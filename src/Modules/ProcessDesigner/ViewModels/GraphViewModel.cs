@@ -4,11 +4,9 @@ using System.ComponentModel.Composition;
 using System.Linq;
 using System.Windows;
 using Caliburn.Micro;
-using Cortex.Model;
 using Cortex.Model.Elements;
 using Gemini.Framework;
 using Gemini.Modules.Inspector;
-using DebugLog = Cortex.Model.Elements.DebugLog;
 
 namespace Cortex.Modules.ProcessDesigner.ViewModels
 {

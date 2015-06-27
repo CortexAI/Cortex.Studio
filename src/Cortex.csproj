@@ -59,6 +59,10 @@
       <HintPath>..\packages\MahApps.Metro.1.0.0.0\lib\net45\MahApps.Metro.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <HintPath>..\packages\NLog.4.0.1\lib\net45\NLog.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Data" />
@@ -119,11 +123,17 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Elements\ElementsCategory.cs" />
+    <Compile Include="Elements\LogElement.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Modules\ElementsToolbox\Views\ElementsToolboxView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Modules\Output\Views\OutputView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -150,11 +160,22 @@
     <Compile Include="Modules\ElementsToolbox\Views\ElementsToolboxView.xaml.cs">
       <DependentUpon>ElementsToolboxView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Modules\Output\Commands\OpenOutputDefenition.cs" />
+    <Compile Include="Modules\Output\Commands\OpenOutputHandler.cs" />
+    <Compile Include="Modules\Output\MenuDefenitions.cs" />
+    <Compile Include="Modules\Output\Module.cs" />
+    <Compile Include="Modules\Output\NLogLogger.cs" />
+    <Compile Include="Modules\Output\ShoutingTarget.cs" />
+    <Compile Include="Modules\Output\ViewModels\OutputViewModel.cs" />
+    <Compile Include="Modules\Output\Views\OutputView.xaml.cs">
+      <DependentUpon>OutputView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Modules\ProcessDesigner\Commands\NewProcessCommandDefinition.cs" />
     <Compile Include="Modules\ProcessDesigner\Commands\NewProcessCommandHandler.cs" />
     <Compile Include="Modules\ProcessDesigner\Commands\RunProcessCommandDefenition.cs" />
     <Compile Include="Modules\ProcessDesigner\Commands\RunProcessCommandHandler.cs" />
     <Compile Include="Modules\ProcessDesigner\Design\DesignTimeGraphViewModel.cs" />
+    <Compile Include="Modules\ProcessDesigner\EditorProvider.cs" />
     <Compile Include="Modules\ProcessDesigner\MenuDefenitions.cs" />
     <Compile Include="Modules\ProcessDesigner\ToolbarDefenitions.cs" />
     <Compile Include="Modules\ProcessDesigner\TypeToColorConverter.cs" />
@@ -172,6 +193,7 @@
     <Compile Include="Modules\ProjectExplorer\Commands\OpenFolderHandler.cs" />
     <Compile Include="Modules\ProjectExplorer\Commands\OpenProjectExplorerDefinition.cs" />
     <Compile Include="Modules\ProjectExplorer\Commands\OpenProjectExplorerHandler.cs" />
+    <Compile Include="Modules\ProjectExplorer\Design\DesignTimeProjectExplorerViewModel.cs" />
     <Compile Include="Modules\ProjectExplorer\MenuDefenitions.cs" />
     <Compile Include="Modules\ProjectExplorer\ViewModels\FileItemViewModel.cs" />
     <Compile Include="Modules\ProjectExplorer\ViewModels\FolderItemViewModel.cs" />
@@ -199,6 +221,12 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <Content Include="NLog.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <None Include="NLog.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
