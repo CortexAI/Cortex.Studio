@@ -123,6 +123,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Modules\ElementsToolbox\Views\ElementsToolboxView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Modules\ProcessDesigner\Resources\Styles.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -131,17 +135,32 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Modules\ProjectExplorer\Views\ProjectExplorerView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Modules\BasicElements\ElementBase.cs" />
-    <Compile Include="Modules\ProcessDesigner\Commands\OpenGraphCommandDefinition.cs" />
-    <Compile Include="Modules\ProcessDesigner\Commands\OpenGraphCommandHandler.cs" />
+    <Compile Include="Modules\ElementsToolbox\Commands\OpenGraphCommandDefinition.cs" />
+    <Compile Include="Modules\ElementsToolbox\Commands\OpenGraphCommandHandler.cs" />
+    <Compile Include="Modules\ElementsToolbox\MenuDefenitions.cs" />
+    <Compile Include="Modules\ElementsToolbox\ViewModels\CategoryViewModel.cs" />
+    <Compile Include="Modules\ElementsToolbox\ViewModels\ElementsToolboxViewModel.cs" />
+    <Compile Include="Modules\ElementsToolbox\ViewModels\ElementDescriptionViewModel.cs" />
+    <Compile Include="Modules\ElementsToolbox\Views\ElementsToolboxView.xaml.cs">
+      <DependentUpon>ElementsToolboxView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\ProcessDesigner\Commands\NewProcessCommandDefinition.cs" />
+    <Compile Include="Modules\ProcessDesigner\Commands\NewProcessCommandHandler.cs" />
+    <Compile Include="Modules\ProcessDesigner\Commands\RunProcessCommandDefenition.cs" />
+    <Compile Include="Modules\ProcessDesigner\Commands\RunProcessCommandHandler.cs" />
     <Compile Include="Modules\ProcessDesigner\Design\DesignTimeGraphViewModel.cs" />
     <Compile Include="Modules\ProcessDesigner\MenuDefenitions.cs" />
+    <Compile Include="Modules\ProcessDesigner\ToolbarDefenitions.cs" />
+    <Compile Include="Modules\ProcessDesigner\TypeToColorConverter.cs" />
     <Compile Include="Modules\ProcessDesigner\ViewModels\ConnectionViewModel.cs" />
     <Compile Include="Modules\ProcessDesigner\ViewModels\ConnectorDirection.cs" />
     <Compile Include="Modules\ProcessDesigner\ViewModels\ConnectorViewModel.cs" />
-    <Compile Include="Modules\ProcessDesigner\ViewModels\DynamicElement.cs" />
     <Compile Include="Modules\ProcessDesigner\ViewModels\ElementViewModel.cs" />
     <Compile Include="Modules\ProcessDesigner\ViewModels\GraphViewModel.cs" />
     <Compile Include="Modules\ProcessDesigner\ViewModels\InputConnectorViewModel.cs" />
@@ -149,6 +168,20 @@
     <Compile Include="Modules\ProcessDesigner\Views\GraphView.xaml.cs">
       <DependentUpon>GraphView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Modules\ProjectExplorer\Commands\OpenFolderDefenition.cs" />
+    <Compile Include="Modules\ProjectExplorer\Commands\OpenFolderHandler.cs" />
+    <Compile Include="Modules\ProjectExplorer\Commands\OpenProjectExplorerDefinition.cs" />
+    <Compile Include="Modules\ProjectExplorer\Commands\OpenProjectExplorerHandler.cs" />
+    <Compile Include="Modules\ProjectExplorer\MenuDefenitions.cs" />
+    <Compile Include="Modules\ProjectExplorer\ViewModels\FileItemViewModel.cs" />
+    <Compile Include="Modules\ProjectExplorer\ViewModels\FolderItemViewModel.cs" />
+    <Compile Include="Modules\ProjectExplorer\ViewModels\ProjectExplorerViewModel.cs" />
+    <Compile Include="Modules\ProjectExplorer\ViewModels\TreeViewItemBase.cs" />
+    <Compile Include="Modules\ProjectExplorer\Views\ProjectExplorerView.xaml.cs">
+      <DependentUpon>ProjectExplorerView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\Startup\Module.cs" />
+    <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -177,13 +210,31 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Modules\Home\" />
+    <Resource Include="Resources\action_create_16xLG.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Modules\ProcessDesigner\Resources\action_add_16xLG.png" />
     <Resource Include="Modules\ProcessDesigner\Resources\active_x_16xLG.png" />
     <Resource Include="Modules\ProcessDesigner\Resources\color_swatch.png" />
     <Resource Include="Modules\ProcessDesigner\Resources\image.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Cortex.Model\Cortex.Model.csproj">
+      <Project>{841972A7-8B8F-4F21-B05C-1D8E21A64021}</Project>
+      <Name>Cortex.Model</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\arrow_run_16xLG.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\folder_Closed_16xLG.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\folder_Open_16xLG.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\document_16xLG.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

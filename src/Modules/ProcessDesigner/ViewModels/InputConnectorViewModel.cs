@@ -1,11 +1,12 @@
 ﻿using System;
-using System.Windows.Media;
+using Cortex.Model;
 
 namespace Cortex.Modules.ProcessDesigner.ViewModels
 {
-    public class InputConnectorViewModel : ConnectorViewModel
+    public class InputConnectorViewModel : ConnectorViewModel, IDisposable
     {
         public event EventHandler SourceChanged;
+        public InputPin Pin { get; private set; }
 
         public override ConnectorDirection ConnectorDirection
         {
@@ -18,12 +19,15 @@ namespace Cortex.Modules.ProcessDesigner.ViewModels
             get { return _connection; }
             set
             {
+                if(_connection == null)
+                    Pin.SetSourcePin(null);
                 if (_connection != null)
                     _connection.From.Element.OutputChanged -= OnSourceElementOutputChanged;
                 _connection = value;
                 if (_connection != null)
                     _connection.From.Element.OutputChanged += OnSourceElementOutputChanged;
                 RaiseSourceChanged();
+                Pin.SetSourcePin(Connection.From.Pin);
                 NotifyOfPropertyChange(() => Connection);
             }
         }
@@ -33,10 +37,10 @@ namespace Cortex.Modules.ProcessDesigner.ViewModels
             RaiseSourceChanged();
         }
 
-        public InputConnectorViewModel(ElementViewModel element, string name, Color color)
-            : base(element, name, color)
+        public InputConnectorViewModel(ElementViewModel element, InputPin pin)
+            : base(element, pin.Name, TypeToColorConverter.GetColor(pin.Type))
         {
-            
+            Pin = pin;
         }
 
         private void RaiseSourceChanged()
@@ -44,6 +48,12 @@ namespace Cortex.Modules.ProcessDesigner.ViewModels
             var handler = SourceChanged;
             if (handler!= null)
                 handler(this, EventArgs.Empty);
+        }
+
+
+        public void Dispose()
+        {
+            Pin.SetSourcePin(null);
         }
     }
 }

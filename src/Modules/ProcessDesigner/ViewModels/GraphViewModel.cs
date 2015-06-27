@@ -1,11 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.Windows;
 using Caliburn.Micro;
-using Cortex.Modules.BasicElements;
+using Cortex.Model;
+using Cortex.Model.Elements;
 using Gemini.Framework;
 using Gemini.Modules.Inspector;
+using DebugLog = Cortex.Model.Elements.DebugLog;
 
 namespace Cortex.Modules.ProcessDesigner.ViewModels
 {
@@ -41,25 +44,6 @@ namespace Cortex.Modules.ProcessDesigner.ViewModels
             _connections = new BindableCollection<ConnectionViewModel>();
 
             _inspectorTool = inspectorTool;
-
-            var element1 = new DynamicElement(new AddElement()) { X = 100, Y = 200};
-            var element2 = new DynamicElement(new AddElement()) { X = 100, Y = 400 };
-            var element3 = new DynamicElement(new AddElement()) { X = 300, Y = 300 };
-
-            _elements.Add(element1);
-            _elements.Add(element2);
-            _elements.Add(element3);
-
-            Connections.Add(new ConnectionViewModel(
-                element1.OutputConnectors[0],
-                element3.InputConnectors[0]));
-
-            Connections.Add(new ConnectionViewModel(
-                element2.OutputConnectors[0],
-                element3.InputConnectors[1]));
-
-            element1.IsSelected = true;
-         
         }
 
         public TElement AddElement<TElement>(double x, double y)
@@ -105,10 +89,17 @@ namespace Cortex.Modules.ProcessDesigner.ViewModels
             }
 
             var existingConnection = nearbyConnector.Connection;
-            if (existingConnection != null)
-                Connections.Remove(existingConnection);
-
-            newConnection.To = nearbyConnector;
+            
+            try
+            {
+                newConnection.To = nearbyConnector;
+                if (existingConnection != null)
+                    Connections.Remove(existingConnection);
+            }
+            catch (Exception)
+            {
+                Connections.Remove(newConnection);
+            }
         }
 
         private InputConnectorViewModel FindNearbyInputConnector(Point mousePosition)
@@ -141,10 +132,19 @@ namespace Cortex.Modules.ProcessDesigner.ViewModels
 
             if (selectedElements.Count == 1)
                 _inspectorTool.SelectedObject = new InspectableObjectBuilder()
-                    .WithObjectProperties(selectedElements[0], x => true)
+                    .WithObjectProperties(selectedElements[0].Element, x => true)
                     .ToInspectableObject();
             else
                 _inspectorTool.SelectedObject = null;
+        }
+
+        public void Run()
+        {
+            var startElement = _elements.FirstOrDefault(e => e.Element is StartPoint);
+            if (startElement == null) return;
+
+            var startPoint = startElement.Element as StartPoint;
+            if (startPoint != null) startPoint.Run();
         }
     }
 }

@@ -1,11 +1,11 @@
 ﻿using Gemini.Framework.Commands;
 
-namespace Cortex.Modules.ProcessDesigner.Commands
+namespace Cortex.Modules.ProjectExplorer.Commands
 {
     [CommandDefinition]
-    public class OpenGraphCommandDefinition : CommandDefinition
+    class OpenFolderDefenition : CommandDefinition
     {
-        public const string CommandName = "File.OpenGraph";
+        public const string CommandName = "File.OpenFolder";
 
         public override string Name
         {
@@ -14,12 +14,12 @@ namespace Cortex.Modules.ProcessDesigner.Commands
 
         public override string Text
         {
-            get { return "Open Graph"; }
+            get { return "Open project"; }
         }
 
         public override string ToolTip
         {
-            get { return "Open Graph"; }
+            get { return "Opens project"; }
         }
     }
 }

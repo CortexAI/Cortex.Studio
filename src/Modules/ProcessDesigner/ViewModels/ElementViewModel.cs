@@ -4,10 +4,11 @@ using System.ComponentModel;
 using System.Linq;
 using System.Windows.Media;
 using Caliburn.Micro;
+using Cortex.Model;
 
 namespace Cortex.Modules.ProcessDesigner.ViewModels
 {
-    public abstract class ElementViewModel : PropertyChangedBase
+    public class ElementViewModel : PropertyChangedBase
     {
         public event EventHandler OutputChanged;
 
@@ -54,6 +55,8 @@ namespace Cortex.Modules.ProcessDesigner.ViewModels
 
         public Uri IconUri { get; set; }
 
+        public IElement Element { get { return _element; } }
+
         [Browsable(false)]
         public bool IsSelected
         {
@@ -72,6 +75,8 @@ namespace Cortex.Modules.ProcessDesigner.ViewModels
         }
 
         private readonly BindableCollection<OutputConnectorViewModel> _outputConnectors;
+        private readonly IElement _element;
+
         public IList<OutputConnectorViewModel> OutputConnectors
         {
             get { return _outputConnectors; }
@@ -87,29 +92,39 @@ namespace Cortex.Modules.ProcessDesigner.ViewModels
             }
         }
 
-        protected ElementViewModel()
+        public ElementViewModel(IElement element)
         {
+            _element = element;
             _inputConnectors = new BindableCollection<InputConnectorViewModel>();
             _outputConnectors = new BindableCollection<OutputConnectorViewModel>();
-            _name = GetType().Name;
+            _name = element.Name;
+            IconUri = element.IconUri;
+            
+            if(_element.Inputs != null)
+            foreach (var pin in _element.Inputs)
+                AddInputConnector(pin);
+
+            if (_element.Outputs != null)
+            foreach (var pin in _element.Outputs)
+                AddOutputConnector(pin);
         }
 
-        protected void AddInputConnector(string name, Color color)
+        protected void AddInputConnector(InputPin pin)
         {
-            var inputConnector = new InputConnectorViewModel(this, name, color);
-            inputConnector.SourceChanged += (sender, e) => OnInputConnectorConnectionChanged();
+            var inputConnector = new InputConnectorViewModel(this, pin);
+            inputConnector.SourceChanged += InputConnectorOnSourceChanged;
             _inputConnectors.Add(inputConnector);
         }
 
-        protected void AddOutputConnector(string name, Color color)
+        private void InputConnectorOnSourceChanged(object sender, EventArgs eventArgs)
         {
-            var outputConnector = new OutputConnectorViewModel(this, name, color);
-            _outputConnectors.Add(outputConnector);
+
         }
 
-        protected virtual void OnInputConnectorConnectionChanged()
+        protected void AddOutputConnector(OutputPin pin)
         {
-            
+            var outputConnector = new OutputConnectorViewModel(this, pin);
+            _outputConnectors.Add(outputConnector);
         }
 
         protected virtual void RaiseOutputChanged()

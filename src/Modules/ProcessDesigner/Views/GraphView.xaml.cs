@@ -2,7 +2,8 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using Cortex.Modules.BasicElements;
+using Cortex.Model;
+using Cortex.Modules.ElementsToolbox.ViewModels;
 using Cortex.Modules.ProcessDesigner.ViewModels;
 using Gemini.Modules.GraphEditor.Controls;
 using Gemini.Modules.Toolbox;
@@ -114,12 +115,12 @@ namespace Cortex.Modules.ProcessDesigner.Views
 
         private void OnGraphControlDrop(object sender, DragEventArgs e)
         {
-            if (e.Data.GetDataPresent(ToolboxDragDrop.DataFormat))
+            if (e.Data.GetDataPresent(ElementsToolboxViewModel.DataFormat))
             {
                 var mousePosition = e.GetPosition(GraphControl);
 
-                var toolboxItem = (ToolboxItem) e.Data.GetData(ToolboxDragDrop.DataFormat);
-                var element =new DynamicElement((IElement) Activator.CreateInstance(toolboxItem.ItemType))
+                var vm = (ElementDescriptionViewModel)e.Data.GetData(ElementsToolboxViewModel.DataFormat);
+                var element = new ElementViewModel(vm.Create())
                 {
                     X = mousePosition.X,
                     Y = mousePosition.Y

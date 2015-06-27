@@ -7,6 +7,7 @@
              xmlns:local="clr-namespace:Gemini.Modules.GraphEditor.Controls;assembly=Gemini.Modules.GraphEditor"
              xmlns:vm="clr-namespace:Cortex.Modules.ProcessDesigner.ViewModels"
              xmlns:design="clr-namespace:Cortex.Modules.ProcessDesigner.Design"
+             xmlns:cal="http://www.caliburnproject.org"
              mc:Ignorable="d" 
              d:DesignHeight="500" d:DesignWidth="700"
 			 d:DataContext="{d:DesignInstance design:DesignTimeGraphViewModel, IsDesignTimeCreatable=True}"
@@ -15,8 +16,12 @@
         <converters:ColorToBrushConverter x:Key="ColorToBrushConverter" />
     </UserControl.Resources>
     <Grid>
-        <ScrollViewer CanContentScroll="True" VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Visible">
-            <local:ZoomAndPanControl x:Name="ZoomAndPanControl" Background="WhiteSmoke">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <ScrollViewer Grid.Row="1" CanContentScroll="True" VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Visible">
+            <local:ZoomAndPanControl x:Name="ZoomAndPanControl" Background="WhiteSmoke" MaxContentScale="1" MinContentScale="1">
                 <local:GraphControl x:Name="GraphControl" Background="#FF7A7A7A"
 									ElementsSource="{Binding Elements}" ConnectionsSource="{Binding Connections}"
 									Width="3000" Height="2000"
