@@ -24,7 +24,7 @@ namespace Cortex.Modules.Output
 
         public void Error(Exception exception)
         {
-            _innerLogger.ErrorException(exception.Message, exception);
+            _innerLogger.Error(exception, exception.Message, exception.Data);
         }
     }
 }

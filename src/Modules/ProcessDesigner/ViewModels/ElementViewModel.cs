@@ -1,20 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
-using System.Windows.Media;
+using System.Runtime.Serialization;
 using Caliburn.Micro;
 using Cortex.Model;
 
 namespace Cortex.Modules.ProcessDesigner.ViewModels
 {
-    public class ElementViewModel : PropertyChangedBase
+    [Serializable]
+    public class ElementViewModel : PropertyChangedBase, ISerializable
     {
+        private bool _isSelected;
+        private readonly BindableCollection<InputConnectorViewModel> _inputConnectors = new BindableCollection<InputConnectorViewModel>();
+        private readonly BindableCollection<OutputConnectorViewModel> _outputConnectors = new BindableCollection<OutputConnectorViewModel>();
+        
+        private readonly IElement _element;
+        private double _x;
+        private double _y;
+
         public event EventHandler OutputChanged;
 
-        private double _x;
-
-        [Browsable(false)]
         public double X
         {
             get { return _x; }
@@ -25,9 +30,6 @@ namespace Cortex.Modules.ProcessDesigner.ViewModels
             }
         }
 
-        private double _y;
-
-        [Browsable(false)]
         public double Y
         {
             get { return _y; }
@@ -38,26 +40,27 @@ namespace Cortex.Modules.ProcessDesigner.ViewModels
             }
         }
 
-        private string _name;
-
-        [Browsable(false)]
         public string Name
         {
-            get { return _name; }
-            set
+            get
             {
-                _name = value;
-                NotifyOfPropertyChange(() => Name);
+                return _element != null ? _element.Name : "Element";
             }
         }
 
-        private bool _isSelected;
+        public Uri IconUri
+        {
+            get
+            {
+                return _element != null ? _element.IconUri : null;
+            }
+        }
 
-        public Uri IconUri { get; set; }
+        public IElement Element
+        {
+            get { return _element; }
+        }
 
-        public IElement Element { get { return _element; } }
-
-        [Browsable(false)]
         public bool IsSelected
         {
             get { return _isSelected; }
@@ -68,14 +71,10 @@ namespace Cortex.Modules.ProcessDesigner.ViewModels
             }
         }
         
-        private readonly BindableCollection<InputConnectorViewModel> _inputConnectors;
         public IList<InputConnectorViewModel> InputConnectors
         {
             get { return _inputConnectors; }
         }
-
-        private readonly BindableCollection<OutputConnectorViewModel> _outputConnectors;
-        private readonly IElement _element;
 
         public IList<OutputConnectorViewModel> OutputConnectors
         {
@@ -91,22 +90,30 @@ namespace Cortex.Modules.ProcessDesigner.ViewModels
                     .Where(x => x != null);
             }
         }
-
+        
         public ElementViewModel(IElement element)
         {
             _element = element;
-            _inputConnectors = new BindableCollection<InputConnectorViewModel>();
-            _outputConnectors = new BindableCollection<OutputConnectorViewModel>();
-            _name = element.Name;
-            IconUri = element.IconUri;
-            
-            if(_element.Inputs != null)
-            foreach (var pin in _element.Inputs)
-                AddInputConnector(pin);
+            SetConnectors();
+        }
+
+        protected ElementViewModel(SerializationInfo info, StreamingContext context)
+        {
+            _element = (IElement)info.GetValue("Element", typeof(IElement));
+            _x = info.GetDouble("X");
+            _y = info.GetDouble("Y");
+            SetConnectors();
+        }
+
+        private void SetConnectors()
+        {
+            if (_element.Inputs != null)
+                foreach (var pin in _element.Inputs)
+                    AddInputConnector(pin);
 
             if (_element.Outputs != null)
-            foreach (var pin in _element.Outputs)
-                AddOutputConnector(pin);
+                foreach (var pin in _element.Outputs)
+                    AddOutputConnector(pin);
         }
 
         protected void AddInputConnector(InputPin pin)
@@ -129,8 +136,15 @@ namespace Cortex.Modules.ProcessDesigner.ViewModels
 
         protected virtual void RaiseOutputChanged()
         {
-            EventHandler handler = OutputChanged;
+            var handler = OutputChanged;
             if (handler != null) handler(this, EventArgs.Empty);
+        }
+
+        public void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            info.AddValue("Element", _element);
+            info.AddValue("X", _x);
+            info.AddValue("Y", _y);
         }
     }
 }

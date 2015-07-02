@@ -9,7 +9,7 @@ namespace Cortex.Model
         Uri IconUri { get; }
         string Description { get; }
         string Category { get; }
-        IList<InputPin> Inputs { get; }
-        IList<OutputPin> Outputs { get; }
+        InputPin[] Inputs { get; }
+        OutputPin[] Outputs { get; }
     }
 }

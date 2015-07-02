@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel.Composition;
 using System.Threading.Tasks;
-using Caliburn.Micro;
 using Cortex.Modules.ElementsToolbox.ViewModels;
 using Gemini.Framework.Commands;
 using Gemini.Framework.Services;

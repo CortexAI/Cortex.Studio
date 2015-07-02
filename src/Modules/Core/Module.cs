@@ -8,11 +8,13 @@ using Cortex.Modules.ProjectExplorer.ViewModels;
 using Gemini.Framework;
 using Gemini.Modules.Inspector;
 
-namespace Cortex.Modules.Startup
+namespace Cortex.Modules.Core
 {
     [Export(typeof(IModule))]
     class Module : ModuleBase
     {
+        private ProjectExplorerViewModel _explorer;
+
         public override IEnumerable<Type> DefaultTools
         {
             get 
@@ -24,6 +26,12 @@ namespace Cortex.Modules.Startup
             }
         }
 
+        [ImportingConstructor]
+        public Module(ProjectExplorerViewModel explorer)
+        {
+            _explorer = explorer;
+        }
+
         public override void Initialize()
         {
             Shell.ShowFloatingWindowsInTaskbar = true;
@@ -31,6 +39,9 @@ namespace Cortex.Modules.Startup
 
             MainWindow.WindowState = WindowState.Maximized;
             MainWindow.Title = "Cortex";
+
+            // TODO: open lastproject
+            _explorer.OpenProject(Environment.CurrentDirectory);
         }
     }
 }

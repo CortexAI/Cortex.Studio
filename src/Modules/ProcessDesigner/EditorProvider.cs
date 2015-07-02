@@ -1,11 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.IO;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Soap;
 using Caliburn.Micro;
 using Cortex.Modules.ProcessDesigner.ViewModels;
+using Cortex.Modules.ProjectExplorer.ViewModels;
 using Gemini.Framework;
 using Gemini.Framework.Services;
-using Gemini.Modules.Inspector;
 
 namespace Cortex.Modules.ProcessDesigner
 {
@@ -13,6 +16,8 @@ namespace Cortex.Modules.ProcessDesigner
     [Export(typeof(EditorProvider))]
     public class EditorProvider : IEditorProvider
     {
+        private ILog _log = LogManager.GetLog(typeof (EditorProvider));
+
         public bool Handles(string path)
         {
             var extension = Path.GetExtension(path);
@@ -21,12 +26,34 @@ namespace Cortex.Modules.ProcessDesigner
 
         public IDocument CreateNew(string name)
         {
-            return new GraphViewModel(IoC.Get<IInspectorTool>());
+            var explorer = IoC.Get<ProjectExplorerViewModel>();
+            return new GraphViewModel(Path.Combine(explorer.Root.Path, name));
         }
 
         public IDocument Open(string path)
         {
-            return new GraphViewModel(IoC.Get<IInspectorTool>());
+            try
+            {
+                var formatter = new SoapFormatter();
+                using (var stream = new FileStream(path, FileMode.Open, FileAccess.Read))
+                {
+                    var doc = formatter.Deserialize(stream) as GraphViewModel;
+                    stream.Close();
+
+                    if (doc != null)
+                    {
+                        _log.Info("Opened document: {0}", path);
+                        doc.FileName = path;
+                        return doc;
+                    }
+                }                
+            }
+            catch (Exception exception)
+            {
+                _log.Error(exception);
+            }
+
+            return null;
         }
 
         public IEnumerable<EditorFileType> FileTypes

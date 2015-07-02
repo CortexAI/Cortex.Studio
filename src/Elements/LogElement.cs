@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.Composition;
+using System.Runtime.Serialization;
 using Caliburn.Micro;
 using Cortex.Model;
 using Cortex.Model.Elements;
@@ -7,10 +8,11 @@ using Cortex.Model.Elements;
 namespace Cortex.Elements
 {
     [Export(typeof(IElement))]
+    [Serializable]
     class LogElement : BaseElement
     {
+        [NonSerialized]
         private ILog _log;
-
 
         public override string Description
         {
@@ -35,17 +37,29 @@ namespace Cortex.Elements
         public LogElement()
         {
             _log = LogManager.GetLog(this.GetType());
-
-            Inputs.Add(new FlowInputPin(Action));
-            Inputs.Add(new InputPin("Object",typeof(object), null));
-            Outputs.Add(new FlowOutputPin("Out"));
+            Inputs = new []
+            {
+                new FlowInputPin(Action),
+                new InputPin("Object", typeof(object), null),
+            };
+            Outputs = new OutputPin[]
+            {
+                new FlowOutputPin("Out")
+            };
         }
 
         private void Action()
         {
-            if (Inputs[1].Value != null)
-            _log.Info(Inputs[1].Value.ToString());
+            var val = Inputs[1].Value;
+            if (val != null && _log != null)
+                _log.Info("Output: " + Inputs[1].Value);
             ((FlowOutputPin)Outputs[0]).Call();
+        }
+
+        [OnDeserialized]
+        void OnDeserialized(StreamingContext context)
+        {
+            _log = LogManager.GetLog(this.GetType());
         }
     }
 }

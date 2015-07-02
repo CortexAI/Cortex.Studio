@@ -4,10 +4,11 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:viewModels="clr-namespace:Cortex.Modules.ProjectExplorer.ViewModels"
+             xmlns:cal="http://www.caliburnproject.org"
              xmlns:design="clr-namespace:Cortex.Modules.ProjectExplorer.Design"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300"
-             d:DataContext="{d:DesignInstance design:DesignTimeProjectExplorerViewModel, IsDesignTimeCreatable=True}">
+             d:DataContext="{d:DesignInstance design:DesignTimeProjectExplorerViewModel, d:IsDesignTimeCreatable=True}">
     <Grid>
         <TreeView ItemsSource="{Binding Items}">
             <TreeView.Resources>
@@ -18,7 +19,7 @@
                     </StackPanel>
                 </HierarchicalDataTemplate>
                 <DataTemplate DataType="{x:Type viewModels:FileItemViewModel}">
-                    <StackPanel Orientation="Horizontal">
+                    <StackPanel Orientation="Horizontal" cal:Message.Attach="[Event MouseDown] = [Action OnMouseDown($source, $dataContext, $eventArgs)];" >
                         <Image Source="{Binding IconUri}" Width="16" Height="16" />
                         <TextBlock Text="{Binding Name}" />
                     </StackPanel>

@@ -56,7 +56,7 @@ namespace Cortex.Modules.ProcessDesigner.ViewModels
                 NotifyOfPropertyChange(() => To);
             }
         }
-
+        
         private Point _fromPosition;
         public Point FromPosition
         {
@@ -67,7 +67,7 @@ namespace Cortex.Modules.ProcessDesigner.ViewModels
                 NotifyOfPropertyChange(() => FromPosition);
             }
         }
-
+        
         private Point _toPosition;
         public Point ToPosition
         {
@@ -80,7 +80,6 @@ namespace Cortex.Modules.ProcessDesigner.ViewModels
         }
 
         private Color _color;
-
         public Color Color
         {
             get { return _color; }

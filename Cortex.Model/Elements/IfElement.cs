@@ -1,9 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.Composition;
 
 namespace Cortex.Model.Elements
 {
+    [Serializable]
     [Export(typeof(IElement))]
     public class IfElement : IElement
     {
@@ -11,8 +11,8 @@ namespace Cortex.Model.Elements
         public string Category { get { return "Common"; } }
         public Uri IconUri { get { return null; } }
         public string Description { get { return "If statement"; } }
-        public IList<InputPin> Inputs { get; private set; }
-        public IList<OutputPin> Outputs { get; private set; }
+        public InputPin[] Inputs { get; private set; }
+        public OutputPin[] Outputs { get; private set; }
 
         public IfElement()
         {

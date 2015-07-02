@@ -28,7 +28,7 @@ namespace Cortex.Modules.ProjectExplorer.Commands
             var showDialog = dialog.ShowDialog();
             if (showDialog != null && (bool) showDialog)
             {
-                _vm.Open(dialog.FileName);
+                _vm.OpenProject(dialog.FileName);
             }
             return TaskUtility.Completed;
         }

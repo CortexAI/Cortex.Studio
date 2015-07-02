@@ -1,12 +1,12 @@
-﻿using Cortex.Model.Elements;
+﻿using Cortex.Model;
+using Cortex.Model.Elements;
 using Cortex.Modules.ProcessDesigner.ViewModels;
 
 namespace Cortex.Modules.ProcessDesigner.Design
 {
     public class DesignTimeGraphViewModel : GraphViewModel
     {
-        public DesignTimeGraphViewModel()
-            : base(null)
+        public DesignTimeGraphViewModel() : base(null)
         {
             var element1 = new ElementViewModel(new AdditionElement()) { X = 100, Y = 200 };
             var element3 = new ElementViewModel(new DivisionElement()) { X = 300, Y = 300 };

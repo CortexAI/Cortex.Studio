@@ -1,9 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.Composition;
 
 namespace Cortex.Model.Elements
 {
+    [Serializable]
     [Export(typeof(IElement))]
     public class ForElement : IElement
     {
@@ -12,8 +12,8 @@ namespace Cortex.Model.Elements
         public string Category { get { return "Common"; } }
         public Uri IconUri { get { return null; } }
         public string Description { get { return "For Loop"; } }
-        public IList<InputPin> Inputs { get; private set; }
-        public IList<OutputPin> Outputs { get; private set; }
+        public InputPin[] Inputs { get; private set; }
+        public OutputPin[] Outputs { get; private set; }
 
         public ForElement()
         {
@@ -26,20 +26,17 @@ namespace Cortex.Model.Elements
             Outputs = new[]
             {
                 new FlowOutputPin("Each"),
-                new OutputPin("Index", typeof (int), GetIndex),
+                new OutputPin("Index", typeof (int), 0),
                 new FlowOutputPin("Finished"),
             };
         }
 
-        private object GetIndex()
-        {
-            return _index;
-        }
-
         private void OnCall()
         {
-            for (_index = 0; _index < (int)Inputs[1].Value; _index++)
+            var count = (int) Inputs[1].Value;
+            for (_index = 0; _index < count; _index++)
             {
+                Outputs[1].Value = _index;
                 ((FlowOutputPin)Outputs[0]).Call();   
             }
             ((FlowOutputPin)Outputs[2]).Call();

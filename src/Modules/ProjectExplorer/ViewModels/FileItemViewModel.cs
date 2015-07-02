@@ -5,8 +5,8 @@ namespace Cortex.Modules.ProjectExplorer.ViewModels
 {
     public class FileItemViewModel : TreeViewItemBase
     {
-        private string _fullPath;
-        private string _name;
+        private readonly string _fullPath;
+        private readonly string _name;
 
         public override string Name
         {
@@ -18,10 +18,12 @@ namespace Cortex.Modules.ProjectExplorer.ViewModels
             get { return new Uri("pack://application:,,,/Resources/document_16xLG.png"); }
         }
 
+        public override string Path { get { return _fullPath; } }
+
         public FileItemViewModel(string path)
         {
             _fullPath = path;
-            _name = Path.GetFileName(path);
+            _name = System.IO.Path.GetFileName(path);
         }
     }
 }

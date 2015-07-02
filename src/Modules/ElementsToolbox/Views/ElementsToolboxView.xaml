@@ -7,8 +7,7 @@
              xmlns:cal="http://www.caliburnproject.org"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-    <Grid>
-        <TreeView ItemsSource="{Binding Categories}">
+        <TreeView ItemsSource="{Binding Categories}" VerticalAlignment="Stretch">
             <TreeView.ItemContainerStyle>
                 <Style TargetType="{x:Type TreeViewItem}">
                     <Setter Property="IsExpanded" Value="True"/>
@@ -17,6 +16,7 @@
             <TreeView.Resources>
                 <HierarchicalDataTemplate DataType="{x:Type viewModels:CategoryViewModel}" ItemsSource="{Binding Elements}">
                     <StackPanel Orientation="Horizontal">
+                        <Image Source="/Resources/folder_Closed_16xLG.png" Width="16" Height="16" />
                         <TextBlock Text="{Binding Name}" />
                         <TextBlock Text=" [" Foreground="Blue" />
                         <TextBlock Text="{Binding Elements.Count}" Foreground="Blue" />
@@ -24,22 +24,17 @@
                     </StackPanel>
                 </HierarchicalDataTemplate>
                 <DataTemplate DataType="{x:Type viewModels:ElementDescriptionViewModel}">
-                <Grid HorizontalAlignment="Stretch" cal:Message.Attach="[Event MouseDown] = [Action OnMouseDown($source, $dataContext, $eventArgs)];">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="16"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>            
-                    <Grid.ToolTip>
-                            <StackPanel>
-                                <TextBlock Text="{Binding Name}" HorizontalAlignment="Left" FontWeight="Bold"/>
-                                <TextBlock Text="{Binding Description}" HorizontalAlignment="Left" />
-                            </StackPanel>
-                        </Grid.ToolTip>
-                    <Image Grid.Column="0" Source="{Binding IconUri}" HorizontalAlignment="Left" />
-                    <TextBlock Grid.Column="1" Grid.Row ="0" Text="{Binding Name}" HorizontalAlignment="Left" />
-                </Grid>
+                    <StackPanel Orientation="Horizontal"  cal:Message.Attach="[Event MouseDown] = [Action OnMouseDown($source, $dataContext, $eventArgs)];">
+                    <StackPanel.ToolTip>
+                        <StackPanel>
+                            <TextBlock Text="{Binding Name}" HorizontalAlignment="Left" FontWeight="Bold"/>
+                            <TextBlock Text="{Binding Description}" HorizontalAlignment="Left" />
+                        </StackPanel>
+                    </StackPanel.ToolTip>
+                    <Image Source="{Binding IconUri}" HorizontalAlignment="Left" />
+                    <TextBlock Text="{Binding Name}" HorizontalAlignment="Left" />
+                    </StackPanel>
                 </DataTemplate>
             </TreeView.Resources>
         </TreeView>
-    </Grid>
 </UserControl>

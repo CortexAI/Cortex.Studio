@@ -1,27 +1,28 @@
 ﻿using System.ComponentModel.Composition;
+using System.Linq;
 using System.Threading.Tasks;
 using Gemini.Framework.Commands;
 using Gemini.Framework.Services;
 using Gemini.Framework.Threading;
 
-namespace Cortex.Modules.ProcessDesigner.Commands
+namespace Cortex.Modules.Core.Commands
 {
     [CommandHandler]
-    public class NewProcessCommandHandler : CommandHandlerBase<NewProcessCommandDefinition>
+    class SaveAllCommandHandler : CommandHandlerBase<SaveAllCommandDefenition>
     {
         private readonly IShell _shell;
-        private readonly EditorProvider _editor;
 
         [ImportingConstructor]
-        public NewProcessCommandHandler(IShell shell, EditorProvider editor)
+        public SaveAllCommandHandler(IShell shell)
         {
             _shell = shell;
-            _editor = editor;
         }
 
         public override Task Run(Command command)
         {
-            _shell.OpenDocument(_editor.CreateNew("Untitled"));
+            foreach (var d in _shell.Documents.OfType<FileDocument>())
+                d.Save();
+
             return TaskUtility.Completed;
         }
     }

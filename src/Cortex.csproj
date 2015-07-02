@@ -66,6 +66,8 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Runtime.Serialization.Formatters.Soap" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\MahApps.Metro.1.0.0.0\lib\net45\System.Windows.Interactivity.dll</HintPath>
       <Private>True</Private>
@@ -115,6 +117,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Modules\Core\Commands\SaveAllCommandDefenition.cs" />
+    <Compile Include="Modules\Core\Commands\SaveAllCommandHandler.cs" />
+    <Compile Include="Modules\Core\Commands\SaveCommandDefenition.cs" />
+    <Compile Include="Modules\Core\MenuDefenitions.cs" />
+    <Compile Include="Modules\Core\ToolBarDefenitions.cs" />
+    <Compile Include="Modules\Core\FileDocument.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -170,10 +178,7 @@
     <Compile Include="Modules\Output\Views\OutputView.xaml.cs">
       <DependentUpon>OutputView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Modules\ProcessDesigner\Commands\NewProcessCommandDefinition.cs" />
-    <Compile Include="Modules\ProcessDesigner\Commands\NewProcessCommandHandler.cs" />
     <Compile Include="Modules\ProcessDesigner\Commands\RunProcessCommandDefenition.cs" />
-    <Compile Include="Modules\ProcessDesigner\Commands\RunProcessCommandHandler.cs" />
     <Compile Include="Modules\ProcessDesigner\Design\DesignTimeGraphViewModel.cs" />
     <Compile Include="Modules\ProcessDesigner\EditorProvider.cs" />
     <Compile Include="Modules\ProcessDesigner\MenuDefenitions.cs" />
@@ -181,7 +186,7 @@
     <Compile Include="Modules\ProcessDesigner\TypeToColorConverter.cs" />
     <Compile Include="Modules\ProcessDesigner\ViewModels\ConnectionViewModel.cs" />
     <Compile Include="Modules\ProcessDesigner\ViewModels\ConnectorDirection.cs" />
-    <Compile Include="Modules\ProcessDesigner\ViewModels\ConnectorViewModel.cs" />
+    <Compile Include="Modules\ProcessDesigner\ViewModels\IConnectorViewModel.cs" />
     <Compile Include="Modules\ProcessDesigner\ViewModels\ElementViewModel.cs" />
     <Compile Include="Modules\ProcessDesigner\ViewModels\GraphViewModel.cs" />
     <Compile Include="Modules\ProcessDesigner\ViewModels\InputConnectorViewModel.cs" />
@@ -202,7 +207,7 @@
     <Compile Include="Modules\ProjectExplorer\Views\ProjectExplorerView.xaml.cs">
       <DependentUpon>ProjectExplorerView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Modules\Startup\Module.cs" />
+    <Compile Include="Modules\Core\Module.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
@@ -217,6 +222,8 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Resource Include="Resources\Saveall_6518.png" />
+    <Resource Include="Resources\save_16xLG.png" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

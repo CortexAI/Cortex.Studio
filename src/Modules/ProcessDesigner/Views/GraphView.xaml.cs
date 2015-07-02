@@ -86,7 +86,7 @@ namespace Cortex.Modules.ProcessDesigner.Views
 
         private void OnGraphControlConnectionDragStarted(object sender, ConnectionDragStartedEventArgs e)
         {
-            var sourceConnector = (ConnectorViewModel) e.SourceConnector.DataContext;
+            var sourceConnector = (IConnectorViewModel) e.SourceConnector.DataContext;
             var currentDragPoint = Mouse.GetPosition(GraphControl);
             var connection = ViewModel.OnConnectionDragStarted(sourceConnector, currentDragPoint);
             e.Connection = connection;
@@ -102,7 +102,7 @@ namespace Cortex.Modules.ProcessDesigner.Views
         private void OnGraphControlConnectionDragCompleted(object sender, ConnectionDragCompletedEventArgs e)
         {
             var currentDragPoint = Mouse.GetPosition(GraphControl);
-            var sourceConnector = (ConnectorViewModel) e.SourceConnector.DataContext;
+            var sourceConnector = (IConnectorViewModel) e.SourceConnector.DataContext;
             var newConnection = (ConnectionViewModel) e.Connection;
             ViewModel.OnConnectionDragCompleted(currentDragPoint, newConnection, sourceConnector);
         }

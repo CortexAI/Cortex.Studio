@@ -63,5 +63,10 @@ namespace Cortex.Modules.Output.ViewModels
                 Active = Targets.First();
             NotifyOfPropertyChange(() => Targets);
         }
+
+        public void Clear()
+        {
+            Active.Messages.Clear();
+        }
     }
 }

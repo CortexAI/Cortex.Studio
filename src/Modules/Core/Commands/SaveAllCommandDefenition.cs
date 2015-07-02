@@ -2,12 +2,12 @@
 using System.Windows.Input;
 using Gemini.Framework.Commands;
 
-namespace Cortex.Modules.ProcessDesigner.Commands
+namespace Cortex.Modules.Core.Commands
 {
     [CommandDefinition]
-    public class NewProcessCommandDefinition : CommandDefinition
+    class SaveAllCommandDefenition : CommandDefinition
     {
-        public const string CommandName = "File.New.NewProcess";
+        public const string CommandName = "File.SaveAll";
 
         public override string Name
         {
@@ -16,22 +16,22 @@ namespace Cortex.Modules.ProcessDesigner.Commands
 
         public override string Text
         {
-            get { return "New Process"; }
+            get { return "Save All"; }
         }
 
         public override string ToolTip
         {
-            get { return "Create new process"; }
+            get { return "Save All"; }
         }
 
         public override KeyGesture KeyGesture
         {
-            get { return new KeyGesture(Key.N, ModifierKeys.Control); }
+            get { return new KeyGesture(Key.S, ModifierKeys.Alt); }
         }
 
         public override Uri IconSource
         {
-            get { return new Uri("pack://application:,,,/Resources/action_create_16xLG.png"); }
+            get { return new Uri("pack://application:,,,/Resources/Saveall_6518.png"); }
         }
     }
 }

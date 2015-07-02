@@ -13,6 +13,8 @@ namespace Cortex.Modules.ProjectExplorer.ViewModels
             get { return _name; }
         }
 
+        public override string Path { get { return _path; } }
+
         private ObservableCollection<TreeViewItemBase> _childs;
 
         public ObservableCollection<TreeViewItemBase> Childs
@@ -28,7 +30,7 @@ namespace Cortex.Modules.ProjectExplorer.ViewModels
         public FolderItemViewModel(string path)
         {
             _path = path;
-            _name = Path.GetFileName(_path);
+            _name = System.IO.Path.GetFileName(_path);
         }
 
         private ObservableCollection<TreeViewItemBase> GetChilds()
