@@ -20,7 +20,7 @@
                 </HierarchicalDataTemplate>
                 <DataTemplate DataType="{x:Type viewModels:FileItemViewModel}">
                     <StackPanel Orientation="Horizontal" cal:Message.Attach="[Event MouseDown] = [Action OnMouseDown($source, $dataContext, $eventArgs)];" >
-                        <Image Source="{Binding IconUri}" Width="16" Height="16" />
+                        <Image Source="{Binding Icon}" Width="16" Height="16" />
                         <TextBlock Text="{Binding Name}" />
                     </StackPanel>
                 </DataTemplate>

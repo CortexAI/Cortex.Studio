@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.Windows.Media;
 
 namespace Cortex.Modules.ProjectExplorer.ViewModels
 {
@@ -12,11 +11,8 @@ namespace Cortex.Modules.ProjectExplorer.ViewModels
         {
             get { return _name; }
         }
-
-        public Uri IconUri
-        {
-            get { return new Uri("pack://application:,,,/Resources/document_16xLG.png"); }
-        }
+        
+        public ImageSource Icon { get; private set; }
 
         public override string Path { get { return _fullPath; } }
 
@@ -24,6 +20,7 @@ namespace Cortex.Modules.ProjectExplorer.ViewModels
         {
             _fullPath = path;
             _name = System.IO.Path.GetFileName(path);
+            this.Icon = Util.FileIcons.GetImageSource(Util.FileIcons.GetSmallIcon(path));
         }
     }
 }
