@@ -15,13 +15,13 @@
                 <HierarchicalDataTemplate DataType="{x:Type viewModels:FolderItemViewModel}" ItemsSource="{Binding Childs}">
                     <StackPanel Orientation="Horizontal">
                         <Image Source="/Resources/folder_Closed_16xLG.png" Width="16" Height="16" />
-                        <TextBlock Text="{Binding Name}" />
+                        <TextBlock Text="{Binding Name}" Margin="4 2 0 2" />
                     </StackPanel>
                 </HierarchicalDataTemplate>
                 <DataTemplate DataType="{x:Type viewModels:FileItemViewModel}">
                     <StackPanel Orientation="Horizontal" cal:Message.Attach="[Event MouseDown] = [Action OnMouseDown($source, $dataContext, $eventArgs)];" >
                         <Image Source="{Binding Icon}" Width="16" Height="16" />
-                        <TextBlock Text="{Binding Name}" />
+                        <TextBlock Text="{Binding Name}" Margin="3 1 0 1" />
                     </StackPanel>
                 </DataTemplate>
             </TreeView.Resources>

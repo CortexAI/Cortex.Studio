@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
+using System.Threading.Tasks;
 
 namespace Cortex.Model.Elements
 {
@@ -25,7 +26,10 @@ namespace Cortex.Model.Elements
 
         public void Run()
         {
-            ((FlowOutputPin)Outputs[0]).Call();
+            var pin = Outputs[0] as FlowOutputPin;
+            if (pin == null)
+                throw new NullReferenceException();
+            var task = Task.Factory.StartNew(pin.Call);
         }
     }
 }

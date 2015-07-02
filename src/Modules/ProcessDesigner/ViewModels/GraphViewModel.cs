@@ -8,6 +8,7 @@ using System.Runtime.Serialization.Formatters.Soap;
 using System.Threading.Tasks;
 using System.Windows;
 using Caliburn.Micro;
+using Cortex.Model;
 using Cortex.Model.Elements;
 using Cortex.Modules.Core;
 using Cortex.Modules.ProcessDesigner.Commands;
@@ -150,7 +151,10 @@ namespace Cortex.Modules.ProcessDesigner.ViewModels
             if (startElement == null) return;
 
             var startPoint = startElement.Element as StartPoint;
-            if (startPoint != null) startPoint.Run();
+            if (startPoint != null)
+            {
+                startPoint.Run();
+            }
         }
         
         public override void Save()

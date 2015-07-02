@@ -19,6 +19,8 @@ namespace Cortex.Model
             }
         }
 
+        
+
         private readonly object _selfValue;
 
         public InputPin(string name, Type t, object defaultValue)

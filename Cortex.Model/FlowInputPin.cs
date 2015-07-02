@@ -14,6 +14,10 @@ namespace Cortex.Model
 
         public override void SetSourcePin(OutputPin pin)
         {
+            var source = ConnectedPin as FlowOutputPin;
+            if (source != null)
+                source.Unsubscribe(_action);
+
             base.SetSourcePin(pin);
 
             var flowOut = pin as FlowOutputPin;

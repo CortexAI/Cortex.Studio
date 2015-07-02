@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Runtime.Serialization;
+using System.Threading.Tasks;
 
 namespace Cortex.Model
 {
@@ -6,7 +9,7 @@ namespace Cortex.Model
     public class FlowOutputPin : OutputPin
     {
         [NonSerialized]
-        private Action _action;
+        private List<Action> _actions = new List<Action>();
 
         public FlowOutputPin(string name)
             : base(name, typeof(Flow))
@@ -22,13 +25,31 @@ namespace Cortex.Model
 
         public void Call()
         {
-            if (_action != null)
-                _action.Invoke();
+            if (_actions.Count <= 0) 
+                return;
+            _actions[0].Invoke();
+
+            for (var i = 1; i < _actions.Count; i++)
+            {
+                var task = Task.Factory.StartNew(_actions[i]);
+            }
         }
 
         public void Subscribe(Action action)
         {
-            _action = action;
+            _actions.Add(action);
+        }
+
+        public void Unsubscribe(Action action)
+        {
+            if (_actions.Contains(action))
+                _actions.Remove(action);
+        }
+
+        [OnDeserializing]
+        private void OnDeserializing(StreamingContext context)
+        {
+            _actions = new List<Action>();
         }
     }
 }
