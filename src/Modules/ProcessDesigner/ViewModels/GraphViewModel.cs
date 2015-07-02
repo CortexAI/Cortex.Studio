@@ -47,7 +47,6 @@ namespace Cortex.Modules.ProcessDesigner.ViewModels
         public GraphViewModel(string path) : base(path)
         {
             _inspectorTool = IoC.Get<IInspectorTool>();
-
             _log.Info("Graph created: {0}", FileName);
         }
 

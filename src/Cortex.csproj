@@ -124,6 +124,8 @@
     <Compile Include="Modules\Core\MenuDefenitions.cs" />
     <Compile Include="Modules\Core\ToolBarDefenitions.cs" />
     <Compile Include="Modules\Core\FileDocument.cs" />
+    <Compile Include="Modules\ProcessDesigner\Controls\ConnectionBezierLine.cs" />
+    <Compile Include="Modules\ProcessDesigner\Util\BoolToVisibilityConverter.cs" />
     <Compile Include="Modules\ProjectExplorer\Util\FileIcons.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

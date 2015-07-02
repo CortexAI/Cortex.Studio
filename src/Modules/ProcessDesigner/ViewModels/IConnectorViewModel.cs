@@ -11,6 +11,7 @@ namespace Cortex.Modules.ProcessDesigner.ViewModels
         string Name { get; }
         Color Color { get; }
         Point Position { get; }
+        bool IsConnected { get; }
         ConnectorDirection ConnectorDirection { get; }
     }
 }

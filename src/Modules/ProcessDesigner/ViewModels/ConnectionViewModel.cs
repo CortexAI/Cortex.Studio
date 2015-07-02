@@ -89,7 +89,7 @@ namespace Cortex.Modules.ProcessDesigner.ViewModels
                 NotifyOfPropertyChange(() => Color);
             }
         }
-
+        
         public ConnectionViewModel(OutputConnectorViewModel from, InputConnectorViewModel to)
         {
             From = from;

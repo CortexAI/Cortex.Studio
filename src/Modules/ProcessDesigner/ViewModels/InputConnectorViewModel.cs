@@ -40,6 +40,11 @@ namespace Cortex.Modules.ProcessDesigner.ViewModels
                 RaisePositionChanged();
             }
         }
+
+        public bool IsConnected
+        {
+            get { return Connection != null; }
+        }
         
         public ConnectionViewModel Connection
         {
@@ -56,6 +61,7 @@ namespace Cortex.Modules.ProcessDesigner.ViewModels
                 RaiseSourceChanged();
                 Pin.SetSourcePin(Connection.From.Pin);
                 NotifyOfPropertyChange(() => Connection);
+                NotifyOfPropertyChange(() => IsConnected);
             }
         }
 

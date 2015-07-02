@@ -8,21 +8,20 @@
              xmlns:vm="clr-namespace:Cortex.Modules.ProcessDesigner.ViewModels"
              xmlns:design="clr-namespace:Cortex.Modules.ProcessDesigner.Design"
              xmlns:cal="http://www.caliburnproject.org"
+             xmlns:util="clr-namespace:Cortex.Modules.ProcessDesigner.Util"
+             xmlns:controls="clr-namespace:Cortex.Modules.ProcessDesigner.Controls"
              mc:Ignorable="d" 
              d:DesignHeight="500" d:DesignWidth="700"
 			 d:DataContext="{d:DesignInstance design:DesignTimeGraphViewModel, IsDesignTimeCreatable=True}"
 			 Background="WhiteSmoke" Focusable="True">
     <UserControl.Resources>
         <converters:ColorToBrushConverter x:Key="ColorToBrushConverter" />
+        <util:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
     </UserControl.Resources>
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="*"></RowDefinition>
-        </Grid.RowDefinitions>
-        <ScrollViewer Grid.Row="1" CanContentScroll="True" VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Visible">
+        <ScrollViewer CanContentScroll="True" VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Visible">
             <local:ZoomAndPanControl x:Name="ZoomAndPanControl" Background="WhiteSmoke" MaxContentScale="1" MinContentScale="1">
-                <local:GraphControl x:Name="GraphControl" Background="#FF7A7A7A"
+                <local:GraphControl x:Name="GraphControl" Background="#FF7A7A7A" 
 									ElementsSource="{Binding Elements}" ConnectionsSource="{Binding Connections}"
 									Width="3000" Height="2000"
 									PreviewMouseRightButtonDown="OnGraphControlRightMouseButtonDown"
@@ -52,9 +51,12 @@
                                     <Setter Property="Template">
                                         <Setter.Value>
                                             <ControlTemplate TargetType="local:ConnectorItem">
-                                                <Border BorderThickness="1" Padding="1" Margin="0 2 3 5" CornerRadius="2" BorderBrush="{Binding Color, Converter={StaticResource ColorToBrushConverter}}"> 
-                                                    <Rectangle Width="5" Height="5" Fill="{Binding Color, Converter={StaticResource ColorToBrushConverter}}" />
-                                                </Border>
+                                                <Grid Width="12" Height="12">
+                                                    <Ellipse Stroke="{Binding Color, Converter={StaticResource ColorToBrushConverter}}" Fill="Transparent"
+                                                             StrokeThickness="1" />
+                                                    <Ellipse Fill="{Binding Color, Converter={StaticResource ColorToBrushConverter}}" 
+                                                             Visibility="{Binding IsConnected, Converter={StaticResource BoolToVisibilityConverter}}" />
+                                                </Grid>
                                             </ControlTemplate>
                                         </Setter.Value>
                                     </Setter>
@@ -62,14 +64,12 @@
                             </DataTemplate.Resources>
                             <Border x:Name="HighlightBorder" 
 									BorderThickness="2" Padding="2" CornerRadius="4">
-                                <Border CornerRadius="4" Background="WhiteSmoke">
+                                <Border CornerRadius="4" Background="#333">
                                     <Border.Effect>
-                                        <DropShadowEffect Color="DarkGray" ShadowDepth="0" 
-														  BlurRadius="10" />
+                                        <DropShadowEffect Color="DarkGray" ShadowDepth="0" BlurRadius="10" />
                                     </Border.Effect>
                                     <StackPanel Orientation="Vertical">
-                                        <Border Background="LightSkyBlue" Padding="5 2 2 2" BorderBrush="DodgerBlue"
-												BorderThickness="0 0 0 1" CornerRadius="2 2 0 0">
+                                        <Border Background="LightSkyBlue" Padding="5 2 2 2" BorderBrush="DodgerBlue" BorderThickness="0 0 0 1" CornerRadius="2 2 0 0">
                                             <StackPanel Orientation="Horizontal">
                                                 <Image Source="{Binding IconUri}" Margin="0 0 3 0"></Image>
                                                 <TextBlock HorizontalAlignment="Stretch" Text="{Binding Name}" />
@@ -82,27 +82,31 @@
                                                     <ColumnDefinition Width="1" />
                                                     <ColumnDefinition Width="Auto"  MinWidth="50" />
                                                 </Grid.ColumnDefinitions>
-                                                <ItemsControl Grid.Column="0" ItemsSource="{Binding InputConnectors}" 
-															  VerticalAlignment="Top" Padding="0 5 5 0">
+                                                <ItemsControl Grid.Column="0" ItemsSource="{Binding InputConnectors}" VerticalAlignment="Top" Margin="2">
                                                     <ItemsControl.ItemTemplate>
                                                         <DataTemplate>
-                                                            <StackPanel Orientation="Horizontal" Height="20">
-                                                                <local:ConnectorItem />
-                                                                <TextBlock Text="{Binding Name}" FontSize="11" VerticalAlignment="Top"
-																		   Margin="3 0 0 0"/>
-                                                            </StackPanel>
+                                                            <Grid>
+                                                                <Grid.ColumnDefinitions>
+                                                                    <ColumnDefinition Width="Auto"/>
+                                                                    <ColumnDefinition Width="*"/>
+                                                                </Grid.ColumnDefinitions>
+                                                                <local:ConnectorItem Grid.Column="0" />
+                                                                <TextBlock Grid.Column="1" Text="{Binding Name}" FontSize="12" VerticalAlignment="Center" Margin="3" Foreground="White"/>
+                                                            </Grid>
                                                         </DataTemplate>
                                                     </ItemsControl.ItemTemplate>
                                                 </ItemsControl>
-                                                <ItemsControl Grid.Column="2" ItemsSource="{Binding OutputConnectors}" 
-															VerticalAlignment="Top" Padding="5 5 0 0">
+                                                <ItemsControl Grid.Column="2" ItemsSource="{Binding OutputConnectors}" VerticalAlignment="Top" Margin="2">
                                                     <ItemsControl.ItemTemplate>
                                                         <DataTemplate>
-                                                            <StackPanel Orientation="Horizontal" Height="20">
-                                                                <TextBlock Text="{Binding Name}" FontSize="11" VerticalAlignment="Top"
-																		Margin="0 0 3 0"/>
-                                                                <local:ConnectorItem />
-                                                            </StackPanel>
+                                                            <Grid>
+                                                                <Grid.ColumnDefinitions>
+                                                                    <ColumnDefinition Width="*"/>
+                                                                    <ColumnDefinition Width="Auto"/>
+                                                                </Grid.ColumnDefinitions>
+                                                                <TextBlock Grid.Column="0" Text="{Binding Name}" FontSize="12" VerticalAlignment="Center" Margin="3" HorizontalAlignment="Right" Foreground="White"/>
+                                                                <local:ConnectorItem Grid.Column="1" />
+                                                            </Grid>
                                                         </DataTemplate>
                                                     </ItemsControl.ItemTemplate>
                                                 </ItemsControl>
@@ -121,9 +125,11 @@
 
                     <local:GraphControl.ConnectionItemTemplate>
                         <DataTemplate DataType="vm:ConnectionViewModel">
-                            <local:BezierLine Stroke="{Binding Color, Converter={StaticResource ColorToBrushConverter}}" StrokeThickness="2"
-									X1="{Binding FromPosition.X}" Y1="{Binding FromPosition.Y}"
-									X2="{Binding ToPosition.X}" Y2="{Binding ToPosition.Y}" />
+                            <controls:ConnectionBezierLine 
+                                Stroke="{Binding Color, Converter={StaticResource ColorToBrushConverter}}" 
+                                StrokeThickness="2"
+								X1="{Binding FromPosition.X}" Y1="{Binding FromPosition.Y}"
+								X2="{Binding ToPosition.X}" Y2="{Binding ToPosition.Y}" />
                         </DataTemplate>
                     </local:GraphControl.ConnectionItemTemplate>
                 </local:GraphControl>

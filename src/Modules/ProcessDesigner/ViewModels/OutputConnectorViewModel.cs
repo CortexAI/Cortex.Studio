@@ -34,6 +34,16 @@ namespace Cortex.Modules.ProcessDesigner.ViewModels
                 RaisePositionChanged();
             }
         }
+
+        public bool IsConnected
+        {
+            get
+            {
+                if(Connections != null)
+                    return Connections.Count > 0;
+                return false;
+            }
+        }
         
         public ConnectorDirection ConnectorDirection
         {
@@ -50,6 +60,7 @@ namespace Cortex.Modules.ProcessDesigner.ViewModels
             Pin = pin;
             Element = element;
             _connections = new BindableCollection<ConnectionViewModel>();
+            _connections.CollectionChanged += (sender, args) => NotifyOfPropertyChange(()=>IsConnected);
         }
 
         private void RaisePositionChanged()
