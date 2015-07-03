@@ -41,7 +41,7 @@ namespace Cortex.Modules.ProcessDesigner.ViewModels
                 if (_to != null)
                 {
                     _to.PositionChanged -= OnToPositionChanged;
-                    _to.Connection = null;
+                    _to.Detach(this);
                 }
 
                 _to = value;
@@ -49,7 +49,7 @@ namespace Cortex.Modules.ProcessDesigner.ViewModels
                 if (_to != null)
                 {
                     _to.PositionChanged += OnToPositionChanged;
-                    _to.Connection = this;
+                    _to.Attach(this);
                     ToPosition = _to.Position;
                 }
 

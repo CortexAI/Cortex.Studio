@@ -4,6 +4,7 @@ using System.Runtime.Serialization;
 using Caliburn.Micro;
 using Cortex.Model;
 using Cortex.Model.Elements;
+using Cortex.Model.Pins;
 
 namespace Cortex.Elements
 {
@@ -37,12 +38,12 @@ namespace Cortex.Elements
         public LogElement()
         {
             _log = LogManager.GetLog(this.GetType());
-            Inputs = new []
+            Inputs = new IInputPin[]
             {
                 new FlowInputPin(Action),
                 new InputPin("Object", typeof(object), null),
             };
-            Outputs = new OutputPin[]
+            Outputs = new IOutputPin[]
             {
                 new FlowOutputPin("Out")
             };

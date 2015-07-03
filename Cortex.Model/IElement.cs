@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Cortex.Model.Pins;
 
 namespace Cortex.Model
 {
@@ -9,7 +10,7 @@ namespace Cortex.Model
         Uri IconUri { get; }
         string Description { get; }
         string Category { get; }
-        InputPin[] Inputs { get; }
-        OutputPin[] Outputs { get; }
+        IInputPin[] Inputs { get; }
+        IOutputPin[] Outputs { get; }
     }
 }

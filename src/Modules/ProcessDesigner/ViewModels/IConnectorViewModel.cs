@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Media;
 
@@ -13,5 +14,6 @@ namespace Cortex.Modules.ProcessDesigner.ViewModels
         Point Position { get; }
         bool IsConnected { get; }
         ConnectorDirection ConnectorDirection { get; }
+        IList<ConnectionViewModel> Connections { get; }
     }
 }

@@ -1,20 +1,21 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Media;
 using Caliburn.Micro;
-using Cortex.Model;
+using Cortex.Model.Pins;
 
 namespace Cortex.Modules.ProcessDesigner.ViewModels
 {
     public class InputConnectorViewModel : PropertyChangedBase, IConnectorViewModel, IDisposable
     {
-        private ConnectionViewModel _connection;
+        private readonly List<ConnectionViewModel> _connections = new List<ConnectionViewModel>();
         private Point _position;
         
         public event EventHandler SourceChanged;
         public event EventHandler PositionChanged;
 
-        public InputPin Pin { get; private set; }
+        public IInputPin Pin { get; private set; }
 
         public ElementViewModel Element { get; private set; }
 
@@ -24,6 +25,10 @@ namespace Cortex.Modules.ProcessDesigner.ViewModels
         }
 
         public string Name { get { return Pin.Name; } }
+
+        public bool AllowMultipleConnections { get { return Pin.AllowMultipleConnections; } }
+
+        public IList<ConnectionViewModel> Connections { get { return _connections; }}
 
         public Color Color
         {
@@ -43,26 +48,34 @@ namespace Cortex.Modules.ProcessDesigner.ViewModels
 
         public bool IsConnected
         {
-            get { return Connection != null; }
+            get { return _connections.Count > 0; }
         }
         
-        public ConnectionViewModel Connection
+        public void Attach(ConnectionViewModel connection)
         {
-            get { return _connection; }
-            set
+            connection.From.Element.OutputChanged += OnSourceElementOutputChanged;
+            _connections.Add(connection);
+            Pin.Attach(connection.From.Pin);
+            NotifyOfPropertyChange(() => IsConnected);
+        }
+
+        public void Detach(ConnectionViewModel connection)
+        {
+            connection.From.Element.OutputChanged -= OnSourceElementOutputChanged;
+            _connections.Remove(connection);
+            Pin.Detach(connection.From.Pin);
+            NotifyOfPropertyChange(() => IsConnected);
+        }
+
+        public void DetachAll()
+        {
+            foreach (var connectionViewModel in _connections)
             {
-                if(_connection == null)
-                    Pin.SetSourcePin(null);
-                if (_connection != null)
-                    _connection.From.Element.OutputChanged -= OnSourceElementOutputChanged;
-                _connection = value;
-                if (_connection != null)
-                    _connection.From.Element.OutputChanged += OnSourceElementOutputChanged;
-                RaiseSourceChanged();
-                Pin.SetSourcePin(Connection.From.Pin);
-                NotifyOfPropertyChange(() => Connection);
-                NotifyOfPropertyChange(() => IsConnected);
+                connectionViewModel.From.Element.OutputChanged -= OnSourceElementOutputChanged;
             }
+            Pin.DetachAll();
+            _connections.Clear();
+            NotifyOfPropertyChange(() => IsConnected);
         }
 
         private void OnSourceElementOutputChanged(object sender, EventArgs e)
@@ -70,7 +83,7 @@ namespace Cortex.Modules.ProcessDesigner.ViewModels
             RaiseSourceChanged();
         }
 
-        public InputConnectorViewModel(ElementViewModel element, InputPin pin)
+        public InputConnectorViewModel(ElementViewModel element, IInputPin pin)
         {
             Pin = pin;
             Element = element;
@@ -91,7 +104,7 @@ namespace Cortex.Modules.ProcessDesigner.ViewModels
 
         public void Dispose()
         {
-            Pin.SetSourcePin(null);
+            Pin.DetachAll();
         }
     }
 }

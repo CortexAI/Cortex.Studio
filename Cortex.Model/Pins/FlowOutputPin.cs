@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Threading.Tasks;
 
-namespace Cortex.Model
+namespace Cortex.Model.Pins
 {
     [Serializable]
     public class FlowOutputPin : OutputPin
@@ -25,14 +25,7 @@ namespace Cortex.Model
 
         public void Call()
         {
-            if (_actions.Count <= 0) 
-                return;
-            _actions[0].Invoke();
-
-            for (var i = 1; i < _actions.Count; i++)
-            {
-                var task = Task.Factory.StartNew(_actions[i]);
-            }
+            Parallel.Invoke(_actions.ToArray());
         }
 
         public void Subscribe(Action action)

@@ -54,15 +54,16 @@
     <Compile Include="Elements\IntElement.cs" />
     <Compile Include="Elements\MultiplyElement.cs" />
     <Compile Include="Elements\NetTypeElement.cs" />
+    <Compile Include="Elements\SleepElement.cs" />
     <Compile Include="Elements\StringElement.cs" />
     <Compile Include="Elements\SubtractionElement.cs" />
-    <Compile Include="FlowInputPin.cs" />
-    <Compile Include="FlowOutputPin.cs" />
-    <Compile Include="InputPin.cs" />
-    <Compile Include="IPin.cs" />
+    <Compile Include="Pins\FlowInputPin.cs" />
+    <Compile Include="Pins\FlowOutputPin.cs" />
+    <Compile Include="Pins\InputPin.cs" />
+    <Compile Include="Pins\IPin.cs" />
     <Compile Include="Flow.cs" />
     <Compile Include="IElement.cs" />
-    <Compile Include="OutputPin.cs" />
+    <Compile Include="Pins\OutputPin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Elements\StartPoint.cs" />
   </ItemGroup>

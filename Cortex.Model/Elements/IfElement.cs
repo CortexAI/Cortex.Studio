@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.Composition;
+using Cortex.Model.Pins;
 
 namespace Cortex.Model.Elements
 {
@@ -11,18 +12,18 @@ namespace Cortex.Model.Elements
         public string Category { get { return "Common"; } }
         public Uri IconUri { get { return null; } }
         public string Description { get { return "If statement"; } }
-        public InputPin[] Inputs { get; private set; }
-        public OutputPin[] Outputs { get; private set; }
+        public IInputPin[] Inputs { get; private set; }
+        public IOutputPin[] Outputs { get; private set; }
 
         public IfElement()
         {
-            Inputs = new[]
+            Inputs = new IInputPin[]
             {
                 new FlowInputPin(OnCall),
                 new InputPin("Condition", typeof (bool), false),
             };
 
-            Outputs = new OutputPin[]
+            Outputs = new IOutputPin[]
             {
                 new FlowOutputPin("True"),
                 new FlowOutputPin("False"),

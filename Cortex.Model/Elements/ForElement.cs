@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.Composition;
+using Cortex.Model.Pins;
 
 namespace Cortex.Model.Elements
 {
@@ -12,18 +13,18 @@ namespace Cortex.Model.Elements
         public string Category { get { return "Common"; } }
         public Uri IconUri { get { return null; } }
         public string Description { get { return "For Loop"; } }
-        public InputPin[] Inputs { get; private set; }
-        public OutputPin[] Outputs { get; private set; }
+        public IInputPin[] Inputs { get; private set; }
+        public IOutputPin[] Outputs { get; private set; }
 
         public ForElement()
         {
-            Inputs = new []
+            Inputs = new IInputPin[]
             {
                 new FlowInputPin(OnCall),
                 new InputPin("Times", typeof(int), 10)
             };
 
-            Outputs = new[]
+            Outputs = new IOutputPin[]
             {
                 new FlowOutputPin("Each"),
                 new OutputPin("Index", typeof (int), 0),

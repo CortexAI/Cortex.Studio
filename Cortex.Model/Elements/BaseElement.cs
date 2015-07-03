@@ -1,4 +1,5 @@
 ﻿using System;
+using Cortex.Model.Pins;
 
 namespace Cortex.Model.Elements
 {
@@ -9,8 +10,8 @@ namespace Cortex.Model.Elements
         public abstract string Name { get; }
         public abstract Uri IconUri { get; }
         public abstract string Description { get; }
-        public InputPin[] Inputs { get; protected set; }
-        public OutputPin[] Outputs { get; protected set; }
+        public IInputPin[] Inputs { get; protected set; }
+        public IOutputPin[] Outputs { get; protected set; }
 
         protected BaseElement()
         {

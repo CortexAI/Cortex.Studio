@@ -1,9 +1,9 @@
 ﻿using System;
 
-namespace Cortex.Model
+namespace Cortex.Model.Pins
 {
     [Serializable]
-    public class OutputPin : IPin
+    public class OutputPin : IOutputPin
     {
         public string Name { get; protected set; }
         public Type Type { get; protected set; }

@@ -32,8 +32,8 @@ namespace Cortex.Modules.ProcessDesigner
 
         public IDocument Open(string path)
         {
-            try
-            {
+            //try
+            //{
                 var formatter = new SoapFormatter();
                 using (var stream = new FileStream(path, FileMode.Open, FileAccess.Read))
                 {
@@ -47,11 +47,11 @@ namespace Cortex.Modules.ProcessDesigner
                         return doc;
                     }
                 }                
-            }
-            catch (Exception exception)
-            {
-                _log.Error(exception);
-            }
+            //}
+            //catch (Exception exception)
+            //{
+                //_log.Error(exception);
+            //}
 
             return null;
         }

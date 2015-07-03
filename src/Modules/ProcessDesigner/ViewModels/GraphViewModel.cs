@@ -8,14 +8,12 @@ using System.Runtime.Serialization.Formatters.Soap;
 using System.Threading.Tasks;
 using System.Windows;
 using Caliburn.Micro;
-using Cortex.Model;
 using Cortex.Model.Elements;
 using Cortex.Modules.Core;
 using Cortex.Modules.ProcessDesigner.Commands;
 using Gemini.Framework.Commands;
 using Gemini.Framework.Threading;
 using Gemini.Modules.Inspector;
-using MahApps.Metro.Controls;
 
 namespace Cortex.Modules.ProcessDesigner.ViewModels
 {
@@ -89,23 +87,40 @@ namespace Cortex.Modules.ProcessDesigner.ViewModels
         {
             var nearbyConnector = FindNearbyInputConnector(currentDragPoint);
 
+            // No target connector found or target is a source
             if (nearbyConnector == null || sourceConnector.Element == nearbyConnector.Element)
             {
+                sourceConnector.Connections.Remove(newConnection);
                 Connections.Remove(newConnection);
+                _log.Warn("No target for connection was found or target is a source");
                 return;
             }
 
-            var existingConnection = nearbyConnector.Connection;
-            
+            // Connection already exist
+            if (Connections.FirstOrDefault(c => c.From == sourceConnector && c.To == nearbyConnector) != null)
+            {
+                sourceConnector.Connections.Remove(newConnection);
+                Connections.Remove(newConnection);
+                _log.Warn("That connection already exists");
+                return;
+            }
+
             try
             {
+                if (!nearbyConnector.AllowMultipleConnections && nearbyConnector.IsConnected)
+                {
+                    Connections.RemoveRange(nearbyConnector.Connections);
+                    nearbyConnector.DetachAll();
+                    _log.Warn("Target connector doesn't support multiple inputs. Removing other connectors");
+                }
                 newConnection.To = nearbyConnector;
-                if (existingConnection != null)
-                    Connections.Remove(existingConnection);
+                _log.Info("Connection created");
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                sourceConnector.Connections.Remove(newConnection);
                 Connections.Remove(newConnection);
+                _log.Error(ex);
             }
         }
 
@@ -191,18 +206,25 @@ namespace Cortex.Modules.ProcessDesigner.ViewModels
         [OnDeserialized]
         void OnDeserialize(StreamingContext context)
         {
-            foreach (var e in _elements.Where(element => element.Element.Inputs != null))
+            foreach (var elementViewModel in _elements)
             {
-                foreach (var input in e.Element.Inputs.Where(i => i.ConnectedPin != null))
+                if (elementViewModel.Element == null || elementViewModel.Element.Inputs == null) 
+                    continue;
+                foreach (var inputPin in elementViewModel.Element.Inputs)
                 {
-                    var to = e.InputConnectors.FirstOrDefault(c => c.Pin.Equals(input));
-                    var sourceElement = _elements.FirstOrDefault(element => element.Element.Outputs.Contains(input.ConnectedPin));
+                    if(!inputPin.IsConnected)
+                        continue;
+                    var to = elementViewModel.InputConnectors.FirstOrDefault(c => c.Pin.Equals(inputPin));
 
-                    if (sourceElement == null)
-                        throw new Exception("Missed source element");
-
-                    var from = sourceElement.OutputConnectors.FirstOrDefault(c => c.Pin.Equals(input.ConnectedPin));
-                    _connections.Add(new ConnectionViewModel(from, to));
+                    foreach (var outputPin in inputPin.Connected)
+                    {
+                        var sourceElement =
+                            _elements.FirstOrDefault(element => element.Element.Outputs.Contains(outputPin));
+                        if (sourceElement == null)
+                            throw new Exception("Missed source element");
+                        var from = sourceElement.OutputConnectors.FirstOrDefault(c => c.Pin.Equals(outputPin));
+                        _connections.Add(new ConnectionViewModel(@from, to));
+                    }
                 }
             }
         }

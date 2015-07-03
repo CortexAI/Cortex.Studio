@@ -1,8 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Media;
 using Caliburn.Micro;
-using Cortex.Model;
+using Cortex.Model.Pins;
 
 namespace Cortex.Modules.ProcessDesigner.ViewModels
 {
@@ -13,7 +14,7 @@ namespace Cortex.Modules.ProcessDesigner.ViewModels
 
         public event EventHandler PositionChanged;
 
-        public OutputPin Pin { get; private set; }
+        public IOutputPin Pin { get; private set; }
         
         public ElementViewModel Element { get; private set; }
 
@@ -50,12 +51,12 @@ namespace Cortex.Modules.ProcessDesigner.ViewModels
             get { return ConnectorDirection.Output; }
         }
         
-        public IObservableCollection<ConnectionViewModel> Connections
+        public IList<ConnectionViewModel> Connections
         {
             get { return _connections; }
         }
         
-        public OutputConnectorViewModel(ElementViewModel element, OutputPin pin)
+        public OutputConnectorViewModel(ElementViewModel element, IOutputPin pin)
         {
             Pin = pin;
             Element = element;

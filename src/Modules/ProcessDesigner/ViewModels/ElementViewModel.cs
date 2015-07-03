@@ -4,6 +4,7 @@ using System.Linq;
 using System.Runtime.Serialization;
 using Caliburn.Micro;
 using Cortex.Model;
+using Cortex.Model.Pins;
 
 namespace Cortex.Modules.ProcessDesigner.ViewModels
 {
@@ -85,8 +86,8 @@ namespace Cortex.Modules.ProcessDesigner.ViewModels
         {
             get
             {
-                return _inputConnectors.Select(x => x.Connection)
-                    .Union(_outputConnectors[0].Connections)
+                return _inputConnectors.SelectMany(x => x.Connections)
+                    .Union(_outputConnectors.SelectMany(x => x.Connections))
                     .Where(x => x != null);
             }
         }
@@ -116,7 +117,7 @@ namespace Cortex.Modules.ProcessDesigner.ViewModels
                     AddOutputConnector(pin);
         }
 
-        protected void AddInputConnector(InputPin pin)
+        protected void AddInputConnector(IInputPin pin)
         {
             var inputConnector = new InputConnectorViewModel(this, pin);
             inputConnector.SourceChanged += InputConnectorOnSourceChanged;
@@ -128,7 +129,7 @@ namespace Cortex.Modules.ProcessDesigner.ViewModels
 
         }
 
-        protected void AddOutputConnector(OutputPin pin)
+        protected void AddOutputConnector(IOutputPin pin)
         {
             var outputConnector = new OutputConnectorViewModel(this, pin);
             _outputConnectors.Add(outputConnector);
