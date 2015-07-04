@@ -69,6 +69,7 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Runtime.Serialization.Formatters.Soap" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\MahApps.Metro.1.0.0.0\lib\net45\System.Windows.Interactivity.dll</HintPath>
       <Private>True</Private>
@@ -124,8 +125,14 @@
     <Compile Include="Modules\Core\MenuDefenitions.cs" />
     <Compile Include="Modules\Core\ToolBarDefenitions.cs" />
     <Compile Include="Modules\Core\FileDocument.cs" />
+    <Compile Include="Modules\ProcessDesigner\Commands\StopProcessCommandDefenition.cs" />
     <Compile Include="Modules\ProcessDesigner\Controls\ConnectionBezierLine.cs" />
     <Compile Include="Modules\ProcessDesigner\Util\BoolToVisibilityConverter.cs" />
+    <Compile Include="Modules\ProjectExplorer\Commands\OpenExactProjectListDefenition.cs" />
+    <Compile Include="Modules\ProjectExplorer\Commands\OpenExactProjectListHandler.cs" />
+    <Compile Include="Modules\ProjectExplorer\Services\IProjectService.cs" />
+    <Compile Include="Modules\ProjectExplorer\Services\IRecentProjectsPersister.cs" />
+    <Compile Include="Modules\ProjectExplorer\Services\RegistryRecentProjectsPersister.cs" />
     <Compile Include="Modules\ProjectExplorer\Util\FileIcons.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -199,7 +206,7 @@
       <DependentUpon>GraphView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Modules\ProjectExplorer\Commands\OpenFolderDefenition.cs" />
-    <Compile Include="Modules\ProjectExplorer\Commands\OpenFolderHandler.cs" />
+    <Compile Include="Modules\ProjectExplorer\Services\ProjectService.cs" />
     <Compile Include="Modules\ProjectExplorer\Commands\OpenProjectExplorerDefinition.cs" />
     <Compile Include="Modules\ProjectExplorer\Commands\OpenProjectExplorerHandler.cs" />
     <Compile Include="Modules\ProjectExplorer\Design\DesignTimeProjectExplorerViewModel.cs" />
@@ -226,6 +233,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Resource Include="Resources\Symbols_Stop_16xLG.png" />
     <Resource Include="Resources\Saveall_6518.png" />
     <Resource Include="Resources\save_16xLG.png" />
     <EmbeddedResource Include="Properties\Resources.resx">

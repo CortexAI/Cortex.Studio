@@ -1,9 +1,9 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
-using System.IO;
 using System.Linq;
 using System.Windows.Input;
 using Caliburn.Micro;
+using Cortex.Modules.ProjectExplorer.Services;
 using Gemini.Framework;
 using Gemini.Framework.Services;
 
@@ -33,6 +33,9 @@ namespace Cortex.Modules.ProjectExplorer.ViewModels
         private readonly IShell _shell;
         private readonly IEditorProvider[] _editorProviders;
 
+        [Import]
+        private IProjectService _service;
+
         public FolderItemViewModel Root
         {
             get { return _root; }
@@ -52,9 +55,9 @@ namespace Cortex.Modules.ProjectExplorer.ViewModels
             _editorProviders = editorProviders;
         }
 
-        public void OpenProject(string path)
+        public void Open(string directory)
         {
-            Root = new FolderItemViewModel(path);
+            Root = new FolderItemViewModel(directory);
         }
 
         public void OnMouseDown(object source, FileItemViewModel fileItem, MouseButtonEventArgs args)

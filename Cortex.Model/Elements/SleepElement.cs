@@ -45,8 +45,9 @@ namespace Cortex.Model.Elements
 
         private void Action()
         {
+            var flow = Inputs[0].Value as Flow;
             Thread.Sleep((int)Inputs[1].Value);
-            ((FlowOutputPin)Outputs[0]).Call();
+            ((FlowOutputPin)Outputs[0]).Call(flow);
         }
     }
 }

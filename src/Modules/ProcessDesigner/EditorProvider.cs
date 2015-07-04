@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.IO;
-using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Soap;
 using Caliburn.Micro;
 using Cortex.Modules.ProcessDesigner.ViewModels;
@@ -32,8 +31,8 @@ namespace Cortex.Modules.ProcessDesigner
 
         public IDocument Open(string path)
         {
-            //try
-            //{
+            try
+            {
                 var formatter = new SoapFormatter();
                 using (var stream = new FileStream(path, FileMode.Open, FileAccess.Read))
                 {
@@ -47,11 +46,11 @@ namespace Cortex.Modules.ProcessDesigner
                         return doc;
                     }
                 }                
-            //}
-            //catch (Exception exception)
-            //{
-                //_log.Error(exception);
-            //}
+            }
+            catch (Exception exception)
+            {
+                _log.Error(exception);
+            }
 
             return null;
         }

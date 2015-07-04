@@ -1,17 +1,19 @@
 using System;
+using System.Threading;
 
 namespace Cortex.Model
 {
     [Serializable]
     public class Flow
     {
-        public void Raise()
-        {
-        }
+        [NonSerialized]
+        private readonly CancellationToken _token;
+        
+        public CancellationToken Token { get { return _token; } }
 
-        public void Call()
+        public Flow(CancellationToken token)
         {
-            throw new NotImplementedException();
+            _token = token;
         }
     }
 }

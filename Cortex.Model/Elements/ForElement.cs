@@ -34,13 +34,14 @@ namespace Cortex.Model.Elements
 
         private void OnCall()
         {
+            var flow = Inputs[0].Value as Flow;
             var count = (int) Inputs[1].Value;
             for (_index = 0; _index < count; _index++)
             {
                 Outputs[1].Value = _index;
-                ((FlowOutputPin)Outputs[0]).Call();   
+                ((FlowOutputPin)Outputs[0]).Call(flow);   
             }
-            ((FlowOutputPin)Outputs[2]).Call();
+            ((FlowOutputPin)Outputs[2]).Call(flow);
         }
     }
 }

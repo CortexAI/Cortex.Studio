@@ -31,8 +31,9 @@ namespace Cortex.Model.Elements
 
         private void OnCall()
         {
+            var flow = Inputs[0].Value as Flow;
             Debug.WriteLine(Inputs[1].Value);
-            ((FlowOutputPin)Outputs[0]).Call();
+            ((FlowOutputPin)Outputs[0]).Call(flow);
         }
     }
 }

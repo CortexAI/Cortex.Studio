@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.Serialization;
 
 namespace Cortex.Model.Pins
 {
@@ -13,7 +12,17 @@ namespace Cortex.Model.Pins
 
         public string Name { get { return "Flow In"; } }
         public Type Type { get { return typeof(Flow); } }
-        public object Value { get { return null; } }
+
+        public object Value
+        {
+            get
+            {
+                // ToDo get flowobject separately from each FlowOutputPin
+                if (IsConnected)
+                    return _connected[0].Value;
+                return null;
+            }
+        }
 
         public IEnumerable<IOutputPin> Connected { get {  return _connected; } }
 
@@ -43,6 +52,8 @@ namespace Cortex.Model.Pins
                 _connected = list.ToArray();
                 source.Subscribe(_action);
             }
+            else
+                throw new Exception("Pin types mismatch");
         }
 
         public void Detach(IOutputPin pin)
@@ -57,7 +68,8 @@ namespace Cortex.Model.Pins
                 list.Remove(pin);
                 _connected = list.ToArray();
             }
-            throw new InvalidOperationException("Trying to detach not attached pin");
+            else
+                throw new InvalidOperationException("Trying to detach not attached pin");
         }
         
         public void DetachAll()

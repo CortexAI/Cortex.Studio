@@ -54,33 +54,4 @@ namespace Cortex.Model.Attibutes
             Name = name;
         }
     }
-
-    [Serializable]
-    [Element("Test element", "Common", "Just a test element", null)]
-    class TestElement
-    {
-        [Input("Input 1")]
-        public double Input1 { get; set; }
-        
-        [FlowInput("Event 1")]
-        void OnInput1()
-        {
-            _output = Input1;
-            FlowOut.Call();
-        }
-
-        [FlowInput("Event 2")]
-        void OnInput2()
-        {
-            _output = Input1 * Input1;
-            FlowOut.Call();
-        }
-
-        [Output("Output")] 
-        private double _output;
-
-        [Output("Output")]
-        public Flow FlowOut { get; set; }
-    }
-   
 }

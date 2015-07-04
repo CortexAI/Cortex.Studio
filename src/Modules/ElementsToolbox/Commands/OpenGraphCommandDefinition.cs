@@ -19,7 +19,7 @@ namespace Cortex.Modules.ElementsToolbox.Commands
 
         public override string ToolTip
         {
-            get { return "OpenProject Elements Toolbox"; }
+            get { return "Open Elements Toolbox"; }
         }
     }
 }

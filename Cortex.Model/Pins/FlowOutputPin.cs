@@ -23,9 +23,20 @@ namespace Cortex.Model.Pins
 
         }
 
-        public void Call()
+        public void Call(Flow flow)
         {
-            Parallel.Invoke(_actions.ToArray());
+            this.Value = flow;
+            if(flow == null)
+                throw  new Exception();
+
+            try
+            {
+                Parallel.Invoke(new ParallelOptions { CancellationToken = flow.Token }, _actions.ToArray());
+            }
+            catch (OperationCanceledException)
+            {
+                // cancelled
+            }
         }
 
         public void Subscribe(Action action)

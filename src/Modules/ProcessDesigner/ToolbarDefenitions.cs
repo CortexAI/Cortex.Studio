@@ -15,5 +15,9 @@ namespace Cortex.Modules.ProcessDesigner
         [Export]
         public static ToolBarItemDefinition RunToolBarItem = new CommandToolBarItemDefinition<RunProcessCommandDefenition>(
             ProcessToolBarGroup, 1, ToolBarItemDisplay.IconAndText);
+        
+        [Export]
+        public static ToolBarItemDefinition StopToolBarItem = new CommandToolBarItemDefinition<StopProcessCommandDefenition>(
+            ProcessToolBarGroup, 2, ToolBarItemDisplay.IconAndText);
     }
 }

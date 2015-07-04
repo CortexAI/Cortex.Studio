@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.Composition;
 using Cortex.Modules.ProjectExplorer.Commands;
 using Gemini.Framework.Menus;
+using Gemini.Modules.Shell.Commands;
 
 namespace Cortex.Modules.ProjectExplorer
 {
@@ -13,5 +14,15 @@ namespace Cortex.Modules.ProjectExplorer
         [Export]
         public static MenuItemDefinition OpenFolderMenuItem = new CommandMenuItemDefinition<OpenFolderDefenition>(
             Gemini.Modules.MainMenu.MenuDefinitions.FileNewOpenMenuGroup, 1);
+
+        [Export]
+        public static MenuItemDefinition RecentMenuItem = new TextMenuItemDefinition(
+            Gemini.Modules.MainMenu.MenuDefinitions.FileNewOpenMenuGroup, 3, "_Recent");
+
+        [Export]
+        public static MenuItemGroupDefinition RecentCascadeGroup = new MenuItemGroupDefinition(RecentMenuItem, 0);
+
+        [Export]
+        public static MenuItemDefinition RecentMenuItemList = new CommandMenuItemDefinition<OpenExactProjectListDefenition>(RecentCascadeGroup, 0);
     }
 }

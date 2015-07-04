@@ -25,7 +25,7 @@ namespace Cortex.Modules.ProjectExplorer.Commands
 
         public override Uri IconSource
         {
-            get { return new Uri("pack://application:,,,/Gemini;component/Resources/Icons/OpenProject.png"); }
+            get { return new Uri("pack://application:,,,/Gemini;component/Resources/Icons/Open.png"); }
         }
     }
 }

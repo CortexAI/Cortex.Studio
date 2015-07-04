@@ -32,10 +32,11 @@ namespace Cortex.Model.Elements
 
         public void OnCall()
         {
+            var flow = Inputs[0].Value as Flow;
             if((bool)Inputs[1].Value)
-                ((FlowOutputPin)Outputs[0]).Call();
+                ((FlowOutputPin)Outputs[0]).Call(flow);
             else
-                ((FlowOutputPin)Outputs[1]).Call();
+                ((FlowOutputPin)Outputs[1]).Call(flow);
         }
     }
 }

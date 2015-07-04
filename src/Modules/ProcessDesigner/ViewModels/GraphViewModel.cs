@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Soap;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using Caliburn.Micro;
@@ -20,7 +21,9 @@ namespace Cortex.Modules.ProcessDesigner.ViewModels
     [Serializable]
     [Export(typeof(GraphViewModel))]
     [PartCreationPolicy(CreationPolicy.NonShared)]
-    public class GraphViewModel : FileDocument, ISerializable, ICommandHandler<RunProcessCommandDefenition>
+    public class GraphViewModel : FileDocument, ISerializable, 
+        ICommandHandler<RunProcessCommandDefenition>,
+        ICommandHandler<StopProcessCommandDefenition>
     {
         private readonly IInspectorTool _inspectorTool = IoC.Get<IInspectorTool>();
         private readonly ILog _log = LogManager.GetLog(typeof (GraphViewModel));
@@ -32,6 +35,7 @@ namespace Cortex.Modules.ProcessDesigner.ViewModels
         }
         
         private readonly BindableCollection<ConnectionViewModel> _connections = new BindableCollection<ConnectionViewModel>();
+        private Thread _thread;
 
         public IObservableCollection<ConnectionViewModel> Connections
         {
@@ -42,7 +46,17 @@ namespace Cortex.Modules.ProcessDesigner.ViewModels
         {
             get { return _elements.Where(x => x.IsSelected); }
         }
-        
+
+        public bool IsRunning
+        {
+            get
+            {
+                if (_thread == null)
+                    return false;
+                return _thread.IsAlive;
+            }
+        }
+
         public GraphViewModel(string path) : base(path)
         {
             _inspectorTool = IoC.Get<IInspectorTool>();
@@ -159,18 +173,6 @@ namespace Cortex.Modules.ProcessDesigner.ViewModels
             else
                 _inspectorTool.SelectedObject = null;
         }
-
-        public void Run()
-        {
-            var startElement = _elements.FirstOrDefault(e => e.Element is StartPoint);
-            if (startElement == null) return;
-
-            var startPoint = startElement.Element as StartPoint;
-            if (startPoint != null)
-            {
-                startPoint.Run();
-            }
-        }
         
         public override void Save()
         {
@@ -179,18 +181,56 @@ namespace Cortex.Modules.ProcessDesigner.ViewModels
             {
                 formatter.Serialize(stream, this);
                 stream.Close();
+                _log.Info("Process saved to {0}", FileName);
             }
         }
 
         void ICommandHandler<RunProcessCommandDefenition>.Update(Command command)
         {
-            // TODO: update run command availability
-            // command.Enabled = 
+            command.Enabled = !IsRunning;
         }
 
         Task ICommandHandler<RunProcessCommandDefenition>.Run(Command command)
         {
-            this.Run();
+            var startElement = _elements.FirstOrDefault(e => e.Element is StartPoint);
+            if (startElement == null)
+                return TaskUtility.Completed;
+
+            var startPoint = startElement.Element as StartPoint;
+            if (startPoint != null)
+            {
+                _thread = new Thread(startPoint.Run);
+                _thread.Start();
+                _log.Info("Thread started");
+                NotifyOfPropertyChange(() => IsRunning);
+            }
+            return TaskUtility.Completed;
+        }
+
+        void ICommandHandler<StopProcessCommandDefenition>.Update(Command command)
+        {
+            command.Enabled = IsRunning;
+        }
+
+        Task ICommandHandler<StopProcessCommandDefenition>.Run(Command command)
+        {
+            if (IsRunning)
+            {
+                _log.Info("Interrupting running thread");
+                _thread.Interrupt();
+                NotifyOfPropertyChange(() => IsRunning);
+                return Task.Delay(2000).ContinueWith(delegate
+                {
+                    if (IsRunning)
+                    {
+                        _log.Info("Thread is still running. Aborting Thread");
+                        _thread.Abort();
+                        _thread = null;
+                    }
+                    NotifyOfPropertyChange(() => IsRunning);
+                });
+            }
+
             return TaskUtility.Completed;
         }
 

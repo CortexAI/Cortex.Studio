@@ -4,6 +4,7 @@ using System.ComponentModel.Composition;
 using System.Windows;
 using Cortex.Modules.ElementsToolbox.ViewModels;
 using Cortex.Modules.Output.ViewModels;
+using Cortex.Modules.ProjectExplorer.Services;
 using Cortex.Modules.ProjectExplorer.ViewModels;
 using Gemini.Framework;
 using Gemini.Modules.Inspector;
@@ -13,7 +14,7 @@ namespace Cortex.Modules.Core
     [Export(typeof(IModule))]
     class Module : ModuleBase
     {
-        private ProjectExplorerViewModel _explorer;
+        private readonly IProjectService _projectService;
 
         public override IEnumerable<Type> DefaultTools
         {
@@ -27,9 +28,9 @@ namespace Cortex.Modules.Core
         }
 
         [ImportingConstructor]
-        public Module(ProjectExplorerViewModel explorer)
+        public Module(IProjectService service)
         {
-            _explorer = explorer;
+            _projectService = service;
         }
 
         public override void Initialize()
@@ -41,7 +42,7 @@ namespace Cortex.Modules.Core
             MainWindow.Title = "Cortex";
 
             // TODO: open lastproject
-            _explorer.OpenProject(Environment.CurrentDirectory);
+            _projectService.OpenRecent();
         }
     }
 }

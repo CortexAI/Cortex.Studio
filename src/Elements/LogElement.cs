@@ -51,10 +51,12 @@ namespace Cortex.Elements
 
         private void Action()
         {
+            var flow = Inputs[0].Value as Flow;
             var val = Inputs[1].Value;
+            
             if (val != null && _log != null)
                 _log.Info("Output: " + Inputs[1].Value);
-            ((FlowOutputPin)Outputs[0]).Call();
+            ((FlowOutputPin)Outputs[0]).Call(flow);
         }
 
         [OnDeserialized]

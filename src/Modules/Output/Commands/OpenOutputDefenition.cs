@@ -19,7 +19,7 @@ namespace Cortex.Modules.Output.Commands
 
         public override string ToolTip
         {
-            get { return "OpenProject output window"; }
+            get { return "Open output window"; }
         }
     }
 }
