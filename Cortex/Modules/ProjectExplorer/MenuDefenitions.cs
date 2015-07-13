@@ -1,7 +1,6 @@
 ﻿using System.ComponentModel.Composition;
 using Cortex.Modules.ProjectExplorer.Commands;
 using Gemini.Framework.Menus;
-using Gemini.Modules.Shell.Commands;
 
 namespace Cortex.Modules.ProjectExplorer
 {

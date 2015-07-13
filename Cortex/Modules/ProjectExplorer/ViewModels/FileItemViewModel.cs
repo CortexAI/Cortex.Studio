@@ -1,4 +1,8 @@
-﻿using System.Windows.Media;
+﻿using System.ComponentModel.Composition;
+using System.Windows.Media;
+using Caliburn.Micro;
+using Cortex.Modules.ProjectExplorer.Util;
+using Gemini.Framework.Services;
 
 namespace Cortex.Modules.ProjectExplorer.ViewModels
 {
@@ -6,11 +10,16 @@ namespace Cortex.Modules.ProjectExplorer.ViewModels
     {
         private readonly string _fullPath;
         private readonly string _name;
+        private IEditorProviderSelector _providerSelector;
 
         public override string Name
         {
             get { return _name; }
         }
+
+        public IEditorProvider EditorProvider { get; private set; }
+
+        public bool IsEditorAvailable { get { return EditorProvider != null; } }
         
         public ImageSource Icon { get; private set; }
 
@@ -21,6 +30,8 @@ namespace Cortex.Modules.ProjectExplorer.ViewModels
             _fullPath = path;
             _name = System.IO.Path.GetFileName(path);
             this.Icon = Util.FileIcons.GetImageSource(Util.FileIcons.GetSmallIcon(path));
+            _providerSelector = IoC.Get<IEditorProviderSelector>();
+            EditorProvider = _providerSelector.GetEditor(path);
         }
     }
 }

@@ -128,11 +128,20 @@
     <Compile Include="Modules\ProcessDesigner\Commands\StopProcessCommandDefenition.cs" />
     <Compile Include="Modules\ProcessDesigner\Controls\ConnectionBezierLine.cs" />
     <Compile Include="Modules\ProcessDesigner\Util\BoolToVisibilityConverter.cs" />
+    <Compile Include="Modules\ProjectExplorer\Commands\AllFilesHandler.cs" />
     <Compile Include="Modules\ProjectExplorer\Commands\OpenExactProjectListDefenition.cs" />
     <Compile Include="Modules\ProjectExplorer\Commands\OpenExactProjectListHandler.cs" />
+    <Compile Include="Modules\ProjectExplorer\Commands\AllFilesDefenition.cs" />
+    <Compile Include="Modules\ProjectExplorer\Commands\RefreshDefenition.cs" />
+    <Compile Include="Modules\ProjectExplorer\Commands\RefreshHandler.cs" />
+    <Compile Include="Modules\ProjectExplorer\Controls\FileItem.xaml.cs">
+      <DependentUpon>FileItem.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Modules\ProjectExplorer\Services\IProjectService.cs" />
     <Compile Include="Modules\ProjectExplorer\Services\IRecentProjectsPersister.cs" />
     <Compile Include="Modules\ProjectExplorer\Services\RegistryRecentProjectsPersister.cs" />
+    <Compile Include="Modules\ProjectExplorer\ToolBarDefenitions.cs" />
+    <Compile Include="Modules\ProjectExplorer\Util\EditorProviderSelector.cs" />
     <Compile Include="Modules\ProjectExplorer\Util\FileIcons.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -161,6 +170,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Modules\ProcessDesigner\Views\GraphView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Modules\ProjectExplorer\Controls\FileItem.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -233,6 +246,8 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Resource Include="Resources\ShowAllFiles_349.png" />
+    <Resource Include="Resources\refresh_16xLG.png" />
     <Resource Include="Resources\Symbols_Stop_16xLG.png" />
     <Resource Include="Resources\Saveall_6518.png" />
     <Resource Include="Resources\save_16xLG.png" />

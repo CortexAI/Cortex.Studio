@@ -4,8 +4,10 @@ using System.Linq;
 using System.Windows.Input;
 using Caliburn.Micro;
 using Cortex.Modules.ProjectExplorer.Services;
+using Cortex.Modules.ProjectExplorer.Util;
 using Gemini.Framework;
 using Gemini.Framework.Services;
+
 
 namespace Cortex.Modules.ProjectExplorer.ViewModels
 {
@@ -31,7 +33,7 @@ namespace Cortex.Modules.ProjectExplorer.ViewModels
 
         private FolderItemViewModel _root;
         private readonly IShell _shell;
-        private readonly IEditorProvider[] _editorProviders;
+        private readonly IEditorProviderSelector _editorProviderSelector;
 
         [Import]
         private IProjectService _service;
@@ -46,13 +48,17 @@ namespace Cortex.Modules.ProjectExplorer.ViewModels
                 NotifyOfPropertyChange(() => Items);
             }
         }
+
+        public bool ShowAllFiles { get; set; }
         
         [ImportingConstructor]
-        public ProjectExplorerViewModel(IShell shell, [ImportMany] IEditorProvider[] editorProviders)
+        public ProjectExplorerViewModel(IShell shell, IEditorProviderSelector editorProviderSelector)
         {
             DisplayName = "Project Explorer";
             _shell = shell;
-            _editorProviders = editorProviders;
+            _editorProviderSelector = editorProviderSelector;
+
+            this.ToolBarDefinition = ProjectExplorer.ToolBarDefenitions.ProjectExplorerToolBar;
         }
 
         public void Open(string directory)
@@ -67,18 +73,24 @@ namespace Cortex.Modules.ProjectExplorer.ViewModels
                 Open(fileItem);
             }
         }
+
         private void Open(FileItemViewModel file)
         {
-            var editor = _editorProviders.FirstOrDefault(e => e.Handles(file.Path));
-            if (editor != null)
-            {
-                _shell.OpenDocument(editor.Open(file.Path));
-                _log.Info("Opening {0} with {1}", file.Path, editor.ToString());
-            }
+            if(!file.IsEditorAvailable)
+                _log.Warn("Can't find editor for {0}", file.Path);
             else
             {
-                _log.Warn("Can't find editor for {0}", file.Path);
+                var editor = file.EditorProvider;
+                _log.Info("Opening {0} with {1}", file.Path, editor.ToString());
+                _shell.OpenDocument(editor.Open(file.Path));
             }
+        }
+
+        public void UpdateTree()
+        {
+            Root.Refresh();
+            NotifyOfPropertyChange(() => Root);
+            NotifyOfPropertyChange(() => Items);
         }
     }
 }

@@ -6,9 +6,12 @@
              xmlns:viewModels="clr-namespace:Cortex.Modules.ProjectExplorer.ViewModels"
              xmlns:cal="http://www.caliburnproject.org"
              xmlns:design="clr-namespace:Cortex.Modules.ProjectExplorer.Design"
+             xmlns:controls="clr-namespace:Cortex.Modules.ProjectExplorer.Controls"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300"
              d:DataContext="{d:DesignInstance design:DesignTimeProjectExplorerViewModel, d:IsDesignTimeCreatable=True}">
+    <UserControl.Resources>
+    </UserControl.Resources>
     <Grid>
         <TreeView ItemsSource="{Binding Items}">
             <TreeView.Resources>
@@ -21,8 +24,13 @@
                 <DataTemplate DataType="{x:Type viewModels:FileItemViewModel}">
                     <StackPanel Orientation="Horizontal" cal:Message.Attach="[Event MouseDown] = [Action OnMouseDown($source, $dataContext, $eventArgs)];" >
                         <Image Source="{Binding Icon}" Width="16" Height="16" />
-                        <TextBlock Text="{Binding Name}" Margin="3 1 0 1" />
+                        <TextBlock Text="{Binding Name}" Margin="3 1 0 1"/>
                     </StackPanel>
+                    <DataTemplate.Triggers>
+                        <DataTrigger Binding="{Binding IsEditorAvailable}" Value="False">
+                            <Setter Property="Opacity" Value="0.5" />
+                        </DataTrigger>
+                    </DataTemplate.Triggers>
                 </DataTemplate>
             </TreeView.Resources>
         </TreeView>

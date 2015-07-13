@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using Cortex.Model.Pins;
 
 namespace Cortex.Model
