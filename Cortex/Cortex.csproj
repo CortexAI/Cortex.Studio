@@ -143,20 +143,12 @@
     <Compile Include="Modules\ProjectExplorer\ToolBarDefenitions.cs" />
     <Compile Include="Modules\ProjectExplorer\Util\EditorProviderSelector.cs" />
     <Compile Include="Modules\ProjectExplorer\Util\FileIcons.cs" />
-    <Page Include="MainWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Elements\ElementsCategory.cs" />
     <Compile Include="Elements\LogElement.cs" />
-    <Compile Include="MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
     <Page Include="Modules\ElementsToolbox\Views\ElementsToolboxView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
