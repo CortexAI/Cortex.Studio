@@ -210,7 +210,7 @@
     <Compile Include="Modules\ProcessDesigner\Views\GraphView.xaml.cs">
       <DependentUpon>GraphView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Modules\ProjectExplorer\Commands\OpenFolderDefenition.cs" />
+    <Compile Include="Modules\ProjectExplorer\Commands\OpenProjectDefenition.cs" />
     <Compile Include="Modules\ProjectExplorer\Services\ProjectService.cs" />
     <Compile Include="Modules\ProjectExplorer\Commands\OpenProjectExplorerDefinition.cs" />
     <Compile Include="Modules\ProjectExplorer\Commands\OpenProjectExplorerHandler.cs" />

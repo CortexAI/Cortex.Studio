@@ -3,7 +3,7 @@ using Gemini.Framework.Commands;
 
 namespace Cortex.Modules.ProjectExplorer.Services
 {
-    interface IProjectService : ICommandHandler<OpenFolderDefenition>
+    interface IProjectService : ICommandHandler<OpenProjectDefenition>
     {
         bool IsProjectLoaded { get; }
         string ProjectPath { get; }

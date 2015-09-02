@@ -11,7 +11,7 @@ namespace Cortex.Modules.ProjectExplorer
             Gemini.Modules.MainMenu.MenuDefinitions.ViewToolsMenuGroup, 0);
 
         [Export]
-        public static MenuItemDefinition OpenFolderMenuItem = new CommandMenuItemDefinition<OpenFolderDefenition>(
+        public static MenuItemDefinition OpenFolderMenuItem = new CommandMenuItemDefinition<OpenProjectDefenition>(
             Gemini.Modules.MainMenu.MenuDefinitions.FileNewOpenMenuGroup, 1);
 
         [Export]

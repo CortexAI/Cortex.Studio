@@ -3,7 +3,7 @@
 namespace Cortex.Modules.ProjectExplorer.Commands
 {
     [CommandDefinition]
-    class OpenFolderDefenition : CommandDefinition
+    class OpenProjectDefenition : CommandDefinition
     {
         public const string CommandName = "File.OpenFolder";
 
