@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using Caliburn.Micro;
 using Cortex.Model.Elements;
+using Cortex.Model.Elements.Logic;
 using Cortex.Modules.Core;
 using Cortex.Modules.ProcessDesigner.Commands;
 using Gemini.Framework.Commands;

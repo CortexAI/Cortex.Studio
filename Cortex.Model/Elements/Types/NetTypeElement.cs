@@ -1,19 +1,11 @@
 using System;
 using Cortex.Model.Pins;
 
-namespace Cortex.Model.Elements
+namespace Cortex.Model.Elements.Types
 {
     [Serializable]
     public class NetTypeElement<T> : BaseElement
     {
-        public override string Description { get { return string.Format("{0}. Represents default .NET type", typeof (T).FullName); } }
-
-        public override string Category { get { return "Types"; } }
-
-        public override string Name { get { return typeof (T).Name; } }
-
-        public override Uri IconUri { get { return null; } }
-
         public T Value
         {
             get

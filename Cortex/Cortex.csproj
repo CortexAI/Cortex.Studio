@@ -147,7 +147,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Elements\ElementsCategory.cs" />
+    <Compile Include="Elements\ElementsDefenition.cs" />
     <Compile Include="Elements\LogElement.cs" />
     <Page Include="Modules\ElementsToolbox\Views\ElementsToolboxView.xaml">
       <SubType>Designer</SubType>
@@ -180,7 +180,7 @@
     <Compile Include="Modules\ElementsToolbox\MenuDefenitions.cs" />
     <Compile Include="Modules\ElementsToolbox\ViewModels\CategoryViewModel.cs" />
     <Compile Include="Modules\ElementsToolbox\ViewModels\ElementsToolboxViewModel.cs" />
-    <Compile Include="Modules\ElementsToolbox\ViewModels\ElementDescriptionViewModel.cs" />
+    <Compile Include="Modules\ElementsToolbox\ViewModels\ElementItemViewModel.cs" />
     <Compile Include="Modules\ElementsToolbox\Views\ElementsToolboxView.xaml.cs">
       <DependentUpon>ElementsToolboxView.xaml</DependentUpon>
     </Compile>

@@ -38,8 +38,8 @@ namespace Cortex.Modules.ElementsToolbox.ViewModels
             var categories = new ObservableCollection<CategoryViewModel>();
             DisplayName = "Elements Toolbox";
 
-            var elements = IoC.GetAll<IElement>();
-            foreach (var group in elements.GroupBy(e => e.Category))
+            var elements = IoC.GetAll<ElementItemDefenition>();
+            foreach (var group in elements.GroupBy(e => e.Group))
             {
                 categories.Add(new CategoryViewModel(group.Key, group));
             }
@@ -49,7 +49,7 @@ namespace Cortex.Modules.ElementsToolbox.ViewModels
 
         public void OnMouseDown(object sender, object dataContext, EventArgs args)
         {
-            var vm = dataContext as ElementDescriptionViewModel;
+            var vm = dataContext as ElementItemViewModel;
             var elem = sender as FrameworkElement;
             if (vm != null && elem != null)
             {

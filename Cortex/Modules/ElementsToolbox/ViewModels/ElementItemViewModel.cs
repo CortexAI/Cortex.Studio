@@ -6,26 +6,32 @@ using Cortex.Model;
 
 namespace Cortex.Modules.ElementsToolbox.ViewModels
 {
-    class ElementDescriptionViewModel : INotifyPropertyChanged
+    class ElementItemViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
-        private readonly IElement _elementTemplate;
+        private readonly ElementItemDefenition _elementDefenition;
 
         public string Name
         {
-            get { return _elementTemplate.Name; }
+            get { return _elementDefenition.Name; }
         }
 
         public string Description
         {
-            get { return _elementTemplate.Description; }
+            get { return _elementDefenition.Description; }
         }
 
         public Uri IconUri
         {
-            get { return _elementTemplate.IconUri; }
+            get { return _elementDefenition.IconUri; }
         }
+
+        public ElementItemDefenition Defenition
+        {
+            get { return _elementDefenition; }
+        }
+
 
         [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
@@ -34,14 +40,9 @@ namespace Cortex.Modules.ElementsToolbox.ViewModels
             if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public ElementDescriptionViewModel(IElement template)
+        public ElementItemViewModel(ElementItemDefenition defenition)
         {
-            _elementTemplate = template;
-        }
-
-        public IElement Create()
-        {
-            return Activator.CreateInstance(_elementTemplate.GetType()) as IElement;
+            _elementDefenition = defenition;
         }
     }
 }

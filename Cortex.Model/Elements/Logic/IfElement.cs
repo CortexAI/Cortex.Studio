@@ -2,10 +2,9 @@
 using System.ComponentModel.Composition;
 using Cortex.Model.Pins;
 
-namespace Cortex.Model.Elements
+namespace Cortex.Model.Elements.Logic
 {
     [Serializable]
-    [Export(typeof(IElement))]
     public class IfElement : IElement
     {
         public string Name { get { return "If"; } }

@@ -1,13 +1,11 @@
 using System;
 using Cortex.Model.Pins;
 
-namespace Cortex.Model.Elements
+namespace Cortex.Model.Elements.MathElements
 {
     [Serializable]
     public abstract class MathElement : BaseElement
     {
-        public override string Category { get { return "Math"; } }
-
         public abstract double Calc(double a, double b);
         
         protected MathElement()

@@ -18,6 +18,7 @@ namespace Cortex.Modules.ProcessDesigner.ViewModels
         private readonly IElement _element;
         private double _x;
         private double _y;
+        private readonly ElementItemDefenition _itemDefenition;
 
         public event EventHandler OutputChanged;
 
@@ -45,7 +46,7 @@ namespace Cortex.Modules.ProcessDesigner.ViewModels
         {
             get
             {
-                return _element != null ? _element.Name : "Element";
+                return _element != null ? _itemDefenition.Name : "Element";
             }
         }
 
@@ -53,7 +54,7 @@ namespace Cortex.Modules.ProcessDesigner.ViewModels
         {
             get
             {
-                return _element != null ? _element.IconUri : null;
+                return _element != null ? _itemDefenition.IconUri : null;
             }
         }
 
@@ -92,9 +93,10 @@ namespace Cortex.Modules.ProcessDesigner.ViewModels
             }
         }
         
-        public ElementViewModel(IElement element)
+        public ElementViewModel(ElementItemDefenition itemDefenition)
         {
-            _element = element;
+            _element = itemDefenition.CreateElement();
+            _itemDefenition = itemDefenition;
             SetConnectors();
         }
 

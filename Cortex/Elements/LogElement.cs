@@ -8,32 +8,11 @@ using Cortex.Model.Pins;
 
 namespace Cortex.Elements
 {
-    [Export(typeof(IElement))]
     [Serializable]
     class LogElement : BaseElement
     {
         [NonSerialized]
         private ILog _log;
-
-        public override string Description
-        {
-            get { return "Logs a value into IDE output view"; }
-        }
-
-        public override string Category
-        {
-            get { return ElementsCategory.CategoryName; }
-        }
-
-        public override string Name
-        {
-            get { return "Log"; }
-        }
-
-        public override Uri IconUri
-        {
-            get { return null; }
-        }
 
         public LogElement()
         {

@@ -2,10 +2,9 @@
 using System.ComponentModel.Composition;
 using Cortex.Model.Pins;
 
-namespace Cortex.Model.Elements
+namespace Cortex.Model.Elements.Logic
 {
     [Serializable]
-    [Export(typeof(IElement))]
     public class ForElement : IElement
     {
         private int _index;

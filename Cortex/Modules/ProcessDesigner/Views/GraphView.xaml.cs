@@ -119,8 +119,8 @@ namespace Cortex.Modules.ProcessDesigner.Views
             {
                 var mousePosition = e.GetPosition(GraphControl);
 
-                var vm = (ElementDescriptionViewModel)e.Data.GetData(ElementsToolboxViewModel.DataFormat);
-                var element = new ElementViewModel(vm.Create())
+                var vm = (ElementItemViewModel)e.Data.GetData(ElementsToolboxViewModel.DataFormat);
+                var element = new ElementViewModel(vm.Defenition)
                 {
                     X = mousePosition.X,
                     Y = mousePosition.Y

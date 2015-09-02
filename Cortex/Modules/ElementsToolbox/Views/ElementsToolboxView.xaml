@@ -23,7 +23,7 @@
                         <TextBlock Text="]" Foreground="Blue" />
                     </StackPanel>
                 </HierarchicalDataTemplate>
-                <DataTemplate DataType="{x:Type viewModels:ElementDescriptionViewModel}">
+                <DataTemplate DataType="{x:Type viewModels:ElementItemViewModel}">
                     <StackPanel Orientation="Horizontal"  cal:Message.Attach="[Event MouseDown] = [Action OnMouseDown($source, $dataContext, $eventArgs)];">
                     <StackPanel.ToolTip>
                         <StackPanel>

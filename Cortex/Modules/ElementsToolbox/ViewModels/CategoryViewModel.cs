@@ -21,16 +21,16 @@ namespace Cortex.Modules.ElementsToolbox.ViewModels
             }
         }
 
-        public ObservableCollection<ElementDescriptionViewModel> Elements { get; set; }
+        public ObservableCollection<ElementItemViewModel> Elements { get; set; }
         
-        public CategoryViewModel(string name, IEnumerable<IElement> elements)
+        public CategoryViewModel(ElementGroupDefenition group, IEnumerable<ElementItemDefenition> elements)
         {
-            Name = name;
-            var elementsVm = new ObservableCollection<ElementDescriptionViewModel>();
+            Name = group.Name;
+            var elementsVm = new ObservableCollection<ElementItemViewModel>();
 
             foreach (var element in elements)
             {
-                elementsVm.Add(new ElementDescriptionViewModel(element));
+                elementsVm.Add(new ElementItemViewModel(element));
             }
 
 
