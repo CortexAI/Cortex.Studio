@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
 using System.Linq;
@@ -35,16 +36,26 @@ namespace Cortex.Modules.ElementsToolbox.ViewModels
 
         public ElementsToolboxViewModel()
         {
-            var categories = new ObservableCollection<CategoryViewModel>();
             DisplayName = "Elements Toolbox";
+            
 
             var elements = IoC.GetAll<ElementItemDefenition>();
-            foreach (var group in elements.GroupBy(e => e.Group))
+            
+            var categroiesPool = elements.GroupBy(e => e.Group).Select(g => new CategoryViewModel(g.Key, g)).ToList();
+
+            foreach (var category in categroiesPool)
             {
-                categories.Add(new CategoryViewModel(group.Key, group));
+                if (category.GroupDefenition.ParentGroup != null)
+                {
+                    var parent =
+                        categroiesPool.FirstOrDefault(
+                            cat => cat.GroupDefenition.Equals(category.GroupDefenition.ParentGroup));
+                    if (parent != null)
+                        parent.Items.Insert(0,category);
+                }
             }
 
-            Categories = categories;
+            Categories = new ObservableCollection<CategoryViewModel>(categroiesPool.Where(cat => cat.GroupDefenition.ParentGroup == null));
         }
 
         public void OnMouseDown(object sender, object dataContext, EventArgs args)

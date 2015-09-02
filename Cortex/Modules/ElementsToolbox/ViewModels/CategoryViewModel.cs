@@ -1,49 +1,42 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
-using Cortex.Annotations;
+using System.Linq;
 using Cortex.Model;
 
 namespace Cortex.Modules.ElementsToolbox.ViewModels
 {
-    class CategoryViewModel : INotifyPropertyChanged
+    class CategoryViewModel : ToolboxItemViewModel
     {
-        private string _name;
+        private readonly ElementGroupDefenition _groupDefenition;
 
-        public string Name
+        public override string Name
         {
-            get { return _name; }
-            set
-            {
-                _name = value;
-                OnPropertyChanged(Name);
-            }
+            get { return _groupDefenition.Name; }
         }
 
-        public ObservableCollection<ElementItemViewModel> Elements { get; set; }
+        public override string Description
+        {
+            get { return null; }
+        }
+
+        public override Uri IconUri
+        {
+            get { return null; }
+        }
+
+        public ElementGroupDefenition GroupDefenition
+        {
+            get { return _groupDefenition; }
+        }
+
+        public ObservableCollection<ToolboxItemViewModel> Items { get; set; }
         
-        public CategoryViewModel(ElementGroupDefenition group, IEnumerable<ElementItemDefenition> elements)
+        public CategoryViewModel(ElementGroupDefenition @group, IEnumerable<ElementItemDefenition> elements)
         {
-            Name = group.Name;
-            var elementsVm = new ObservableCollection<ElementItemViewModel>();
-
-            foreach (var element in elements)
-            {
-                elementsVm.Add(new ElementItemViewModel(element));
-            }
-
-
-            Elements = elementsVm;
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        [NotifyPropertyChangedInvocator]
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChangedEventHandler handler = PropertyChanged;
-            if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
+            _groupDefenition = group;
+            var items = elements.Select(e => new ElementItemViewModel(e)).ToList();
+            Items = new ObservableCollection<ToolboxItemViewModel>(items);
         }
     }
 }

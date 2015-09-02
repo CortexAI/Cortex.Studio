@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel.Composition;
 using System.Runtime.Serialization;
 using Caliburn.Micro;
 using Cortex.Model;

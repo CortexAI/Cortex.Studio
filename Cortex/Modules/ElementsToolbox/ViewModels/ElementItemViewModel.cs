@@ -1,28 +1,23 @@
 ﻿using System;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
-using Cortex.Annotations;
 using Cortex.Model;
 
 namespace Cortex.Modules.ElementsToolbox.ViewModels
 {
-    class ElementItemViewModel : INotifyPropertyChanged
+    class ElementItemViewModel : ToolboxItemViewModel
     {
-        public event PropertyChangedEventHandler PropertyChanged;
-
         private readonly ElementItemDefenition _elementDefenition;
 
-        public string Name
+        public override string Name
         {
             get { return _elementDefenition.Name; }
         }
 
-        public string Description
+        public override string Description
         {
             get { return _elementDefenition.Description; }
         }
 
-        public Uri IconUri
+        public override Uri IconUri
         {
             get { return _elementDefenition.IconUri; }
         }
@@ -31,15 +26,7 @@ namespace Cortex.Modules.ElementsToolbox.ViewModels
         {
             get { return _elementDefenition; }
         }
-
-
-        [NotifyPropertyChangedInvocator]
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChangedEventHandler handler = PropertyChanged;
-            if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
-        }
-
+        
         public ElementItemViewModel(ElementItemDefenition defenition)
         {
             _elementDefenition = defenition;
