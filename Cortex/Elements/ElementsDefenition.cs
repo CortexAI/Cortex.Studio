@@ -3,7 +3,7 @@ using Cortex.Model;
 
 namespace Cortex.Elements
 {
-    static class ElementsDefenition
+    public static class EditorElementsDefenition
     {
         [Export]
         public static ElementGroupDefenition EditorElements = new ElementGroupDefenition("Editor");
@@ -11,5 +11,9 @@ namespace Cortex.Elements
         [Export]
         public static ElementItemDefenition LogElement =
             new ElementItemDefenition<LogElement>(EditorElements, "Log to console", null, "Logs any data to console");
+
+        [Export]
+        public static ElementItemDefenition UIElement =
+            new ElementItemWithViewDefenition<DisplayElement,DisplayElementView>(EditorElements, "Display", null, "Just to show");
     }
 }

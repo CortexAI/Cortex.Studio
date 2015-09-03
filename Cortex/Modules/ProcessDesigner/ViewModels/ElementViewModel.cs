@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
+using System.Windows.Controls;
 using Caliburn.Micro;
+using Cortex.Elements;
 using Cortex.Model;
 using Cortex.Model.Pins;
 
@@ -18,6 +20,7 @@ namespace Cortex.Modules.ProcessDesigner.ViewModels
         private readonly IElement _element;
         private double _x;
         private double _y;
+        private readonly UserControl _view;
         private readonly ElementItemDefenition _itemDefenition;
 
         public event EventHandler OutputChanged;
@@ -41,7 +44,7 @@ namespace Cortex.Modules.ProcessDesigner.ViewModels
                 NotifyOfPropertyChange(() => Y);
             }
         }
-
+        
         public string Name
         {
             get
@@ -56,6 +59,11 @@ namespace Cortex.Modules.ProcessDesigner.ViewModels
             {
                 return _element != null ? _itemDefenition.IconUri : null;
             }
+        }
+
+        public UserControl View
+        {
+            get { return _view; }
         }
 
         public IElement Element
@@ -98,6 +106,13 @@ namespace Cortex.Modules.ProcessDesigner.ViewModels
             _element = itemDefenition.CreateElement();
             _itemDefenition = itemDefenition;
             SetConnectors();
+
+            var defenitionWithView = itemDefenition as IViewProvider;
+            if (defenitionWithView != null)
+            {
+                _view = defenitionWithView.View;
+                _view.DataContext = _element;
+            }
         }
 
         protected ElementViewModel(SerializationInfo info, StreamingContext context)

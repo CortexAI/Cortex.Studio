@@ -119,6 +119,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Elements\ElementItemWithViewDefenition.cs" />
+    <Compile Include="Elements\IViewProvider.cs" />
+    <Compile Include="Elements\DisplayElement.cs" />
+    <Compile Include="Elements\DisplayElementView.xaml.cs">
+      <DependentUpon>DisplayElementView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Modules\Core\Commands\SaveAllCommandDefenition.cs" />
     <Compile Include="Modules\Core\Commands\SaveAllCommandHandler.cs" />
     <Compile Include="Modules\Core\Commands\SaveCommandDefenition.cs" />
@@ -150,6 +156,10 @@
     </Compile>
     <Compile Include="Elements\ElementsDefenition.cs" />
     <Compile Include="Elements\LogElement.cs" />
+    <Page Include="Elements\DisplayElementView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Modules\ElementsToolbox\Views\ElementsToolboxView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

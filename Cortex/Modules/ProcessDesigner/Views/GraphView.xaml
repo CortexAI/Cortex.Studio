@@ -77,12 +77,18 @@
                                         </Border>
                                         <Border>
                                             <Grid>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="Auto"></RowDefinition>
+                                                    <RowDefinition Height="Auto"></RowDefinition>
+                                                </Grid.RowDefinitions>
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition Width="Auto" MinWidth="50" />
                                                     <ColumnDefinition Width="1" />
                                                     <ColumnDefinition Width="Auto"  MinWidth="50" />
                                                 </Grid.ColumnDefinitions>
-                                                <ItemsControl Grid.Column="0" ItemsSource="{Binding InputConnectors}" VerticalAlignment="Top" Margin="2">
+                                                <!-- <ContentControl Grid.Row="0" Grid.ColumnSpan="3" cal:View.Model="{Binding Element}"></ContentControl> /-->
+                                                <ContentControl Grid.Row="0" Grid.ColumnSpan="3" Content="{Binding View}"/>
+                                                <ItemsControl  Grid.Row="1" Grid.Column="0" ItemsSource="{Binding InputConnectors}" VerticalAlignment="Top" Margin="2">
                                                     <ItemsControl.ItemTemplate>
                                                         <DataTemplate>
                                                             <Grid>
@@ -96,7 +102,7 @@
                                                         </DataTemplate>
                                                     </ItemsControl.ItemTemplate>
                                                 </ItemsControl>
-                                                <ItemsControl Grid.Column="2" ItemsSource="{Binding OutputConnectors}" VerticalAlignment="Top" Margin="2">
+                                                <ItemsControl Grid.Row="1" Grid.Column="2" ItemsSource="{Binding OutputConnectors}" VerticalAlignment="Top" Margin="2">
                                                     <ItemsControl.ItemTemplate>
                                                         <DataTemplate>
                                                             <Grid>
