@@ -5,7 +5,7 @@ using Caliburn.Micro;
 
 namespace Cortex.Modules.ProcessDesigner.ViewModels
 {
-    public class ConnectionViewModel : PropertyChangedBase
+    public class ConnectionViewModel : PropertyChangedBase, IDisposable
     {
         private OutputConnectorViewModel _from;
         public OutputConnectorViewModel From
@@ -13,10 +13,13 @@ namespace Cortex.Modules.ProcessDesigner.ViewModels
             get { return _from; }
             private set
             {
-                if (_from != null)
+                if (_from != value)
                 {
-                    _from.PositionChanged -= OnFromPositionChanged;
-                    _from.Connections.Remove(this);
+                    if (_from != null)
+                    {
+                        _from.Detach(this);
+                        _from.PositionChanged -= OnToPositionChanged;
+                    }
                 }
 
                 _from = value;
@@ -24,7 +27,7 @@ namespace Cortex.Modules.ProcessDesigner.ViewModels
                 if (_from != null)
                 {
                     _from.PositionChanged += OnFromPositionChanged;
-                    _from.Connections.Add(this);
+                    _from.Attach(this);
                     FromPosition = value.Position;
                 }
 
@@ -38,10 +41,13 @@ namespace Cortex.Modules.ProcessDesigner.ViewModels
             get { return _to; }
             set
             {
-                if (_to != null)
+                if (_to != value)
                 {
-                    _to.PositionChanged -= OnToPositionChanged;
-                    _to.Detach(this);
+                    if (_to != null)
+                    {
+                        _to.Detach(this);
+                        _to.PositionChanged -= OnToPositionChanged;
+                    }
                 }
 
                 _to = value;
@@ -105,12 +111,23 @@ namespace Cortex.Modules.ProcessDesigner.ViewModels
 
         private void OnFromPositionChanged(object sender, EventArgs e)
         {
-            FromPosition = From.Position;
+            FromPosition = ((IConnectorViewModel)sender).Position;
         }
 
         private void OnToPositionChanged(object sender, EventArgs e)
         {
-            ToPosition = To.Position;
+            ToPosition = ((IConnectorViewModel)sender).Position;
+        }
+
+        public void Remove()
+        {
+            To = null;
+            From = null;
+        }
+
+        public void Dispose()
+        {
+            Remove();
         }
     }
 }

@@ -1,27 +1,44 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace Cortex.Model.Pins
 {
-    public interface IPin
+   public interface IPin
     {
         string Name { get; }
-        Type Type { get; }
-        Object Value { get; }
-    }
-
-    public interface IOutputPin : IPin
-    {
-        Object Value { get; set; }
     }
 
     public interface IInputPin : IPin
     {
-        IEnumerable<IOutputPin> Connected { get; }
-        bool IsConnected { get; }
-        bool AllowMultipleConnections { get; }
         void Attach(IOutputPin pin);
         void Detach(IOutputPin pin);
-        void DetachAll();
+    }
+
+    public interface IOutputPin : IPin
+    {
+    }
+
+    public interface IDataPin : IPin
+    {
+        Object Value { get; }
+
+        Type Type { get; }
+    }
+    
+    public interface IDataOutputPin : IDataPin, IOutputPin
+    {
+    }
+
+    public interface IDataInputPin : IDataPin, IInputPin
+    {
+    }
+
+    public interface IFlowInputPin : IInputPin
+    {
+    }
+
+    public interface IFlowOutputPin : IOutputPin
+    {
+        event Action<Flow> Called;
+        void Call(Flow flow);
     }
 }

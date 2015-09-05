@@ -12,11 +12,11 @@ namespace Cortex.Model.Elements.Logic
             new ElementItemDefenition<StartPoint>(LogicElements, "Start point", null, "Entry point of a process");
 
         [Export]
-        public static ElementItemDefenition Subtract =
-            new ElementItemDefenition<ForElement>(LogicElements, "For element", null, "Simple 'For' loop");
+        public static ElementItemDefenition Repeat =
+            new ElementItemDefenition<Repeat>(LogicElements, "Repeat", null, "Simple 'For' loop");
 
         [Export]
-        public static ElementItemDefenition Division =
-            new ElementItemDefenition<IfElement>(LogicElements, "If element", null, "Branching based on condition");
+        public static ElementItemDefenition Condition =
+            new ElementItemDefenition<Condition>(LogicElements, "If element", null, "Branching based on condition");
     }
 }

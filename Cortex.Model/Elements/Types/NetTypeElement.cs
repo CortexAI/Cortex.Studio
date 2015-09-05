@@ -10,24 +10,20 @@ namespace Cortex.Model.Elements.Types
         {
             get
             {
-                if(Outputs != null)
-                    return (T)Outputs[0].Value;
+                if (((IDataOutputPin)_outputs[0]).Value != null)
+                    return (T)((IDataOutputPin)_outputs[0]).Value;
                 return default(T);
             }
             set
             {
-                if (Outputs != null)
-                    Outputs[0].Value = value;
+                ((DataOutputPin)_outputs[0]).Value = value;
             }
         }
 
         public NetTypeElement()
         {
+            AddOutputPin(new DataOutputPin("Value", typeof(T)));
             Value = default(T);
-            Outputs = new []
-            {
-                new OutputPin("Output", typeof(T), default(T))
-            };
         }
     }
 }

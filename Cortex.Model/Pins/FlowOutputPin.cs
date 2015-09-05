@@ -1,59 +1,28 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Runtime.Serialization;
-using System.Threading.Tasks;
 
 namespace Cortex.Model.Pins
 {
     [Serializable]
-    public class FlowOutputPin : OutputPin
+    public class FlowOutputPin : IFlowOutputPin
     {
-        [NonSerialized]
-        private List<Action> _actions = new List<Action>();
-
+        public string Name { get; private set; }
+        
         public FlowOutputPin(string name)
-            : base(name, typeof(Flow))
         {
-
+            Name = name;
         }
 
         public FlowOutputPin()
-            : base("Flow Out", typeof(Flow))
+            : this("Flow out")
         {
-
         }
 
+        public event Action<Flow> Called;
         public void Call(Flow flow)
         {
-            this.Value = flow;
-            if(flow == null)
-                throw  new Exception();
-
-            try
-            {
-                Parallel.Invoke(new ParallelOptions { CancellationToken = flow.Token }, _actions.ToArray());
-            }
-            catch (OperationCanceledException)
-            {
-                // cancelled
-            }
-        }
-
-        public void Subscribe(Action action)
-        {
-            _actions.Add(action);
-        }
-
-        public void Unsubscribe(Action action)
-        {
-            if (_actions.Contains(action))
-                _actions.Remove(action);
-        }
-
-        [OnDeserializing]
-        private void OnDeserializing(StreamingContext context)
-        {
-            _actions = new List<Action>();
+            var handler = Called;
+            if(handler != null)
+                handler.Invoke(flow);
         }
     }
 }

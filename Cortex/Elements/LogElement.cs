@@ -16,25 +16,18 @@ namespace Cortex.Elements
         public LogElement()
         {
             _log = LogManager.GetLog(this.GetType());
-            Inputs = new IInputPin[]
-            {
-                new FlowInputPin(Action),
-                new InputPin("Object", typeof(object), null),
-            };
-            Outputs = new IOutputPin[]
-            {
-                new FlowOutputPin("Out")
-            };
+            AddInputPin(new FlowInputPin(Action));
+            AddInputPin(new DataInputPin("Object", typeof(object)));
+            AddOutputPin(new FlowOutputPin());
         }
 
-        private void Action()
+        private void Action(Flow flow)
         {
-            var flow = Inputs[0].Value as Flow;
-            var val = Inputs[1].Value;
+            var val = ((DataInputPin)_inputs[1]).Value;
             
             if (val != null && _log != null)
-                _log.Info("Output: " + Inputs[1].Value);
-            ((FlowOutputPin)Outputs[0]).Call(flow);
+                _log.Info("Output: " + val);
+            ((FlowOutputPin)_outputs[0]).Call(flow);
         }
 
         [OnDeserialized]

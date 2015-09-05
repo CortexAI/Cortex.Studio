@@ -210,7 +210,7 @@
     <Compile Include="Modules\ProcessDesigner\EditorProvider.cs" />
     <Compile Include="Modules\ProcessDesigner\MenuDefenitions.cs" />
     <Compile Include="Modules\ProcessDesigner\ToolbarDefenitions.cs" />
-    <Compile Include="Modules\ProcessDesigner\TypeToColorConverter.cs" />
+    <Compile Include="Modules\ProcessDesigner\Util\TypeToColorConverter.cs" />
     <Compile Include="Modules\ProcessDesigner\ViewModels\ConnectionViewModel.cs" />
     <Compile Include="Modules\ProcessDesigner\ViewModels\ConnectorDirection.cs" />
     <Compile Include="Modules\ProcessDesigner\ViewModels\IConnectorViewModel.cs" />

@@ -1,16 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Media;
 using Caliburn.Micro;
 using Cortex.Model.Pins;
+using Cortex.Modules.ProcessDesigner.Util;
 
 namespace Cortex.Modules.ProcessDesigner.ViewModels
 {
     public class OutputConnectorViewModel : PropertyChangedBase, IConnectorViewModel
     {
         private Point _position;
-        private readonly BindableCollection<ConnectionViewModel> _connections;
+        private int _connections;
 
         public event EventHandler PositionChanged;
 
@@ -22,7 +22,7 @@ namespace Cortex.Modules.ProcessDesigner.ViewModels
         
         public Color Color
         {
-            get { return TypeToColorConverter.GetColor(Pin.Type); }
+            get { return TypeToColorConverter.GetColor(Pin); }
         }
         
         public Point Position
@@ -38,30 +38,30 @@ namespace Cortex.Modules.ProcessDesigner.ViewModels
 
         public bool IsConnected
         {
-            get
-            {
-                if(Connections != null)
-                    return Connections.Count > 0;
-                return false;
-            }
+            get { return _connections > 0; }
         }
         
         public ConnectorDirection ConnectorDirection
         {
             get { return ConnectorDirection.Output; }
         }
-        
-        public IList<ConnectionViewModel> Connections
+
+        public void Attach(ConnectionViewModel connection)
         {
-            get { return _connections; }
+            _connections++;
+            NotifyOfPropertyChange(() => IsConnected);
+        }
+
+        public void Detach(ConnectionViewModel connection)
+        {
+            _connections--;
+            NotifyOfPropertyChange(() => IsConnected);
         }
         
         public OutputConnectorViewModel(ElementViewModel element, IOutputPin pin)
         {
             Pin = pin;
             Element = element;
-            _connections = new BindableCollection<ConnectionViewModel>();
-            _connections.CollectionChanged += (sender, args) => NotifyOfPropertyChange(()=>IsConnected);
         }
 
         private void RaisePositionChanged()

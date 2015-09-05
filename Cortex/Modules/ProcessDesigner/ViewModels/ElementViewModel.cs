@@ -90,16 +90,6 @@ namespace Cortex.Modules.ProcessDesigner.ViewModels
         {
             get { return _outputConnectors; }
         }
-
-        public IEnumerable<ConnectionViewModel> AttachedConnections
-        {
-            get
-            {
-                return _inputConnectors.SelectMany(x => x.Connections)
-                    .Union(_outputConnectors.SelectMany(x => x.Connections))
-                    .Where(x => x != null);
-            }
-        }
         
         public ElementViewModel(ElementItemDefenition itemDefenition)
         {
@@ -137,13 +127,7 @@ namespace Cortex.Modules.ProcessDesigner.ViewModels
         protected void AddInputConnector(IInputPin pin)
         {
             var inputConnector = new InputConnectorViewModel(this, pin);
-            inputConnector.SourceChanged += InputConnectorOnSourceChanged;
             _inputConnectors.Add(inputConnector);
-        }
-
-        private void InputConnectorOnSourceChanged(object sender, EventArgs eventArgs)
-        {
-
         }
 
         protected void AddOutputConnector(IOutputPin pin)

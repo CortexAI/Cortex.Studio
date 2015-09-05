@@ -10,21 +10,14 @@ namespace Cortex.Model.Elements.MathElements
         
         protected MathElement()
         {
-            Inputs = new []
-            {
-                new InputPin("In 1", typeof (double), 0.0),
-                new InputPin("In 2", typeof (double), 0.0)
-            };
-
-            Outputs = new[]
-            {
-                new OutputPin("Output", typeof(double))
-            };
+            AddInputPin(new DataInputPin("In 1",typeof(double)));
+            AddInputPin(new DataInputPin("In 2",typeof(double)));
+            AddOutputPin(new DynamicDataOutputPin("Value", typeof(double), Compute));
         }
 
-        private void Compute()
+        private object Compute()
         {
-            Outputs[0].Value = Calc((double) Inputs[0].Value, (double) Inputs[1].Value);
+            return Calc(GetInputData<double>(0), GetInputData<double>(1));
         }
     }
 }

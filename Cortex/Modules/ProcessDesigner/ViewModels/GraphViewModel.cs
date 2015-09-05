@@ -9,8 +9,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using Caliburn.Micro;
-using Cortex.Model.Elements;
 using Cortex.Model.Elements.Logic;
+using Cortex.Model.Pins;
 using Cortex.Modules.Core;
 using Cortex.Modules.ProcessDesigner.Commands;
 using Gemini.Framework.Commands;
@@ -85,7 +85,6 @@ namespace Cortex.Modules.ProcessDesigner.ViewModels
             };
 
             Connections.Add(connection);
-
             return connection;
         }
 
@@ -105,7 +104,7 @@ namespace Cortex.Modules.ProcessDesigner.ViewModels
             // No target connector found or target is a source
             if (nearbyConnector == null || sourceConnector.Element == nearbyConnector.Element)
             {
-                sourceConnector.Connections.Remove(newConnection);
+                newConnection.Remove();
                 Connections.Remove(newConnection);
                 _log.Warn("No target for connection was found or target is a source");
                 return;
@@ -114,7 +113,7 @@ namespace Cortex.Modules.ProcessDesigner.ViewModels
             // Connection already exist
             if (Connections.FirstOrDefault(c => c.From == sourceConnector && c.To == nearbyConnector) != null)
             {
-                sourceConnector.Connections.Remove(newConnection);
+                newConnection.Remove();
                 Connections.Remove(newConnection);
                 _log.Warn("That connection already exists");
                 return;
@@ -122,10 +121,15 @@ namespace Cortex.Modules.ProcessDesigner.ViewModels
 
             try
             {
-                if (!nearbyConnector.AllowMultipleConnections && nearbyConnector.IsConnected)
+                // Datapins couldn't have multiple connections
+                if (nearbyConnector.IsConnected && nearbyConnector.Pin is IDataPin)
                 {
-                    Connections.RemoveRange(nearbyConnector.Connections);
-                    nearbyConnector.DetachAll();
+                    var connections = Connections.Where(c => c.To == nearbyConnector).ToList();
+                    foreach (var connection in connections)
+                    {
+                        connection.Remove();
+                        Connections.Remove(connection);
+                    }
                     _log.Warn("Target connector doesn't support multiple inputs. Removing other connectors");
                 }
                 newConnection.To = nearbyConnector;
@@ -133,7 +137,7 @@ namespace Cortex.Modules.ProcessDesigner.ViewModels
             }
             catch (Exception ex)
             {
-                sourceConnector.Connections.Remove(newConnection);
+                newConnection.Remove();
                 Connections.Remove(newConnection);
                 _log.Error(ex);
             }
@@ -152,7 +156,16 @@ namespace Cortex.Modules.ProcessDesigner.ViewModels
 
         public void DeleteElement(ElementViewModel element)
         {
-            Connections.RemoveRange(element.AttachedConnections);
+            var connections = 
+                        Connections.Where(c => c.From.Element == element)
+                .Union( Connections.Where(c => c.To.Element == element)).ToList();
+
+            foreach (var connection in connections)
+            {
+                connection.Remove();
+                Connections.Remove(connection);
+            }
+
             Elements.Remove(element);
         }
 
@@ -253,10 +266,10 @@ namespace Cortex.Modules.ProcessDesigner.ViewModels
                     continue;
                 foreach (var inputPin in elementViewModel.Element.Inputs)
                 {
-                    if(!inputPin.IsConnected)
-                        continue;
+                    //if(!inputPin.IsConnected)
+                      //  continue;
                     var to = elementViewModel.InputConnectors.FirstOrDefault(c => c.Pin.Equals(inputPin));
-
+                    /*
                     foreach (var outputPin in inputPin.Connected)
                     {
                         var sourceElement =
@@ -265,7 +278,7 @@ namespace Cortex.Modules.ProcessDesigner.ViewModels
                             throw new Exception("Missed source element");
                         var from = sourceElement.OutputConnectors.FirstOrDefault(c => c.Pin.Equals(outputPin));
                         _connections.Add(new ConnectionViewModel(@from, to));
-                    }
+                    }*/
                 }
             }
         }

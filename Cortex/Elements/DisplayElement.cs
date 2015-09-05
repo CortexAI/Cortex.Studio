@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Caliburn.Micro;
 using Cortex.Model;
 using Cortex.Model.Pins;
@@ -8,11 +9,13 @@ namespace Cortex.Elements
     [Serializable]
     class DisplayElement : PropertyChangedBase, IElement
     {
-        public IInputPin[] Inputs { get; private set; }
+        public IEnumerable<IInputPin> Inputs { get { return _inputs; } }
 
-        public IOutputPin[] Outputs { get; private set; }
+        public IEnumerable<IOutputPin> Outputs { get { return _outputs; } }
 
         private string _value;
+        private readonly IInputPin[] _inputs;
+        private readonly IOutputPin[] _outputs;
 
         public string Value
         {
@@ -29,20 +32,22 @@ namespace Cortex.Elements
 
         public DisplayElement()
         {
-            Inputs = new IInputPin[]
+            _inputs = new IInputPin[]
             {
                 new FlowInputPin(Action),
-                new InputPin("Object", typeof(object), null),
+                new DataInputPin("Object",typeof(object)),
             };
-            Outputs = new IOutputPin[]
+            _outputs = new IOutputPin[]
             {
                 new FlowOutputPin("Out")
             };
         }
 
-        private void Action()
+        private void Action(Flow flow)
         {
-            Value = Inputs[1].Value.ToString();
+            var o = ((DataInputPin) _inputs[1]).Value;
+            Value = o != null ? o.ToString() : "null";
+            ((FlowOutputPin)_outputs[0]).Call(flow);
         }
     }
 }
