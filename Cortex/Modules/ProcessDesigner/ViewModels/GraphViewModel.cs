@@ -4,10 +4,10 @@ using System.ComponentModel.Composition;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
-using System.Runtime.Serialization.Formatters.Soap;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Xml.Serialization;
 using Caliburn.Micro;
 using Cortex.Model.Elements.Logic;
 using Cortex.Model.Pins;
@@ -190,7 +190,8 @@ namespace Cortex.Modules.ProcessDesigner.ViewModels
         
         public override void Save()
         {
-            var formatter = new SoapFormatter();
+            //var formatter = new SoapFormatter();
+            var formatter = new XmlSerializer(typeof(GraphViewModel));
             using (var stream = new FileStream(FileName, FileMode.Create))
             {
                 formatter.Serialize(stream, this);

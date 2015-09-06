@@ -22,9 +22,7 @@ namespace Cortex.Model.Elements.Logic
                 if (pin == null)
                     throw new NullReferenceException();
                 var flowObject = new Flow(cts.Token);
-                var task = Task.Factory.StartNew(() => pin.Call(flowObject), flowObject.Token);
-
-                //Task.Run(() => pin.Call(flowObject), flowObject.Token);
+                pin.Call(flowObject);
             }
             catch (ThreadInterruptedException)
             {
