@@ -34,7 +34,9 @@ namespace Cortex.Model.Elements
             var val = ((IDataInputPin)_inputs[index]).Value;
             if (val == null)
                 return default(T);
-            return (T)val;
+            if (val is T)
+                return (T) val;
+            return (T)Convert.ChangeType(val, typeof(T));
         }
     }
 }

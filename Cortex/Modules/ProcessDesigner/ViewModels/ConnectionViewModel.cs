@@ -1,13 +1,16 @@
 ﻿using System;
+using System.Runtime.Serialization;
 using System.Windows;
 using System.Windows.Media;
 using Caliburn.Micro;
 
 namespace Cortex.Modules.ProcessDesigner.ViewModels
 {
+    [DataContract(IsReference = true)]
     public class ConnectionViewModel : PropertyChangedBase, IDisposable
     {
         private OutputConnectorViewModel _from;
+        [DataMember]
         public OutputConnectorViewModel From
         {
             get { return _from; }
@@ -36,6 +39,7 @@ namespace Cortex.Modules.ProcessDesigner.ViewModels
         }
 
         private InputConnectorViewModel _to;
+        [DataMember]
         public InputConnectorViewModel To
         {
             get { return _to; }
@@ -62,7 +66,8 @@ namespace Cortex.Modules.ProcessDesigner.ViewModels
                 NotifyOfPropertyChange(() => To);
             }
         }
-        
+
+
         private Point _fromPosition;
         public Point FromPosition
         {
@@ -73,6 +78,7 @@ namespace Cortex.Modules.ProcessDesigner.ViewModels
                 NotifyOfPropertyChange(() => FromPosition);
             }
         }
+
         
         private Point _toPosition;
         public Point ToPosition
@@ -84,29 +90,21 @@ namespace Cortex.Modules.ProcessDesigner.ViewModels
                 NotifyOfPropertyChange(() => ToPosition);
             }
         }
-
-        private Color _color;
+        
         public Color Color
         {
-            get { return _color; }
-            set
-            {
-                _color = value;
-                NotifyOfPropertyChange(() => Color);
-            }
+            get { return _from.Color; }
         }
         
         public ConnectionViewModel(OutputConnectorViewModel from, InputConnectorViewModel to)
         {
             From = from;
             To = to;
-            Color = from.Color;
         }
 
         public ConnectionViewModel(OutputConnectorViewModel from)
         {
             From = from;
-            Color = from.Color;
         }
 
         private void OnFromPositionChanged(object sender, EventArgs e)

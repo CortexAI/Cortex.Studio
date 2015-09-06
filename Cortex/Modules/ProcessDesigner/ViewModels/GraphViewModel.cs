@@ -3,11 +3,9 @@ using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.IO;
 using System.Linq;
-using System.Runtime.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Xml.Serialization;
 using Caliburn.Micro;
 using Cortex.Model.Elements.Logic;
 using Cortex.Model.Pins;
@@ -16,13 +14,13 @@ using Cortex.Modules.ProcessDesigner.Commands;
 using Gemini.Framework.Commands;
 using Gemini.Framework.Threading;
 using Gemini.Modules.Inspector;
+using Newtonsoft.Json;
 
 namespace Cortex.Modules.ProcessDesigner.ViewModels
 {
-    [Serializable]
     [Export(typeof(GraphViewModel))]
     [PartCreationPolicy(CreationPolicy.NonShared)]
-    public class GraphViewModel : FileDocument, ISerializable, 
+    public class GraphViewModel : FileDocument, 
         ICommandHandler<RunProcessCommandDefenition>,
         ICommandHandler<StopProcessCommandDefenition>
     {
@@ -62,16 +60,6 @@ namespace Cortex.Modules.ProcessDesigner.ViewModels
         {
             _inspectorTool = IoC.Get<IInspectorTool>();
             _log.Info("Graph created: {0}", FileName);
-        }
-
-        public GraphViewModel(SerializationInfo info, StreamingContext context) : base(null)
-        {
-            var count = info.GetInt32("ElementsCount");
-            for (var i = 0; i < count; i++)
-            {
-                var e = (ElementViewModel)info.GetValue("Element_" + i, typeof(ElementViewModel));
-                _elements.Add(e);
-            }
         }
         
         public ConnectionViewModel OnConnectionDragStarted(IConnectorViewModel sourceConnector, Point currentDragPoint)
@@ -190,12 +178,15 @@ namespace Cortex.Modules.ProcessDesigner.ViewModels
         
         public override void Save()
         {
-            //var formatter = new SoapFormatter();
-            var formatter = new XmlSerializer(typeof(GraphViewModel));
-            using (var stream = new FileStream(FileName, FileMode.Create))
+            var serializer = new JsonSerializer()
             {
-                formatter.Serialize(stream, this);
-                stream.Close();
+                PreserveReferencesHandling = PreserveReferencesHandling.Objects,
+            };
+
+            using (var sw = new StreamWriter(FileName))
+            using (JsonWriter writer = new JsonTextWriter(sw))
+            {
+                serializer.Serialize(writer, this);
                 _log.Info("Process saved to {0}", FileName);
             }
         }
@@ -247,41 +238,6 @@ namespace Cortex.Modules.ProcessDesigner.ViewModels
             }
 
             return TaskUtility.Completed;
-        }
-
-        public void GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-            info.AddValue("ElementsCount", _elements.Count);
-            for (var i = 0; i < _elements.Count; i++)
-            {
-                info.AddValue("Element_" + i, _elements[i]);
-            }
-        }
-
-        [OnDeserialized]
-        void OnDeserialize(StreamingContext context)
-        {
-            foreach (var elementViewModel in _elements)
-            {
-                if (elementViewModel.Element == null || elementViewModel.Element.Inputs == null) 
-                    continue;
-                foreach (var inputPin in elementViewModel.Element.Inputs)
-                {
-                    //if(!inputPin.IsConnected)
-                      //  continue;
-                    var to = elementViewModel.InputConnectors.FirstOrDefault(c => c.Pin.Equals(inputPin));
-                    /*
-                    foreach (var outputPin in inputPin.Connected)
-                    {
-                        var sourceElement =
-                            _elements.FirstOrDefault(element => element.Element.Outputs.Contains(outputPin));
-                        if (sourceElement == null)
-                            throw new Exception("Missed source element");
-                        var from = sourceElement.OutputConnectors.FirstOrDefault(c => c.Pin.Equals(outputPin));
-                        _connections.Add(new ConnectionViewModel(@from, to));
-                    }*/
-                }
-            }
         }
     }
 }

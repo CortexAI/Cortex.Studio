@@ -1,4 +1,5 @@
 ﻿using System;
+using Cortex.Model.Utilities;
 
 namespace Cortex.Model.Pins
 {
@@ -26,8 +27,11 @@ namespace Cortex.Model.Pins
             var inPin = pin as IDataOutputPin;
             if(inPin == null)
                 throw new Exception("Pin is not a data pin");
-            if (!Type.IsAssignableFrom(inPin.Type))
+
+            // If is not convertable to base type
+            if (!inPin.Type.IsCastableTo(Type))
                 throw new Exception("Pin type mismatch");
+
             _connected = inPin;
         }
 
