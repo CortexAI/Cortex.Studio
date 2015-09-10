@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.IO;
-using System.Runtime.Serialization.Formatters.Soap;
+using System.Threading.Tasks;
 using Caliburn.Micro;
 using Cortex.Modules.ProcessDesigner.ViewModels;
-using Cortex.Modules.ProjectExplorer.ViewModels;
 using Gemini.Framework;
 using Gemini.Framework.Services;
 
@@ -23,38 +21,25 @@ namespace Cortex.Modules.ProcessDesigner
             return extension == ".prcs";
         }
 
-        public IDocument CreateNew(string name)
+        public IDocument Create()
         {
-            var explorer = IoC.Get<ProjectExplorerViewModel>();
-            return new GraphViewModel(Path.Combine(explorer.Root.Path, name));
+            return IoC.Get<GraphViewModel>();
         }
 
-        public IDocument Open(string path)
+        public async Task New(IDocument document, string name)
         {
-            try
-            {
-                var formatter = new SoapFormatter();
-                using (var stream = new FileStream(path, FileMode.Open, FileAccess.Read))
-                {
-                    var doc = formatter.Deserialize(stream) as GraphViewModel;
-                    stream.Close();
+            var graph = ((GraphViewModel) document);
 
-                    if (doc != null)
-                    {
-                        _log.Info("Opened document: {0}", path);
-                        doc.FileName = path;
-                        return doc;
-                    }
-                }                
-            }
-            catch (Exception exception)
-            {
-                _log.Error(exception);
-            }
-
-            return null;
+            await graph.New(name);
+            
+            // TODO: autosave in current project dir
         }
 
+        public async Task Open(IDocument document, string path)
+        {
+            await ((GraphViewModel) document).Load(path);
+        }
+        
         public IEnumerable<EditorFileType> FileTypes
         {
             get

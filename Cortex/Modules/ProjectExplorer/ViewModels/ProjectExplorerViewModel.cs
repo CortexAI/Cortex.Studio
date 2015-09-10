@@ -74,15 +74,18 @@ namespace Cortex.Modules.ProjectExplorer.ViewModels
             }
         }
 
-        private void Open(FileItemViewModel file)
+        private async void Open(FileItemViewModel file)
         {
             if(!file.IsEditorAvailable)
                 _log.Warn("Can't find editor for {0}", file.Path);
             else
             {
                 var editor = file.EditorProvider;
+                var vm = editor.Create();
+
                 _log.Info("Opening {0} with {1}", file.Path, editor.ToString());
-                _shell.OpenDocument(editor.Open(file.Path));
+                await editor.Open(vm, file.Path);
+                _shell.OpenDocument(vm);
             }
         }
 

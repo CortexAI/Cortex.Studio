@@ -5,7 +5,7 @@ namespace Cortex.Modules.ProcessDesigner.Design
 {
     public class DesignTimeGraphViewModel : GraphViewModel
     {
-        public DesignTimeGraphViewModel() : base(null)
+        public DesignTimeGraphViewModel()
         {
             var element1 = new ElementViewModel(EditorElementsDefenition.LogElement) { X = 100, Y = 200 };
             var element2 = new ElementViewModel(EditorElementsDefenition.LogElement) { X = 400, Y = 100 };

@@ -9,22 +9,21 @@ using System.Windows;
 using Caliburn.Micro;
 using Cortex.Model.Elements.Logic;
 using Cortex.Model.Pins;
-using Cortex.Modules.Core;
 using Cortex.Modules.ProcessDesigner.Commands;
+using Gemini.Framework;
 using Gemini.Framework.Commands;
 using Gemini.Framework.Threading;
 using Gemini.Modules.Inspector;
-using Newtonsoft.Json;
 
 namespace Cortex.Modules.ProcessDesigner.ViewModels
 {
     [Export(typeof(GraphViewModel))]
     [PartCreationPolicy(CreationPolicy.NonShared)]
-    public class GraphViewModel : FileDocument, 
+    public class GraphViewModel : PersistedDocument, 
         ICommandHandler<RunProcessCommandDefenition>,
         ICommandHandler<StopProcessCommandDefenition>
     {
-        private readonly IInspectorTool _inspectorTool = IoC.Get<IInspectorTool>();
+        private readonly IInspectorTool _inspectorTool;
         private readonly ILog _log = LogManager.GetLog(typeof (GraphViewModel));
         
         private readonly BindableCollection<ElementViewModel> _elements = new BindableCollection<ElementViewModel>();
@@ -56,10 +55,9 @@ namespace Cortex.Modules.ProcessDesigner.ViewModels
             }
         }
 
-        public GraphViewModel(string path) : base(path)
+        public GraphViewModel()
         {
             _inspectorTool = IoC.Get<IInspectorTool>();
-            _log.Info("Graph created: {0}", FileName);
         }
         
         public ConnectionViewModel OnConnectionDragStarted(IConnectorViewModel sourceConnector, Point currentDragPoint)
@@ -176,21 +174,6 @@ namespace Cortex.Modules.ProcessDesigner.ViewModels
                 _inspectorTool.SelectedObject = null;
         }
         
-        public override void Save()
-        {
-            var serializer = new JsonSerializer()
-            {
-                PreserveReferencesHandling = PreserveReferencesHandling.Objects,
-            };
-
-            using (var sw = new StreamWriter(FileName))
-            using (JsonWriter writer = new JsonTextWriter(sw))
-            {
-                serializer.Serialize(writer, this);
-                _log.Info("Process saved to {0}", FileName);
-            }
-        }
-
         void ICommandHandler<RunProcessCommandDefenition>.Update(Command command)
         {
             command.Enabled = !IsRunning;
@@ -237,6 +220,25 @@ namespace Cortex.Modules.ProcessDesigner.ViewModels
                 });
             }
 
+            return TaskUtility.Completed;
+        }
+
+        protected override Task DoNew()
+        {
+            _log.Info("Graph created: {0}", FileName);
+            return TaskUtility.Completed;
+        }
+
+        protected override Task DoLoad(string filePath)
+        {
+            // TODO: DESEREALIZING;
+            return TaskUtility.Completed;
+        }
+
+        protected override Task DoSave(string filePath)
+        {
+            // TODO: SEREALIZING;
+            File.Create(filePath);
             return TaskUtility.Completed;
         }
     }

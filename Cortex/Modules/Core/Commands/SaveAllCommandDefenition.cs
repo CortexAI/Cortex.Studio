@@ -24,10 +24,8 @@ namespace Cortex.Modules.Core.Commands
             get { return "Save All"; }
         }
 
-        public override KeyGesture KeyGesture
-        {
-            get { return new KeyGesture(Key.S, ModifierKeys.Alt); }
-        }
+        public static CommandKeyboardShortcut KeyGesture =
+           new CommandKeyboardShortcut<SaveAllCommandDefenition>(new KeyGesture(Key.S, ModifierKeys.Alt));
 
         public override Uri IconSource
         {
