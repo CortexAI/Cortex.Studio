@@ -1,9 +1,8 @@
-using System;
 using Cortex.Model.Pins;
+using Cortex.Model.Serialization;
 
 namespace Cortex.Model.Elements.Types
 {
-    [Serializable]
     public class NetTypeElement<T> : BaseElement
     {
         public T Value
@@ -24,6 +23,16 @@ namespace Cortex.Model.Elements.Types
         {
             AddOutputPin(new DataOutputPin("Value", typeof(T)));
             Value = default(T);
+        }
+
+        public override void Save(IPersisterWriter writer)
+        {
+            writer.Set("Value", Value);
+        }
+
+        public override void Load(IPersisterReader reader)
+        {
+            Value = reader.Get<T>("Value");
         }
     }
 }

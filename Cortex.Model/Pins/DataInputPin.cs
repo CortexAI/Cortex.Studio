@@ -3,7 +3,6 @@ using Cortex.Model.Utilities;
 
 namespace Cortex.Model.Pins
 {
-    [Serializable]
     public class DataInputPin : IDataInputPin
     {
         private IDataOutputPin _connected;
@@ -39,6 +38,8 @@ namespace Cortex.Model.Pins
         {
             _connected = null;
         }
+
+        private DataInputPin() { }
 
         public DataInputPin(string name, Type type)
         {

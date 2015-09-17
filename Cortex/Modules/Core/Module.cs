@@ -4,6 +4,7 @@ using System.ComponentModel.Composition;
 using System.Windows;
 using Cortex.Modules.ElementsToolbox.ViewModels;
 using Cortex.Modules.Output.ViewModels;
+using Cortex.Modules.ProcessDesigner.ViewModels;
 using Cortex.Modules.ProjectExplorer.Services;
 using Cortex.Modules.ProjectExplorer.ViewModels;
 using Gemini.Framework;
@@ -23,7 +24,8 @@ namespace Cortex.Modules.Core
                 yield return typeof(ProjectExplorerViewModel); 
                 yield return typeof(ElementsToolboxViewModel); 
                 yield return typeof(IInspectorTool);
-                yield return typeof(OutputViewModel); 
+                yield return typeof(OutputViewModel);
+                yield return typeof(StructureViewModel); 
             }
         }
 

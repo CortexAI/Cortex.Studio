@@ -6,6 +6,8 @@ namespace Cortex.Modules.ProcessDesigner
 {
     class MenuDefenitions
     {
-        
+        [Export]
+        public static MenuItemDefinition OpenOutputMenuItem = new CommandMenuItemDefinition<OpenStructureCommandDefenition>(
+            Gemini.Modules.MainMenu.MenuDefinitions.ViewToolsMenuGroup, 3);
     }
 }

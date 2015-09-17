@@ -1,0 +1,138 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel.Composition;
+using Cortex.Model;
+using Gemini.Framework;
+using Gemini.Framework.Services;
+
+namespace Cortex.Modules.ProcessDesigner.ViewModels
+{
+    [Export(typeof(StructureViewModel))]
+    class StructureViewModel : Tool
+    {
+        private IContainer _process;
+        private INode _selectedItem;
+        private ObservableCollection<IElement> _elements;
+        private ObservableCollection<IConnection> _connections;
+
+        public override PaneLocation PreferredLocation
+        {
+            get { return PaneLocation.Right; }
+        }
+
+        public ObservableCollection<IElement> Elements
+        {
+            get { return _elements; }
+            set
+            {
+                _elements = value;
+                NotifyOfPropertyChange(() => Elements);
+            }
+        }
+
+
+        public INode SelectedItem
+        {
+            get { return _selectedItem; }
+            set
+            {
+                _selectedItem = value;
+                NotifyOfPropertyChange(()=>SelectedItem);
+
+                if (_selectedItem != null)
+                {
+                    MetaData =
+                        new ObservableCollection<KeyValuePair<string, object>>(Container.GetMetaData(SelectedItem));
+                    NotifyOfPropertyChange(() => MetaData);
+                }
+            }
+        }
+
+        public ObservableCollection<KeyValuePair<string,Object>> MetaData { get; set; }
+
+        public ObservableCollection<IConnection> Connections
+        {
+            get { return _connections; }
+            set
+            {
+                _connections = value;
+                NotifyOfPropertyChange(() => Connections);
+            }
+        }
+
+        public IContainer Container
+        {
+            get { return _process; }
+            set
+            {
+                if (_process != null)
+                {
+                    _process.ConnectionAdded -= ProcessOnConnectionAdded;
+                    _process.ConnectionRemoved -= ProcessOnConnectionRemoved;
+                    _process.ElementAdded -= ProcessOnElementAdded;
+                    _process.ElementRemoved -= ProcessOnElementRemoved;
+                }
+
+                _process = value;
+                if(_process == null)
+                    return;
+
+                NotifyOfPropertyChange(() => Container);
+
+                Elements = new ObservableCollection<IElement>(_process.Elements);
+                Connections = new ObservableCollection<IConnection>(_process.Connections);
+
+                _process.ConnectionAdded+= ProcessOnConnectionAdded;
+                _process.ConnectionRemoved += ProcessOnConnectionRemoved;
+                _process.ElementAdded += ProcessOnElementAdded;
+                _process.ElementRemoved += ProcessOnElementRemoved;
+            }
+        }
+
+        private void ProcessOnElementRemoved(IContainer container, IElement element)
+        {
+            Elements.Remove(element);
+        }
+
+        private void ProcessOnElementAdded(IContainer container, IElement element)
+        {
+            Elements.Add(element);
+        }
+
+        private void ProcessOnConnectionRemoved(IContainer container, IConnection connection)
+        {
+            Connections.Remove(connection);
+        }
+
+        private void ProcessOnConnectionAdded(IContainer container, IConnection connection)
+        {
+            Connections.Add(connection);
+        }
+
+        [ImportingConstructor]
+        public StructureViewModel(IShell shell)
+        {
+            DisplayName = "Container structure";
+            shell.ActiveDocumentChanged += ShellOnActiveDocumentChanged;
+            GetFromShell(shell);
+        }
+
+        private void ShellOnActiveDocumentChanged(object sender, EventArgs eventArgs)
+        {
+            var shell = sender as IShell;
+            if (shell != null)
+                GetFromShell(shell);
+        }
+
+        private void GetFromShell(IShell shell)
+        {
+            var doc = shell.ActiveItem;
+            var processDesigner = doc as GraphViewModel;
+            if (processDesigner != null)
+            {
+                Container = processDesigner.Process;
+            }
+        }
+    }
+}

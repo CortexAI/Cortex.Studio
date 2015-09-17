@@ -43,13 +43,13 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Caliburn.Micro.2.0.2\lib\net45\Caliburn.Micro.Platform.dll</HintPath>
     </Reference>
-    <Reference Include="Gemini, Version=0.6.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Gemini, Version=1.0.6054.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\GeminiWpf.0.6.0-ci6046\lib\net45\Gemini.dll</HintPath>
+      <HintPath>..\packages\GeminiWpf.1.0.6054\lib\net45\Gemini.dll</HintPath>
     </Reference>
-    <Reference Include="Gemini.Modules.GraphEditor, Version=0.6.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Gemini.Modules.GraphEditor, Version=1.0.6054.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Gemini.Modules.GraphEditor.0.6.0-ci6046\lib\net45\Gemini.Modules.GraphEditor.dll</HintPath>
+      <HintPath>..\packages\Gemini.Modules.GraphEditor.1.0.6054\lib\net45\Gemini.Modules.GraphEditor.dll</HintPath>
     </Reference>
     <Reference Include="Gemini.Modules.Inspector, Version=0.6.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -107,7 +107,7 @@
     </Reference>
     <Reference Include="Xceed.Wpf.AvalonDock.Themes.VS2013, Version=2.0.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\GeminiWpf.0.6.0-ci6046\lib\net45\Xceed.Wpf.AvalonDock.Themes.VS2013.dll</HintPath>
+      <HintPath>..\packages\GeminiWpf.1.0.6054\lib\net45\Xceed.Wpf.AvalonDock.Themes.VS2013.dll</HintPath>
     </Reference>
     <Reference Include="Xceed.Wpf.DataGrid, Version=2.5.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -134,9 +134,15 @@
     <Compile Include="Modules\Core\MenuDefenitions.cs" />
     <Compile Include="Modules\Core\ToolBarDefenitions.cs" />
     <Compile Include="Modules\ElementsToolbox\ViewModels\ToolboxItemViewModel.cs" />
+    <Compile Include="Modules\ProcessDesigner\Commands\OpenStructureCommandDefenition.cs" />
+    <Compile Include="Modules\ProcessDesigner\Commands\OpenStructureCommandHandler.cs" />
     <Compile Include="Modules\ProcessDesigner\Commands\StopProcessCommandDefenition.cs" />
     <Compile Include="Modules\ProcessDesigner\Controls\ConnectionBezierLine.cs" />
     <Compile Include="Modules\ProcessDesigner\Util\BoolToVisibilityConverter.cs" />
+    <Compile Include="Modules\ProcessDesigner\ViewModels\StructureViewModel.cs" />
+    <Compile Include="Modules\ProcessDesigner\Views\StructureView.xaml.cs">
+      <DependentUpon>StructureView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Modules\ProjectExplorer\Commands\AllFilesHandler.cs" />
     <Compile Include="Modules\ProjectExplorer\Commands\OpenExactProjectListDefenition.cs" />
     <Compile Include="Modules\ProjectExplorer\Commands\OpenExactProjectListHandler.cs" />
@@ -175,6 +181,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Modules\ProcessDesigner\Views\GraphView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Modules\ProcessDesigner\Views\StructureView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

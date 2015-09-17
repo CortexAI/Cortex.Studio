@@ -1,17 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.IO;
 using Caliburn.Micro;
 using Cortex.Model;
 using Cortex.Model.Pins;
+using Cortex.Model.Serialization;
 
 namespace Cortex.Elements
 {
-    [Serializable]
-    class DisplayElement : PropertyChangedBase, IElement
+    class DisplayElement : PropertyChangedBase, IElement, IPersistable
     {
         public IEnumerable<IInputPin> Inputs { get { return _inputs; } }
 
         public IEnumerable<IOutputPin> Outputs { get { return _outputs; } }
+       
 
         private string _value;
         private readonly IInputPin[] _inputs;
@@ -48,6 +49,26 @@ namespace Cortex.Elements
             var o = ((DataInputPin) _inputs[1]).Value;
             Value = o != null ? o.ToString() : "null";
             ((FlowOutputPin)_outputs[0]).Call(flow);
+        }
+
+        public void Serialize(BinaryWriter writer)
+        {
+            writer.Write(Value);
+        }
+
+        public void Deserialize(BinaryReader reader)
+        {
+            Value = reader.ReadString();
+        }
+
+        public void Save(IPersisterWriter writer)
+        {
+            writer.Set("Value", Value);
+        }
+
+        public void Load(IPersisterReader reader)
+        {
+            reader.Get<string>("Value");
         }
     }
 }

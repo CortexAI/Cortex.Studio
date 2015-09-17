@@ -2,13 +2,13 @@
 
 namespace Cortex.Model.Pins
 {
-    [Serializable]
     public class FlowInputPin : IFlowInputPin
     {
         public string Name { get; private set; }
 
-        private readonly Action<Flow> _handler; 
+        private readonly Action<Flow> _handler;
 
+        private FlowInputPin() { }
         public FlowInputPin(string name, Action<Flow> handler)
         {
             Name = name;

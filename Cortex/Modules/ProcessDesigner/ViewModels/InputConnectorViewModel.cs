@@ -48,14 +48,12 @@ namespace Cortex.Modules.ProcessDesigner.ViewModels
         
         public void Attach(ConnectionViewModel connection)
         {
-            Pin.Attach(connection.From.Pin);
             _connections++;
             NotifyOfPropertyChange(() => IsConnected);
         }
 
         public void Detach(ConnectionViewModel connection)
         {
-            Pin.Detach(connection.From.Pin);
             _connections--;
             NotifyOfPropertyChange(() => IsConnected);
         }

@@ -2,11 +2,10 @@
 
 namespace Cortex.Model.Pins
 {
-    [Serializable]
     public class FlowOutputPin : IFlowOutputPin
     {
         public string Name { get; private set; }
-        
+
         public FlowOutputPin(string name)
         {
             Name = name;

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.Serialization;
 using System.Windows.Controls;
 using Caliburn.Micro;
 using Cortex.Elements;
@@ -10,19 +9,19 @@ using Cortex.Model.Pins;
 
 namespace Cortex.Modules.ProcessDesigner.ViewModels
 {
-    [Serializable]
-    public class ElementViewModel : PropertyChangedBase, ISerializable
+    public class ElementViewModel : PropertyChangedBase
     {
         private bool _isSelected;
         private readonly BindableCollection<InputConnectorViewModel> _inputConnectors = new BindableCollection<InputConnectorViewModel>();
         private readonly BindableCollection<OutputConnectorViewModel> _outputConnectors = new BindableCollection<OutputConnectorViewModel>();
         
         private readonly IElement _element;
+        private readonly ElementItemDefenition _itemDefenition;
+        private readonly UserControl _view;
+
         private double _x;
         private double _y;
-        private readonly UserControl _view;
-        private readonly ElementItemDefenition _itemDefenition;
-
+        
         public event EventHandler OutputChanged;
 
         public double X
@@ -91,25 +90,25 @@ namespace Cortex.Modules.ProcessDesigner.ViewModels
             get { return _outputConnectors; }
         }
         
-        public ElementViewModel(ElementItemDefenition itemDefenition)
+        public ElementViewModel(IContainer process, IElement element)
         {
-            _element = itemDefenition.CreateElement();
-            _itemDefenition = itemDefenition;
-            SetConnectors();
+            _element = element;
+            var defenitionType = process.GetMetaData<Type>(element, "Defenition");
+            _itemDefenition = IoC.GetAll<ElementItemDefenition>().FirstOrDefault(d => d.GetType() == defenitionType);
 
-            var defenitionWithView = itemDefenition as IViewProvider;
+            if(_itemDefenition == null)
+                throw new Exception("No defenition");
+
+            X = process.GetMetaData<double>(element, "X");
+            Y = process.GetMetaData<double>(element, "Y");
+            
+            var defenitionWithView = _itemDefenition as IViewProvider;
             if (defenitionWithView != null)
             {
                 _view = defenitionWithView.View;
                 _view.DataContext = _element;
             }
-        }
 
-        protected ElementViewModel(SerializationInfo info, StreamingContext context)
-        {
-            _element = (IElement)info.GetValue("Element", typeof(IElement));
-            _x = info.GetDouble("X");
-            _y = info.GetDouble("Y");
             SetConnectors();
         }
 
@@ -140,13 +139,6 @@ namespace Cortex.Modules.ProcessDesigner.ViewModels
         {
             var handler = OutputChanged;
             if (handler != null) handler(this, EventArgs.Empty);
-        }
-
-        public void GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-            info.AddValue("Element", _element);
-            info.AddValue("X", _x);
-            info.AddValue("Y", _y);
         }
     }
 }

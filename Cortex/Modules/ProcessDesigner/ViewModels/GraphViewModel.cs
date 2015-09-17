@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.ComponentModel.Composition;
-using System.IO;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using Caliburn.Micro;
-using Cortex.Model.Elements.Logic;
+using Cortex.Model;
 using Cortex.Model.Pins;
+using Cortex.Model.Serialization;
 using Cortex.Modules.ProcessDesigner.Commands;
 using Gemini.Framework;
 using Gemini.Framework.Commands;
@@ -25,15 +25,16 @@ namespace Cortex.Modules.ProcessDesigner.ViewModels
     {
         private readonly IInspectorTool _inspectorTool;
         private readonly ILog _log = LogManager.GetLog(typeof (GraphViewModel));
-        
+        private Executor _executor;
+        private IContainer _process;
         private readonly BindableCollection<ElementViewModel> _elements = new BindableCollection<ElementViewModel>();
+
         public IObservableCollection<ElementViewModel> Elements
         {
             get { return _elements; }
         }
         
         private readonly BindableCollection<ConnectionViewModel> _connections = new BindableCollection<ConnectionViewModel>();
-        private Thread _thread;
 
         public IObservableCollection<ConnectionViewModel> Connections
         {
@@ -49,17 +50,18 @@ namespace Cortex.Modules.ProcessDesigner.ViewModels
         {
             get
             {
-                if (_thread == null)
-                    return false;
-                return _thread.IsAlive;
+                return _executor != null && _executor.IsRunning;
             }
         }
+
+        public IContainer Process { get { return _process; } }
 
         public GraphViewModel()
         {
             _inspectorTool = IoC.Get<IInspectorTool>();
         }
-        
+       
+
         public ConnectionViewModel OnConnectionDragStarted(IConnectorViewModel sourceConnector, Point currentDragPoint)
         {
             if (!(sourceConnector is OutputConnectorViewModel))
@@ -90,7 +92,6 @@ namespace Cortex.Modules.ProcessDesigner.ViewModels
             // No target connector found or target is a source
             if (nearbyConnector == null || sourceConnector.Element == nearbyConnector.Element)
             {
-                newConnection.Remove();
                 Connections.Remove(newConnection);
                 _log.Warn("No target for connection was found or target is a source");
                 return;
@@ -99,7 +100,6 @@ namespace Cortex.Modules.ProcessDesigner.ViewModels
             // Connection already exist
             if (Connections.FirstOrDefault(c => c.From == sourceConnector && c.To == nearbyConnector) != null)
             {
-                newConnection.Remove();
                 Connections.Remove(newConnection);
                 _log.Warn("That connection already exists");
                 return;
@@ -113,17 +113,15 @@ namespace Cortex.Modules.ProcessDesigner.ViewModels
                     var connections = Connections.Where(c => c.To == nearbyConnector).ToList();
                     foreach (var connection in connections)
                     {
-                        connection.Remove();
                         Connections.Remove(connection);
                     }
                     _log.Warn("Target connector doesn't support multiple inputs. Removing other connectors");
                 }
-                newConnection.To = nearbyConnector;
+                newConnection.Attach(nearbyConnector, _process);
                 _log.Info("Connection created");
             }
             catch (Exception ex)
             {
-                newConnection.Remove();
                 Connections.Remove(newConnection);
                 _log.Error(ex);
             }
@@ -148,11 +146,9 @@ namespace Cortex.Modules.ProcessDesigner.ViewModels
 
             foreach (var connection in connections)
             {
-                connection.Remove();
-                Connections.Remove(connection);
+                _process.RemoveConnection(connection.Connection);
             }
-
-            Elements.Remove(element);
+            _process.RemoveElement(element.Element);
         }
 
         public void DeleteSelectedElements()
@@ -181,18 +177,7 @@ namespace Cortex.Modules.ProcessDesigner.ViewModels
 
         Task ICommandHandler<RunProcessCommandDefenition>.Run(Command command)
         {
-            var startElement = _elements.FirstOrDefault(e => e.Element is StartPoint);
-            if (startElement == null)
-                return TaskUtility.Completed;
-
-            var startPoint = startElement.Element as StartPoint;
-            if (startPoint != null)
-            {
-                _thread = new Thread(startPoint.Run);
-                _thread.Start();
-                _log.Info("Thread started");
-                NotifyOfPropertyChange(() => IsRunning);
-            }
+            _executor.Start();
             return TaskUtility.Completed;
         }
 
@@ -203,43 +188,87 @@ namespace Cortex.Modules.ProcessDesigner.ViewModels
 
         Task ICommandHandler<StopProcessCommandDefenition>.Run(Command command)
         {
-            if (IsRunning)
-            {
-                _log.Info("Interrupting running thread");
-                _thread.Interrupt();
-                NotifyOfPropertyChange(() => IsRunning);
-                return Task.Delay(2000).ContinueWith(delegate
-                {
-                    if (IsRunning)
-                    {
-                        _log.Info("Thread is still running. Aborting Thread");
-                        _thread.Abort();
-                        _thread = null;
-                    }
-                    NotifyOfPropertyChange(() => IsRunning);
-                });
-            }
-
+            _executor.Stop();
             return TaskUtility.Completed;
         }
 
         protected override Task DoNew()
         {
             _log.Info("Graph created: {0}", FileName);
+            _process = new Process();
+            _process.ConnectionAdded += ProcessOnConnectionAdded;
+            _process.ConnectionRemoved += ProcessOnConnectionRemoved;
+            _process.ElementAdded += ProcessOnElementAdded;
+            _process.ElementRemoved += ProcessOnElementRemoved;
             return TaskUtility.Completed;
+        }
+
+        private void ProcessOnElementRemoved(IContainer container, IElement element)
+        {
+            var vm = _elements.FirstOrDefault(e=>e.Element.Equals(element));
+            if(vm != null)
+                _elements.Remove(vm);
+        }
+
+        private void ProcessOnElementAdded(IContainer container, IElement element)
+        {
+            Elements.Add(new ElementViewModel(container, element));
+        }
+
+        private void ProcessOnConnectionRemoved(IContainer container, IConnection connection)
+        {
+            var vm = _connections.FirstOrDefault(e => e.Connection.Equals(connection));
+            if (vm != null)
+                _connections.Remove(vm);
+        }
+
+        private void ProcessOnConnectionAdded(IContainer container, IConnection connection)
+        {
+            var startElement = Elements.FirstOrDefault(e => e.Element.Equals(connection.StartElement));
+            var endElement = Elements.FirstOrDefault(e => e.Element.Equals(connection.EndElement));
+            var startConnector = startElement.OutputConnectors.FirstOrDefault(c => c.Pin.Equals(connection.StartPin));
+            var endConnector = endElement.InputConnectors.FirstOrDefault(c => c.Pin.Equals(connection.EndPin));
+            Connections.Add(new ConnectionViewModel(startConnector, endConnector, connection));
         }
 
         protected override Task DoLoad(string filePath)
         {
-            // TODO: DESEREALIZING;
+            _process = ContainerPersister.Deserialize<Process>(filePath);
+            _process.ConnectionAdded += ProcessOnConnectionAdded;
+            _process.ConnectionRemoved += ProcessOnConnectionRemoved;
+            _process.ElementAdded += ProcessOnElementAdded;
+            _process.ElementRemoved += ProcessOnElementRemoved;
+
+            foreach (var element in _process.Elements)
+            {
+                Elements.Add(new ElementViewModel(_process, element));
+            }
+
+            foreach (var connection in _process.Connections)
+            {
+                var startElement = Elements.FirstOrDefault(e => e.Element.Equals(connection.StartElement));
+                var endElement = Elements.FirstOrDefault(e => e.Element.Equals(connection.EndElement));
+                var startConnector = startElement.OutputConnectors.FirstOrDefault(c => c.Pin.Equals(connection.StartPin));
+                var endConnector = endElement.InputConnectors.FirstOrDefault(c => c.Pin.Equals(connection.EndPin));
+                Connections.Add(new ConnectionViewModel(startConnector, endConnector, connection));
+            }
+
             return TaskUtility.Completed;
         }
 
         protected override Task DoSave(string filePath)
         {
-            // TODO: SEREALIZING;
-            File.Create(filePath);
+            ContainerPersister.Serialize(_process, filePath);
             return TaskUtility.Completed;
+        }
+
+        public void CreateElement(ElementItemDefenition defenition, Point mousePosition)
+        {
+            var element = defenition.CreateElement();
+            _process.SetMetaData(element, "Defenition", defenition.GetType());
+            _process.SetMetaData(element, "X", mousePosition.X);
+            _process.SetMetaData(element, "Y", mousePosition.Y);
+            _process.AddElement(element);
         }
     }
 }

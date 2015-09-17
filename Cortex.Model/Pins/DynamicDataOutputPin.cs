@@ -2,7 +2,6 @@ using System;
 
 namespace Cortex.Model.Pins
 {
-    [Serializable]
     public class DynamicDataOutputPin : IDataOutputPin
     {
         private readonly Func<object> _func;

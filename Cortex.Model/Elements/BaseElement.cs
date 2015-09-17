@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using Cortex.Model.Pins;
+using Cortex.Model.Serialization;
 
 namespace Cortex.Model.Elements
 {
-    [Serializable]
-    public abstract class BaseElement : IElement
+    public abstract class BaseElement : IElement, IPersistable
     {
         public IEnumerable<IInputPin> Inputs { get { return _inputs; } }
         public IEnumerable<IOutputPin> Outputs { get { return _outputs; } }
@@ -38,5 +38,9 @@ namespace Cortex.Model.Elements
                 return (T) val;
             return (T)Convert.ChangeType(val, typeof(T));
         }
+
+        public virtual void Save(IPersisterWriter writer) { }
+
+        public virtual void Load(IPersisterReader reader) { }
     }
 }

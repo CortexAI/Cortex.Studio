@@ -2,9 +2,10 @@
 
 namespace Cortex.Model.Pins
 {
-    [Serializable]
     public class DataOutputPin : IDataOutputPin
     {
+        private DataOutputPin() { }
+
         public string Name { get; private set; }
 
         public object Value { get; set; }

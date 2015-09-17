@@ -1,72 +1,35 @@
 ﻿using System;
-using System.Runtime.Serialization;
 using System.Windows;
 using System.Windows.Media;
 using Caliburn.Micro;
+using Cortex.Model;
 
 namespace Cortex.Modules.ProcessDesigner.ViewModels
 {
-    [DataContract(IsReference = true)]
-    public class ConnectionViewModel : PropertyChangedBase, IDisposable
+    public class ConnectionViewModel : PropertyChangedBase
     {
         private OutputConnectorViewModel _from;
-        [DataMember]
         public OutputConnectorViewModel From
         {
             get { return _from; }
             private set
             {
-                if (_from != value)
-                {
-                    if (_from != null)
-                    {
-                        _from.Detach(this);
-                        _from.PositionChanged -= OnToPositionChanged;
-                    }
-                }
-
                 _from = value;
-
-                if (_from != null)
-                {
-                    _from.PositionChanged += OnFromPositionChanged;
-                    _from.Attach(this);
-                    FromPosition = value.Position;
-                }
-
                 NotifyOfPropertyChange(() => From);
             }
         }
 
         private InputConnectorViewModel _to;
-        [DataMember]
         public InputConnectorViewModel To
         {
             get { return _to; }
-            set
+            private set
             {
-                if (_to != value)
-                {
-                    if (_to != null)
-                    {
-                        _to.Detach(this);
-                        _to.PositionChanged -= OnToPositionChanged;
-                    }
-                }
-
                 _to = value;
-
-                if (_to != null)
-                {
-                    _to.PositionChanged += OnToPositionChanged;
-                    _to.Attach(this);
-                    ToPosition = _to.Position;
-                }
-
                 NotifyOfPropertyChange(() => To);
             }
         }
-
+        
 
         private Point _fromPosition;
         public Point FromPosition
@@ -78,8 +41,8 @@ namespace Cortex.Modules.ProcessDesigner.ViewModels
                 NotifyOfPropertyChange(() => FromPosition);
             }
         }
-
         
+
         private Point _toPosition;
         public Point ToPosition
         {
@@ -95,16 +58,53 @@ namespace Cortex.Modules.ProcessDesigner.ViewModels
         {
             get { return _from.Color; }
         }
+
+        public IConnection Connection { get; private set; }
         
-        public ConnectionViewModel(OutputConnectorViewModel from, InputConnectorViewModel to)
+        public ConnectionViewModel(OutputConnectorViewModel from, InputConnectorViewModel to, IConnection connection = null)
         {
             From = from;
+            From.PositionChanged += OnFromPositionChanged;
+
             To = to;
+            To.PositionChanged += OnToPositionChanged;
+
+            if(connection == null)
+                SetConnection();
+            else
+                Connection = connection;
+        }
+
+        private void SetConnection()
+        {
+            if (To == null || From == null)
+                Connection = null;
+            else
+                Connection = new Connection(From.Element.Element, From.Pin, To.Element.Element, To.Pin);
         }
 
         public ConnectionViewModel(OutputConnectorViewModel from)
         {
             From = from;
+            From.PositionChanged += OnFromPositionChanged;
+        }
+
+        public void Attach(InputConnectorViewModel to, IContainer process)
+        {
+            if (To != null)
+            {
+                To.Detach(this);
+                To.PositionChanged -= OnToPositionChanged;
+            }
+            To = to;
+            To.PositionChanged += OnToPositionChanged;
+            To.Attach(this);
+            if (Connection != null)
+                process.RemoveConnection(Connection);
+
+            SetConnection();
+            if(Connection != null)
+                process.AddConnection(Connection);
         }
 
         private void OnFromPositionChanged(object sender, EventArgs e)
@@ -115,17 +115,6 @@ namespace Cortex.Modules.ProcessDesigner.ViewModels
         private void OnToPositionChanged(object sender, EventArgs e)
         {
             ToPosition = ((IConnectorViewModel)sender).Position;
-        }
-
-        public void Remove()
-        {
-            To = null;
-            From = null;
-        }
-
-        public void Dispose()
-        {
-            Remove();
         }
     }
 }

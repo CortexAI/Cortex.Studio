@@ -1,5 +1,4 @@
-﻿using System;
-using System.Runtime.Serialization;
+﻿using System.Runtime.Serialization;
 using Caliburn.Micro;
 using Cortex.Model;
 using Cortex.Model.Elements;
@@ -7,10 +6,8 @@ using Cortex.Model.Pins;
 
 namespace Cortex.Elements
 {
-    [Serializable]
     class LogElement : BaseElement
     {
-        [NonSerialized]
         private ILog _log;
 
         public LogElement()
@@ -30,7 +27,6 @@ namespace Cortex.Elements
             ((FlowOutputPin)_outputs[0]).Call(flow);
         }
 
-        [OnDeserialized]
         void OnDeserialized(StreamingContext context)
         {
             _log = LogManager.GetLog(this.GetType());

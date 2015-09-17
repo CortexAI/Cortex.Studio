@@ -20,7 +20,6 @@ namespace Cortex.Model.Elements.Logic
 
         private void OnCall(Flow flow)
         {
-
             var count = GetInputData<int>(1);
             for (_index = 0; _index < count; _index++)
             {

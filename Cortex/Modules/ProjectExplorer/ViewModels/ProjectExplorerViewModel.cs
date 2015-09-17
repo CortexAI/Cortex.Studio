@@ -1,6 +1,5 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
-using System.Linq;
 using System.Windows.Input;
 using Caliburn.Micro;
 using Cortex.Modules.ProjectExplorer.Services;
