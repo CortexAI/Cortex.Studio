@@ -14,7 +14,17 @@ namespace Cortex.Modules.ProcessDesigner.ViewModels
             get { return _from; }
             private set
             {
+                if (_from != null)
+                {
+                    _from.Detach(this);
+                    _from.PositionChanged -= OnFromPositionChanged;
+                }
                 _from = value;
+                if (_from != null)
+                {
+                    _from.Attach(this);
+                    _from.PositionChanged += OnFromPositionChanged;
+                }
                 NotifyOfPropertyChange(() => From);
             }
         }
@@ -25,7 +35,17 @@ namespace Cortex.Modules.ProcessDesigner.ViewModels
             get { return _to; }
             private set
             {
+                if (_to != null)
+                {
+                    _to.Detach(this);
+                    _to.PositionChanged -= OnToPositionChanged;
+                }
                 _to = value;
+                if (_to != null)
+                {
+                    _to.Attach(this);
+                    _to.PositionChanged += OnToPositionChanged;
+                }
                 NotifyOfPropertyChange(() => To);
             }
         }
@@ -61,50 +81,27 @@ namespace Cortex.Modules.ProcessDesigner.ViewModels
 
         public IConnection Connection { get; private set; }
         
-        public ConnectionViewModel(OutputConnectorViewModel from, InputConnectorViewModel to, IConnection connection = null)
+        public ConnectionViewModel(OutputConnectorViewModel from, InputConnectorViewModel to, IConnection connection)
         {
             From = from;
-            From.PositionChanged += OnFromPositionChanged;
-
             To = to;
-            To.PositionChanged += OnToPositionChanged;
-
-            if(connection == null)
-                SetConnection();
-            else
-                Connection = connection;
-        }
-
-        private void SetConnection()
-        {
-            if (To == null || From == null)
-                Connection = null;
-            else
-                Connection = new Connection(From.Element.Element, From.Pin, To.Element.Element, To.Pin);
+            
+            Connection = connection;
         }
 
         public ConnectionViewModel(OutputConnectorViewModel from)
         {
             From = from;
-            From.PositionChanged += OnFromPositionChanged;
         }
 
-        public void Attach(InputConnectorViewModel to, IContainer process)
+        public void Attach(InputConnectorViewModel to)
         {
-            if (To != null)
-            {
-                To.Detach(this);
-                To.PositionChanged -= OnToPositionChanged;
-            }
             To = to;
-            To.PositionChanged += OnToPositionChanged;
-            To.Attach(this);
-            if (Connection != null)
-                process.RemoveConnection(Connection);
 
-            SetConnection();
-            if(Connection != null)
-                process.AddConnection(Connection);
+            if(Connection == null && To != null && From != null)
+                Connection = new Connection(From.Element.Element, From.Pin, To.Element.Element, To.Pin);
+            else
+                throw new Exception("Can't create connection");
         }
 
         private void OnFromPositionChanged(object sender, EventArgs e)
@@ -115,6 +112,12 @@ namespace Cortex.Modules.ProcessDesigner.ViewModels
         private void OnToPositionChanged(object sender, EventArgs e)
         {
             ToPosition = ((IConnectorViewModel)sender).Position;
+        }
+
+        public void Clear()
+        {
+            To = null;
+            From = null;
         }
     }
 }

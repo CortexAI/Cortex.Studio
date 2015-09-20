@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.Threading.Tasks;
@@ -60,7 +59,6 @@ namespace Cortex.Modules.ProcessDesigner.ViewModels
         {
             _inspectorTool = IoC.Get<IInspectorTool>();
         }
-       
 
         public ConnectionViewModel OnConnectionDragStarted(IConnectorViewModel sourceConnector, Point currentDragPoint)
         {
@@ -93,6 +91,7 @@ namespace Cortex.Modules.ProcessDesigner.ViewModels
             if (nearbyConnector == null || sourceConnector.Element == nearbyConnector.Element)
             {
                 Connections.Remove(newConnection);
+                newConnection.Clear();
                 _log.Warn("No target for connection was found or target is a source");
                 return;
             }
@@ -101,6 +100,7 @@ namespace Cortex.Modules.ProcessDesigner.ViewModels
             if (Connections.FirstOrDefault(c => c.From == sourceConnector && c.To == nearbyConnector) != null)
             {
                 Connections.Remove(newConnection);
+                newConnection.Clear();
                 _log.Warn("That connection already exists");
                 return;
             }
@@ -114,15 +114,19 @@ namespace Cortex.Modules.ProcessDesigner.ViewModels
                     foreach (var connection in connections)
                     {
                         Connections.Remove(connection);
+                        connection.Clear();
+                        _process.RemoveConnection(connection.Connection);
                     }
                     _log.Warn("Target connector doesn't support multiple inputs. Removing other connectors");
                 }
-                newConnection.Attach(nearbyConnector, _process);
+                newConnection.Attach(nearbyConnector);
+                _process.AddConnection(newConnection.Connection);
                 _log.Info("Connection created");
             }
             catch (Exception ex)
             {
                 Connections.Remove(newConnection);
+                newConnection.Clear();
                 _log.Error(ex);
             }
         }
@@ -147,8 +151,10 @@ namespace Cortex.Modules.ProcessDesigner.ViewModels
             foreach (var connection in connections)
             {
                 _process.RemoveConnection(connection.Connection);
+                Connections.Remove(connection);
             }
             _process.RemoveElement(element.Element);
+            Elements.Remove(element);
         }
 
         public void DeleteSelectedElements()
@@ -196,48 +202,13 @@ namespace Cortex.Modules.ProcessDesigner.ViewModels
         {
             _log.Info("Graph created: {0}", FileName);
             _process = new Process();
-            _process.ConnectionAdded += ProcessOnConnectionAdded;
-            _process.ConnectionRemoved += ProcessOnConnectionRemoved;
-            _process.ElementAdded += ProcessOnElementAdded;
-            _process.ElementRemoved += ProcessOnElementRemoved;
+            _executor = new Executor((Process)_process);
             return TaskUtility.Completed;
-        }
-
-        private void ProcessOnElementRemoved(IContainer container, IElement element)
-        {
-            var vm = _elements.FirstOrDefault(e=>e.Element.Equals(element));
-            if(vm != null)
-                _elements.Remove(vm);
-        }
-
-        private void ProcessOnElementAdded(IContainer container, IElement element)
-        {
-            Elements.Add(new ElementViewModel(container, element));
-        }
-
-        private void ProcessOnConnectionRemoved(IContainer container, IConnection connection)
-        {
-            var vm = _connections.FirstOrDefault(e => e.Connection.Equals(connection));
-            if (vm != null)
-                _connections.Remove(vm);
-        }
-
-        private void ProcessOnConnectionAdded(IContainer container, IConnection connection)
-        {
-            var startElement = Elements.FirstOrDefault(e => e.Element.Equals(connection.StartElement));
-            var endElement = Elements.FirstOrDefault(e => e.Element.Equals(connection.EndElement));
-            var startConnector = startElement.OutputConnectors.FirstOrDefault(c => c.Pin.Equals(connection.StartPin));
-            var endConnector = endElement.InputConnectors.FirstOrDefault(c => c.Pin.Equals(connection.EndPin));
-            Connections.Add(new ConnectionViewModel(startConnector, endConnector, connection));
         }
 
         protected override Task DoLoad(string filePath)
         {
             _process = ContainerPersister.Deserialize<Process>(filePath);
-            _process.ConnectionAdded += ProcessOnConnectionAdded;
-            _process.ConnectionRemoved += ProcessOnConnectionRemoved;
-            _process.ElementAdded += ProcessOnElementAdded;
-            _process.ElementRemoved += ProcessOnElementRemoved;
 
             foreach (var element in _process.Elements)
             {
@@ -253,11 +224,17 @@ namespace Cortex.Modules.ProcessDesigner.ViewModels
                 Connections.Add(new ConnectionViewModel(startConnector, endConnector, connection));
             }
 
+            _executor = new Executor((Process)_process);
             return TaskUtility.Completed;
         }
 
         protected override Task DoSave(string filePath)
         {
+            foreach (var elementViewModel in _elements)
+            {
+                _process.SetMetaData(elementViewModel.Element, "X", elementViewModel.X);
+                _process.SetMetaData(elementViewModel.Element, "Y", elementViewModel.Y);
+            }
             ContainerPersister.Serialize(_process, filePath);
             return TaskUtility.Completed;
         }
@@ -265,10 +242,11 @@ namespace Cortex.Modules.ProcessDesigner.ViewModels
         public void CreateElement(ElementItemDefenition defenition, Point mousePosition)
         {
             var element = defenition.CreateElement();
+            _process.AddElement(element);
             _process.SetMetaData(element, "Defenition", defenition.GetType());
             _process.SetMetaData(element, "X", mousePosition.X);
             _process.SetMetaData(element, "Y", mousePosition.Y);
-            _process.AddElement(element);
+            Elements.Add(new ElementViewModel(_process, element));
         }
     }
 }

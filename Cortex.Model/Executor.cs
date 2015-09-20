@@ -11,7 +11,15 @@ namespace Cortex.Model
         private readonly Process _process;
         private Thread _thread;
 
-        public bool IsRunning { get { return _thread.IsAlive; } }
+        public bool IsRunning
+        {
+            get
+            {
+                if (_thread == null)
+                    return false;
+                return _thread.IsAlive;
+            }
+        }
 
         public Executor(Process process)
         {

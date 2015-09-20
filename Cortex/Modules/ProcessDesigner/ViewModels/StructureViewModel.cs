@@ -42,8 +42,11 @@ namespace Cortex.Modules.ProcessDesigner.ViewModels
 
                 if (_selectedItem != null)
                 {
-                    MetaData =
-                        new ObservableCollection<KeyValuePair<string, object>>(Container.GetMetaData(SelectedItem));
+                    var metaData = Container.GetMetaData(SelectedItem);
+                    if (metaData != null)
+                    {
+                        MetaData = new ObservableCollection<KeyValuePair<string, object>>(metaData);
+                    }
                     NotifyOfPropertyChange(() => MetaData);
                 }
             }

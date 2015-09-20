@@ -115,6 +115,12 @@ namespace Cortex.Model
         {
             _elements = persister.Get<PersistableCollection<IElement>>("Elements");
             _connections = persister.Get<PersistableCollection<IConnection>>("Connections");
+
+            foreach (var connection in Connections)
+            {
+                connection.EndPin.Attach(connection.StartPin);
+            }
+
             var meta = persister.Get<PersistableDictionary<INode, PersistableDictionary<string, Object>>>("Metadata");
 
             foreach (var kvp in meta)

@@ -1,4 +1,6 @@
-﻿namespace Cortex.Model.Serialization
+﻿using System.Xml.Linq;
+
+namespace Cortex.Model.Serialization
 {
     public interface IPersistable
     {
