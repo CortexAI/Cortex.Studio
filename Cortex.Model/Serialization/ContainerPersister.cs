@@ -6,7 +6,7 @@
         {
             using (var persister = new PersisterWriter(fileName))
             {
-                persister.Set("Container", container);    
+                persister.Set("Container", container);
             }
         }
 

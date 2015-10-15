@@ -5,11 +5,8 @@ using Cortex.Model.Serialization;
 
 namespace Cortex.Model.Elements
 {
-    public abstract class BaseElement : IElement, IPersistable
+    public abstract class BaseElement : IElement
     {
-        public IEnumerable<IInputPin> Inputs { get { return _inputs; } }
-        public IEnumerable<IOutputPin> Outputs { get { return _outputs; } }
-
         protected readonly List<IInputPin> _inputs;
         protected readonly List<IOutputPin> _outputs;
 
@@ -17,6 +14,24 @@ namespace Cortex.Model.Elements
         {
             _inputs = new List<IInputPin>();
             _outputs = new List<IOutputPin>();
+        }
+
+        public IEnumerable<IInputPin> Inputs
+        {
+            get { return _inputs; }
+        }
+
+        public IEnumerable<IOutputPin> Outputs
+        {
+            get { return _outputs; }
+        }
+
+        public virtual void Save(IPersisterWriter writer)
+        {
+        }
+
+        public virtual void Load(IPersisterReader reader)
+        {
         }
 
         protected void AddInputPin(IInputPin pin)
@@ -31,16 +46,12 @@ namespace Cortex.Model.Elements
 
         protected T GetInputData<T>(int index)
         {
-            var val = ((IDataInputPin)_inputs[index]).Value;
+            object val = ((IDataInputPin) _inputs[index]).Value;
             if (val == null)
                 return default(T);
             if (val is T)
                 return (T) val;
-            return (T)Convert.ChangeType(val, typeof(T));
+            return (T) Convert.ChangeType(val, typeof (T));
         }
-
-        public virtual void Save(IPersisterWriter writer) { }
-
-        public virtual void Load(IPersisterReader reader) { }
     }
 }

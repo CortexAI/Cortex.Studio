@@ -11,10 +11,10 @@ namespace Cortex.Model.Elements.Logic
         public Repeat()
         {
             AddInputPin(new FlowInputPin(OnCall));
-            AddInputPin(new DataInputPin("Times", typeof(int)));
+            AddInputPin(new DataInputPin("Times", typeof (int)));
 
             AddOutputPin(new FlowOutputPin("Each"));
-            AddOutputPin(new DataOutputPin("Index", typeof(int)));
+            AddOutputPin(new DataOutputPin("Index", typeof (int)));
             AddOutputPin(new FlowOutputPin("Finished"));
         }
 
@@ -23,10 +23,10 @@ namespace Cortex.Model.Elements.Logic
             var count = GetInputData<int>(1);
             for (_index = 0; _index < count; _index++)
             {
-                ((DataOutputPin)_outputs[1]).Value = _index;
-                ((FlowOutputPin)_outputs[0]).Call(flow);   
+                ((DataOutputPin) _outputs[1]).Value = _index;
+                ((FlowOutputPin) _outputs[0]).Call(flow);
             }
-            ((FlowOutputPin)_outputs[2]).Call(flow);
+            ((FlowOutputPin) _outputs[2]).Call(flow);
         }
     }
 }

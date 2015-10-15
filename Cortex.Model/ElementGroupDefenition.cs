@@ -1,12 +1,7 @@
-﻿using System;
-
-namespace Cortex.Model
+﻿namespace Cortex.Model
 {
     public class ElementGroupDefenition
     {
-        public string Name { get; private set; }
-        public ElementGroupDefenition ParentGroup { get; private set; }
-
         public ElementGroupDefenition(string name)
         {
             Name = name;
@@ -17,5 +12,8 @@ namespace Cortex.Model
             Name = name;
             ParentGroup = parentGroup;
         }
+
+        public string Name { get; private set; }
+        public ElementGroupDefenition ParentGroup { get; private set; }
     }
 }

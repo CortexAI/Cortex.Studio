@@ -6,14 +6,24 @@ namespace Cortex.Model.Pins
     public class DataInputPin : IDataInputPin
     {
         private IDataOutputPin _connected;
-        
+
+        private DataInputPin()
+        {
+        }
+
+        public DataInputPin(string name, Type type)
+        {
+            Name = name;
+            Type = type;
+        }
+
         public string Name { get; private set; }
 
         public object Value
         {
             get
             {
-                if(_connected != null)
+                if (_connected != null)
                     return _connected.Value;
                 return null;
             }
@@ -24,7 +34,7 @@ namespace Cortex.Model.Pins
         public void Attach(IOutputPin pin)
         {
             var inPin = pin as IDataOutputPin;
-            if(inPin == null)
+            if (inPin == null)
                 throw new Exception("Pin is not a data pin");
 
             // If is not convertable to base type
@@ -37,14 +47,6 @@ namespace Cortex.Model.Pins
         public void Detach(IOutputPin pin)
         {
             _connected = null;
-        }
-
-        private DataInputPin() { }
-
-        public DataInputPin(string name, Type type)
-        {
-            Name = name;
-            Type = type;
         }
     }
 }

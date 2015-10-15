@@ -7,6 +7,21 @@ namespace Cortex.Model
 {
     public class Connection : IConnection
     {
+        public Connection(IElement startElement, IOutputPin startPin, IElement endElement, IInputPin endPin)
+        {
+            StartElement = startElement;
+            EndElement = endElement;
+
+            if (!startElement.Outputs.Contains(startPin) || !EndElement.Inputs.Contains(endPin))
+                throw new InvalidOperationException("Pins not from this elements");
+            StartPin = startPin;
+            EndPin = endPin;
+        }
+
+        public Connection()
+        {
+        }
+
         public IElement StartElement { get; private set; }
 
         public IElement EndElement { get; private set; }
@@ -14,22 +29,6 @@ namespace Cortex.Model
         public IOutputPin StartPin { get; private set; }
 
         public IInputPin EndPin { get; private set; }
-
-        public Connection(IElement startElement, IOutputPin startPin, IElement endElement, IInputPin endPin)
-        {
-            StartElement = startElement;
-            EndElement = endElement;
-
-            if (!startElement.Outputs.Contains(startPin) || !EndElement.Inputs.Contains(endPin))
-                throw new Exception("Pins not from this elements");
-            StartPin = startPin;
-            EndPin = endPin;
-        }
-
-        public Connection()
-        {
-            
-        }
 
         public void Save(IPersisterWriter persister)
         {

@@ -1,6 +1,6 @@
 ﻿namespace Cortex.Model.Pins
 {
-   public interface IPin
+    public interface IPin
     {
         string Name { get; }
     }

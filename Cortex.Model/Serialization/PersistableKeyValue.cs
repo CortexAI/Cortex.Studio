@@ -1,6 +1,6 @@
 namespace Cortex.Model.Serialization
 {
-    class PersistableKeyValue<TKey, TVal> : IPersistable
+    internal class PersistableKeyValue<TKey, TVal> : IPersistable
     {
         public TKey Key;
         public TVal Value;

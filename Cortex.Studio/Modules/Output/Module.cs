@@ -12,9 +12,6 @@ namespace Cortex.Studio.Modules.Output
     [Export(typeof(IModule))]
     class Module : ModuleBase
     {
-        [Import]
-        private OutputViewModel _outputViewModel;
-
         public override IEnumerable<Type> DefaultTools
         {
             get

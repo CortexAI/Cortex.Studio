@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using Cortex.Model.Pins;
-using Cortex.Model.Serialization;
 
 namespace Cortex.Model
 {

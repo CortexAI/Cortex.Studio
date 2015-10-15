@@ -5,24 +5,21 @@ namespace Cortex.Model.Elements.Types
 {
     public class NetTypeElement<T> : BaseElement
     {
+        public NetTypeElement()
+        {
+            AddOutputPin(new DataOutputPin("Value", typeof (T)));
+            Value = default(T);
+        }
+
         public T Value
         {
             get
             {
-                if (((IDataOutputPin)_outputs[0]).Value != null)
-                    return (T)((IDataOutputPin)_outputs[0]).Value;
+                if (((IDataOutputPin) _outputs[0]).Value != null)
+                    return (T) ((IDataOutputPin) _outputs[0]).Value;
                 return default(T);
             }
-            set
-            {
-                ((DataOutputPin)_outputs[0]).Value = value;
-            }
-        }
-
-        public NetTypeElement()
-        {
-            AddOutputPin(new DataOutputPin("Value", typeof(T)));
-            Value = default(T);
+            set { ((DataOutputPin) _outputs[0]).Value = value; }
         }
 
         public override void Save(IPersisterWriter writer)

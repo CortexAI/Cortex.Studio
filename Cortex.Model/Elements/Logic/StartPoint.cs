@@ -1,6 +1,5 @@
 using System;
 using System.Threading;
-using System.Threading.Tasks;
 using Cortex.Model.Pins;
 
 namespace Cortex.Model.Elements.Logic

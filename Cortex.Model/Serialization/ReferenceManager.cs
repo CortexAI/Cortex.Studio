@@ -2,10 +2,10 @@
 
 namespace Cortex.Model.Serialization
 {
-    class ReferenceManager
+    internal class ReferenceManager
     {
+        private readonly Dictionary<IPersistable, int> _cache;
         private int _lastId;
-        private Dictionary<IPersistable, int> _cache;
 
         public ReferenceManager()
         {
@@ -15,7 +15,7 @@ namespace Cortex.Model.Serialization
 
         public int Add(IPersistable obj)
         {
-            var id = _lastId++;
+            int id = _lastId++;
             _cache.Add(obj, id);
             return id;
         }

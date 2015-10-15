@@ -7,16 +7,21 @@ namespace Cortex.Model
 {
     public abstract class BaseContainer : IContainer
     {
+        private readonly Dictionary<INode, Dictionary<string, object>> _metaData =
+            new Dictionary<INode, Dictionary<string, object>>();
+
+        private List<IConnection> _connections = new List<IConnection>();
         private List<IElement> _elements = new List<IElement>();
-        private List<IConnection> _connections= new List<IConnection>();
-        private readonly Dictionary<INode, Dictionary<string, object>> _metaData = new Dictionary<INode, Dictionary<string, object>>();
 
         public IEnumerable<IElement> Elements
         {
-            get { return _elements; } 
+            get { return _elements; }
         }
 
-        public IEnumerable<IConnection> Connections { get { return _connections; } }
+        public IEnumerable<IConnection> Connections
+        {
+            get { return _connections; }
+        }
 
         public event Action<IContainer, IElement> ElementAdded;
         public event Action<IContainer, IElement> ElementRemoved;
@@ -25,58 +30,59 @@ namespace Cortex.Model
 
         public void AddElement(IElement element)
         {
-            if(_elements.Contains(element))
+            if (_elements.Contains(element))
                 throw new Exception("Duplicate element");
             _elements.Add(element);
 
-            var handler = ElementAdded;
+            Action<IContainer, IElement> handler = ElementAdded;
             if (handler != null)
                 handler(this, element);
         }
 
         public void RemoveElement(IElement element)
         {
-            var relatedConnections = _connections.Where(c => c.StartElement.Equals(element) || c.EndElement.Equals(element)).ToArray();
-            foreach (var connection in relatedConnections)
-                this.RemoveConnection(connection);
+            IConnection[] relatedConnections =
+                _connections.Where(c => c.StartElement.Equals(element) || c.EndElement.Equals(element)).ToArray();
+            foreach (IConnection connection in relatedConnections)
+                RemoveConnection(connection);
             _elements.Remove(element);
 
             if (_metaData.ContainsKey(element))
                 _metaData.Remove(element);
 
-            var handler = ElementRemoved;
+            Action<IContainer, IElement> handler = ElementRemoved;
             if (handler != null)
                 handler(this, element);
         }
 
         public void AddConnection(IConnection connection)
         {
-            if(!_elements.Contains(connection.StartElement) || !_elements.Contains(connection.EndElement))
+            if (!_elements.Contains(connection.StartElement) || !_elements.Contains(connection.EndElement))
                 throw new Exception("No such elements");
 
             connection.EndPin.Attach(connection.StartPin);
             _connections.Add(connection);
 
-            var handler = ConnectionAdded;
+            Action<IContainer, IConnection> handler = ConnectionAdded;
             if (handler != null)
                 handler(this, connection);
         }
 
         public void RemoveConnection(IConnection connection)
         {
-            if(_connections.Contains(connection))
+            if (_connections.Contains(connection))
                 connection.EndPin.Detach(connection.StartPin);
             _connections.Remove(connection);
 
-            var handler = ConnectionRemoved;
+            Action<IContainer, IConnection> handler = ConnectionRemoved;
             if (handler != null)
                 handler(this, connection);
         }
-        
+
 
         public T GetMetaData<T>(INode element, string key)
         {
-            return (T)_metaData[element][key];
+            return (T) _metaData[element][key];
         }
 
         public IDictionary<string, object> GetMetaData(INode element)
@@ -103,9 +109,9 @@ namespace Cortex.Model
             persister.Set("Connections", new PersistableCollection<IConnection>(Connections));
 
             var meta = new PersistableDictionary<INode, PersistableDictionary<string, Object>>();
-            foreach (var e in Elements)
+            foreach (IElement e in Elements)
             {
-                meta.Add(e,new PersistableDictionary<string, object>(GetMetaData(e)));
+                meta.Add(e, new PersistableDictionary<string, object>(GetMetaData(e)));
             }
 
             persister.Set("Metadata", new PersistableDictionary<INode, PersistableDictionary<string, Object>>(meta));
@@ -116,7 +122,7 @@ namespace Cortex.Model
             _elements = persister.Get<PersistableCollection<IElement>>("Elements");
             _connections = persister.Get<PersistableCollection<IConnection>>("Connections");
 
-            foreach (var connection in Connections)
+            foreach (IConnection connection in Connections)
             {
                 connection.EndPin.Attach(connection.StartPin);
             }
@@ -125,7 +131,7 @@ namespace Cortex.Model
 
             foreach (var kvp in meta)
             {
-                _metaData.Add(kvp.Key, kvp.Value);    
+                _metaData.Add(kvp.Key, kvp.Value);
             }
         }
     }

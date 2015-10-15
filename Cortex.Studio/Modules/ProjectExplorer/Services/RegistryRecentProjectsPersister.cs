@@ -67,15 +67,12 @@ namespace Cortex.Studio.Modules.ProjectExplorer.Services
 
         private static List<string> GetRecentProjects()
         {
-            return new List<string>(LoadFromRegistry());
-        }
-
-        private static string[] LoadFromRegistry()
-        {
             var key = OpenRegistryKey();
             var values = key.GetValue(KeyName) as string[];
             key.Close();
-            return values;
+            if(values != null)
+                return new List<string>(values);
+            return new List<string>();
         }
 
         private static void SaveToRegistry(string[] values)

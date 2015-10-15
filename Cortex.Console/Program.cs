@@ -1,6 +1,5 @@
 ﻿using System.Linq;
 using Cortex.Model;
-using Cortex.Model.Elements.Debug;
 using Cortex.Model.Elements.DebugElements;
 using Cortex.Model.Elements.Logic;
 using Cortex.Model.Elements.Types;

@@ -8,7 +8,7 @@ namespace Cortex.Model
     {
         IEnumerable<IElement> Elements { get; }
         IEnumerable<IConnection> Connections { get; }
-        
+
         event Action<IContainer, IElement> ElementAdded;
         event Action<IContainer, IElement> ElementRemoved;
         event Action<IContainer, IConnection> ConnectionAdded;

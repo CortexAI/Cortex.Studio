@@ -45,10 +45,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Attibutes\ElementAttribute.cs" />
-    <Compile Include="Attibutes\FlowInputAttribute.cs" />
-    <Compile Include="Attibutes\InputAttribute.cs" />
-    <Compile Include="Attibutes\OutputAttribute.cs" />
     <Compile Include="BaseContainer.cs" />
     <Compile Include="Connection.cs" />
     <Compile Include="ElementItemDefenition.cs" />

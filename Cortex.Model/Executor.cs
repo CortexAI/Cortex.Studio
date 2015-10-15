@@ -11,6 +11,11 @@ namespace Cortex.Model
         private readonly Process _process;
         private Thread _thread;
 
+        public Executor(Process process)
+        {
+            _process = process;
+        }
+
         public bool IsRunning
         {
             get
@@ -21,9 +26,9 @@ namespace Cortex.Model
             }
         }
 
-        public Executor(Process process)
+        public void Dispose()
         {
-            _process = process;
+            Stop();
         }
 
         public void Start()
@@ -49,11 +54,6 @@ namespace Cortex.Model
                     _thread = null;
                 }
             });
-        }
-
-        public void Dispose()
-        {
-            Stop();
         }
     }
 }

@@ -5,9 +5,9 @@ namespace Cortex.Model.Serialization
 {
     public class PersisterWriter : IPersisterWriter, IDisposable
     {
+        private readonly ReferenceManager _referenceManager;
         private readonly StreamWriter _writer;
         private int _section;
-        private readonly ReferenceManager _referenceManager;
 
         public PersisterWriter(string fileName)
         {
@@ -16,16 +16,10 @@ namespace Cortex.Model.Serialization
             _referenceManager = new ReferenceManager();
         }
 
-        private void Write(string val)
+        public void Dispose()
         {
-            for (var i = 0; i < _section; i++)
-                _writer.Write("\t");
-            _writer.WriteLine(val);
-        }
-
-        private void WriteVal(string key, string type, string val)
-        {
-            Write(string.Format("{0}<{1}>: {2}", key, type, val));
+            _writer.Close();
+            _writer.Dispose();
         }
 
         public void Set(string key, IPersistable value)
@@ -36,11 +30,11 @@ namespace Cortex.Model.Serialization
             }
             else
             {
-                var typeStr = value.GetType().ToString();
+                string typeStr = value.GetType().ToString();
                 if (!value.GetType().Assembly.Equals(GetType().Assembly))
                     typeStr = value.GetType().AssemblyQualifiedName;
 
-                var id = _referenceManager.Add(value);
+                int id = _referenceManager.Add(value);
                 WriteVal(key, "object:" + id, typeStr);
                 _section += 1;
                 value.Save(this);
@@ -73,30 +67,36 @@ namespace Cortex.Model.Serialization
             WriteVal(key, "type", value.AssemblyQualifiedName);
         }
 
-        public void Dispose()
-        {
-            _writer.Close();
-            _writer.Dispose();
-        }
-
         public void Set(string key, object value)
         {
             if (value is IPersistable)
                 Set(key, (IPersistable) value);
             else if (value is int)
-                Set(key, (int)value);
+                Set(key, (int) value);
             else if (value is string)
-                Set(key, (string)value);
+                Set(key, (string) value);
             else if (value is Type)
-                Set(key, (Type)value);
+                Set(key, (Type) value);
             else if (value is double)
-                Set(key, (double)value);
+                Set(key, (double) value);
             else if (value is bool)
-                Set(key, (bool)value);
+                Set(key, (bool) value);
             else
             {
                 throw new ArgumentException("Value has unsopported type");
             }
+        }
+
+        private void Write(string val)
+        {
+            for (int i = 0; i < _section; i++)
+                _writer.Write("\t");
+            _writer.WriteLine(val);
+        }
+
+        private void WriteVal(string key, string type, string val)
+        {
+            Write(string.Format("{0}<{1}>: {2}", key, type, val));
         }
     }
 }

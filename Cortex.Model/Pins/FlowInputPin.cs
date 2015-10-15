@@ -4,11 +4,12 @@ namespace Cortex.Model.Pins
 {
     public class FlowInputPin : IFlowInputPin
     {
-        public string Name { get; private set; }
-
         private readonly Action<Flow> _handler;
 
-        private FlowInputPin() { }
+        private FlowInputPin()
+        {
+        }
+
         public FlowInputPin(string name, Action<Flow> handler)
         {
             Name = name;
@@ -19,6 +20,8 @@ namespace Cortex.Model.Pins
             : this("Flow in", handler)
         {
         }
+
+        public string Name { get; private set; }
 
         public void Attach(IOutputPin pin)
         {

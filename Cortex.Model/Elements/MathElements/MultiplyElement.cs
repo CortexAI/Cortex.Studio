@@ -1,5 +1,4 @@
 using System;
-using System.ComponentModel.Composition;
 
 namespace Cortex.Model.Elements.MathElements
 {
@@ -8,7 +7,7 @@ namespace Cortex.Model.Elements.MathElements
     {
         public override double Calc(double a, double b)
         {
-            return a * b;
+            return a*b;
         }
     }
 }
