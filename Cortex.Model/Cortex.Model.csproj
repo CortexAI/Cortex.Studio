@@ -53,11 +53,11 @@
     <Compile Include="Connection.cs" />
     <Compile Include="ElementItemDefenition.cs" />
     <Compile Include="ElementGroupDefenition.cs" />
-    <Compile Include="Elements\Debug\ElementsDefenition.cs" />
+    <Compile Include="Elements\DebugElements\ElementsDefenition.cs" />
     <Compile Include="Elements\Logic\ElementsDefenition.cs" />
     <Compile Include="Elements\MathElements\MathElement.cs" />
     <Compile Include="Elements\MathElements\AdditionElement.cs" />
-    <Compile Include="Elements\Debug\DebugLog.cs" />
+    <Compile Include="Elements\DebugElements\DebugLog.cs" />
     <Compile Include="Elements\BaseElement.cs" />
     <Compile Include="Elements\MathElements\DivisionElement.cs" />
     <Compile Include="Elements\Logic\Repeat.cs" />
@@ -66,7 +66,7 @@
     <Compile Include="Elements\MathElements\ElementsDefenition.cs" />
     <Compile Include="Elements\MathElements\MultiplyElement.cs" />
     <Compile Include="Elements\Types\NetTypeElement.cs" />
-    <Compile Include="Elements\Debug\SleepElement.cs" />
+    <Compile Include="Elements\DebugElements\SleepElement.cs" />
     <Compile Include="Elements\MathElements\SubtractionElement.cs" />
     <Compile Include="Executor.cs" />
     <Compile Include="IConnection.cs" />

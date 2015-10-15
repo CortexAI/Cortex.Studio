@@ -1,0 +1,324 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{087C7ADD-3651-4BAA-9A46-B56C35149D3E}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Cortex.Studio</RootNamespace>
+    <AssemblyName>Cortex.Studio</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Caliburn.Micro, Version=2.0.2.0, Culture=neutral, PublicKeyToken=8e5891231f2ed21f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Caliburn.Micro.Core.2.0.2\lib\net45\Caliburn.Micro.dll</HintPath>
+    </Reference>
+    <Reference Include="Caliburn.Micro.Platform, Version=2.0.2.0, Culture=neutral, PublicKeyToken=8e5891231f2ed21f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Caliburn.Micro.2.0.2\lib\net45\Caliburn.Micro.Platform.dll</HintPath>
+    </Reference>
+    <Reference Include="Gemini, Version=1.0.6054.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\GeminiWpf.1.0.6054\lib\net45\Gemini.dll</HintPath>
+    </Reference>
+    <Reference Include="Gemini.Modules.GraphEditor, Version=1.0.6054.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Gemini.Modules.GraphEditor.1.0.6054\lib\net45\Gemini.Modules.GraphEditor.dll</HintPath>
+    </Reference>
+    <Reference Include="Gemini.Modules.Inspector, Version=0.6.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Gemini.Modules.Inspector.0.6.0-ci6046\lib\net45\Gemini.Modules.Inspector.dll</HintPath>
+    </Reference>
+    <Reference Include="MahApps.Metro, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f4fb5a3c4d1e5b4f, processorArchitecture=MSIL">
+      <HintPath>..\packages\MahApps.Metro.1.0.0.0\lib\net45\MahApps.Metro.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <HintPath>..\packages\NLog.4.0.1\lib\net45\NLog.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Runtime.Serialization.Formatters.Soap" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\MahApps.Metro.1.0.0.0\lib\net45\System.Windows.Interactivity.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="Xceed.Wpf.AvalonDock, Version=2.5.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Extended.Wpf.Toolkit.2.5\lib\net40\Xceed.Wpf.AvalonDock.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Wpf.AvalonDock.Themes.Aero, Version=2.5.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Extended.Wpf.Toolkit.2.5\lib\net40\Xceed.Wpf.AvalonDock.Themes.Aero.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Wpf.AvalonDock.Themes.Metro, Version=2.5.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Extended.Wpf.Toolkit.2.5\lib\net40\Xceed.Wpf.AvalonDock.Themes.Metro.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Wpf.AvalonDock.Themes.VS2010, Version=2.5.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Extended.Wpf.Toolkit.2.5\lib\net40\Xceed.Wpf.AvalonDock.Themes.VS2010.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Wpf.AvalonDock.Themes.VS2013, Version=2.0.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\GeminiWpf.1.0.6054\lib\net45\Xceed.Wpf.AvalonDock.Themes.VS2013.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Wpf.DataGrid, Version=2.5.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Extended.Wpf.Toolkit.2.5\lib\net40\Xceed.Wpf.DataGrid.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Wpf.Toolkit, Version=2.5.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Extended.Wpf.Toolkit.2.5\lib\net40\Xceed.Wpf.Toolkit.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Compile Include="Elements\ElementItemWithViewDefenition.cs" />
+    <Compile Include="Elements\IViewProvider.cs" />
+    <Compile Include="Elements\DisplayElement.cs" />
+    <Compile Include="Elements\DisplayElementView.xaml.cs">
+      <DependentUpon>DisplayElementView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\Core\Commands\SaveAllCommandDefenition.cs" />
+    <Compile Include="Modules\Core\Commands\SaveAllCommandHandler.cs" />
+    <Compile Include="Modules\Core\MenuDefenitions.cs" />
+    <Compile Include="Modules\Core\ToolBarDefenitions.cs" />
+    <Compile Include="Modules\ElementsToolbox\ViewModels\ToolboxItemViewModel.cs" />
+    <Compile Include="Modules\ProcessDesigner\Commands\OpenStructureCommandDefenition.cs" />
+    <Compile Include="Modules\ProcessDesigner\Commands\OpenStructureCommandHandler.cs" />
+    <Compile Include="Modules\ProcessDesigner\Commands\StopProcessCommandDefenition.cs" />
+    <Compile Include="Modules\ProcessDesigner\Controls\ConnectionBezierLine.cs" />
+    <Compile Include="Modules\ProcessDesigner\Util\BoolToVisibilityConverter.cs" />
+    <Compile Include="Modules\ProcessDesigner\ViewModels\StructureViewModel.cs" />
+    <Compile Include="Modules\ProcessDesigner\Views\StructureView.xaml.cs">
+      <DependentUpon>StructureView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\ProjectExplorer\Commands\AllFilesHandler.cs" />
+    <Compile Include="Modules\ProjectExplorer\Commands\OpenExactProjectListDefenition.cs" />
+    <Compile Include="Modules\ProjectExplorer\Commands\OpenExactProjectListHandler.cs" />
+    <Compile Include="Modules\ProjectExplorer\Commands\AllFilesDefenition.cs" />
+    <Compile Include="Modules\ProjectExplorer\Commands\RefreshDefenition.cs" />
+    <Compile Include="Modules\ProjectExplorer\Commands\RefreshHandler.cs" />
+    <Compile Include="Modules\ProjectExplorer\Controls\FileItem.xaml.cs">
+      <DependentUpon>FileItem.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\ProjectExplorer\Services\IProjectService.cs" />
+    <Compile Include="Modules\ProjectExplorer\Services\IRecentProjectsPersister.cs" />
+    <Compile Include="Modules\ProjectExplorer\Services\RegistryRecentProjectsPersister.cs" />
+    <Compile Include="Modules\ProjectExplorer\ToolBarDefenitions.cs" />
+    <Compile Include="Modules\ProjectExplorer\Util\EditorProviderSelector.cs" />
+    <Compile Include="Modules\ProjectExplorer\Util\FileIcons.cs" />
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Elements\ElementsDefenition.cs" />
+    <Compile Include="Elements\LogElement.cs" />
+    <Page Include="Elements\DisplayElementView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Modules\ElementsToolbox\Views\ElementsToolboxView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Modules\Output\Views\OutputView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Modules\ProcessDesigner\Resources\Styles.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Modules\ProcessDesigner\Views\GraphView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Modules\ProcessDesigner\Views\StructureView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Modules\ProjectExplorer\Controls\FileItem.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Modules\ProjectExplorer\Views\ProjectExplorerView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Modules\ElementsToolbox\Commands\OpenGraphCommandDefinition.cs" />
+    <Compile Include="Modules\ElementsToolbox\Commands\OpenGraphCommandHandler.cs" />
+    <Compile Include="Modules\ElementsToolbox\MenuDefenitions.cs" />
+    <Compile Include="Modules\ElementsToolbox\ViewModels\CategoryViewModel.cs" />
+    <Compile Include="Modules\ElementsToolbox\ViewModels\ElementsToolboxViewModel.cs" />
+    <Compile Include="Modules\ElementsToolbox\ViewModels\ElementItemViewModel.cs" />
+    <Compile Include="Modules\ElementsToolbox\Views\ElementsToolboxView.xaml.cs">
+      <DependentUpon>ElementsToolboxView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\Output\Commands\OpenOutputDefenition.cs" />
+    <Compile Include="Modules\Output\Commands\OpenOutputHandler.cs" />
+    <Compile Include="Modules\Output\MenuDefenitions.cs" />
+    <Compile Include="Modules\Output\Module.cs" />
+    <Compile Include="Modules\Output\NLogLogger.cs" />
+    <Compile Include="Modules\Output\ShoutingTarget.cs" />
+    <Compile Include="Modules\Output\ViewModels\OutputViewModel.cs" />
+    <Compile Include="Modules\Output\Views\OutputView.xaml.cs">
+      <DependentUpon>OutputView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\ProcessDesigner\Commands\RunProcessCommandDefenition.cs" />
+    <Compile Include="Modules\ProcessDesigner\Design\DesignTimeGraphViewModel.cs" />
+    <Compile Include="Modules\ProcessDesigner\EditorProvider.cs" />
+    <Compile Include="Modules\ProcessDesigner\MenuDefenitions.cs" />
+    <Compile Include="Modules\ProcessDesigner\ToolbarDefenitions.cs" />
+    <Compile Include="Modules\ProcessDesigner\Util\TypeToColorConverter.cs" />
+    <Compile Include="Modules\ProcessDesigner\ViewModels\ConnectionViewModel.cs" />
+    <Compile Include="Modules\ProcessDesigner\ViewModels\ConnectorDirection.cs" />
+    <Compile Include="Modules\ProcessDesigner\ViewModels\IConnectorViewModel.cs" />
+    <Compile Include="Modules\ProcessDesigner\ViewModels\ElementViewModel.cs" />
+    <Compile Include="Modules\ProcessDesigner\ViewModels\GraphViewModel.cs" />
+    <Compile Include="Modules\ProcessDesigner\ViewModels\InputConnectorViewModel.cs" />
+    <Compile Include="Modules\ProcessDesigner\ViewModels\OutputConnectorViewModel.cs" />
+    <Compile Include="Modules\ProcessDesigner\Views\GraphView.xaml.cs">
+      <DependentUpon>GraphView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\ProjectExplorer\Commands\OpenProjectDefenition.cs" />
+    <Compile Include="Modules\ProjectExplorer\Services\ProjectService.cs" />
+    <Compile Include="Modules\ProjectExplorer\Commands\OpenProjectExplorerDefinition.cs" />
+    <Compile Include="Modules\ProjectExplorer\Commands\OpenProjectExplorerHandler.cs" />
+    <Compile Include="Modules\ProjectExplorer\Design\DesignTimeProjectExplorerViewModel.cs" />
+    <Compile Include="Modules\ProjectExplorer\MenuDefenitions.cs" />
+    <Compile Include="Modules\ProjectExplorer\ViewModels\FileItemViewModel.cs" />
+    <Compile Include="Modules\ProjectExplorer\ViewModels\FolderItemViewModel.cs" />
+    <Compile Include="Modules\ProjectExplorer\ViewModels\ProjectExplorerViewModel.cs" />
+    <Compile Include="Modules\ProjectExplorer\ViewModels\TreeViewItemBase.cs" />
+    <Compile Include="Modules\ProjectExplorer\Views\ProjectExplorerView.xaml.cs">
+      <DependentUpon>ProjectExplorerView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\Core\Module.cs" />
+    <Compile Include="Properties\Annotations.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Resource Include="Resources\ShowAllFiles_349.png" />
+    <Resource Include="Resources\refresh_16xLG.png" />
+    <Resource Include="Resources\Symbols_Stop_16xLG.png" />
+    <Resource Include="Resources\Saveall_6518.png" />
+    <Resource Include="Resources\save_16xLG.png" />
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <Content Include="NLog.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <None Include="NLog.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\action_create_16xLG.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Modules\ProcessDesigner\Resources\action_add_16xLG.png" />
+    <Resource Include="Modules\ProcessDesigner\Resources\active_x_16xLG.png" />
+    <Resource Include="Modules\ProcessDesigner\Resources\color_swatch.png" />
+    <Resource Include="Modules\ProcessDesigner\Resources\image.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Cortex.Model\Cortex.Model.csproj">
+      <Project>{841972A7-8B8F-4F21-B05C-1D8E21A64021}</Project>
+      <Name>Cortex.Model</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\arrow_run_16xLG.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\folder_Closed_16xLG.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\folder_Open_16xLG.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\document_16xLG.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

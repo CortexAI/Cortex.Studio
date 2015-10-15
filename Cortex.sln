@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.21005.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cortex", "Cortex\Cortex.csproj", "{087C7ADD-3651-4BAA-9A46-B56C35149D3E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cortex.Studio", "Cortex.Studio\Cortex.Studio.csproj", "{087C7ADD-3651-4BAA-9A46-B56C35149D3E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cortex.Model", "Cortex.Model\Cortex.Model.csproj", "{841972A7-8B8F-4F21-B05C-1D8E21A64021}"
 EndProject

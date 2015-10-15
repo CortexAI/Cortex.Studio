@@ -1,0 +1,21 @@
+﻿<UserControl x:Class="Cortex.Studio.Modules.ProjectExplorer.Controls.EditableTextBlock"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:util="clr-namespace:Cortex.Studio.Modules.ProcessDesigner.Util"
+             mc:Ignorable="d" 
+             d:DesignHeight="20" d:DesignWidth="200">
+    <UserControl.Resources>
+        <util:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+    </UserControl.Resources>
+    <Grid>
+        <StackPanel Orientation="Horizontal">
+            <Image Source="/Resources/folder_Closed_16xLG.png" Width="16" Height="16" />
+            <Canvas>
+                <TextBox Canvas.ZIndex="2" Visibility="{Binding IsEditing, Converter={StaticResource BoolToVisibilityConverter}, FallbackValue=Hidden}" Text="{Binding Path=Text, ElementName=Caption}" />
+                <TextBlock Canvas.ZIndex="1" x:Name="Caption" Text="sampleFolder" Margin="4 2 0 2">sampleFolder</TextBlock>
+            </Canvas>
+        </StackPanel>
+    </Grid>
+</UserControl>
