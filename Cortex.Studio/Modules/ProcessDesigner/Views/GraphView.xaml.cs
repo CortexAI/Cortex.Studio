@@ -50,7 +50,8 @@ namespace Cortex.Studio.Modules.ProcessDesigner.Views
         {
             Mouse.OverrideCursor = null;
             GraphControl.ReleaseMouseCapture();
-            e.Handled = true;
+            //e.Handled = true;
+            base.OnMouseRightButtonDown(e);
         }
 
         private void OnGraphControlMouseMove(object sender, MouseEventArgs e)

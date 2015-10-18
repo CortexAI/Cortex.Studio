@@ -13,7 +13,15 @@ namespace Cortex.Studio.Elements
             new ElementItemDefenition<LogElement>(EditorElements, "Log to console", null, "Logs any data to console");
 
         [Export]
-        public static ElementItemDefenition UIElement =
-            new ElementItemWithViewDefenition<DisplayElement,DisplayElementView>(EditorElements, "Display", null, "Just to show");
+        public static ElementItemDefenition UIElement = 
+            new ElementItemDefenition<DisplayElement>(EditorElements, "Display", null, "Just to show");
+
+        [Export]
+        public static ElementEditorDefenition DisplayElementEditor =
+            new ElementEditor<DisplayElement, DisplayElementViewModel, DisplayElementView>(true);
+
+        [Export]
+        public static ElementEditorDefenition LogElementEditor =
+            new ElementEditor<LogElement, LogElementViewModel, LogElementView>();
     }
 }

@@ -4,6 +4,6 @@ namespace Cortex.Studio.Elements
 {
     interface IViewProvider
     {
-        UserControl View { get; }
+        UserControl CreateView();
     }
 }

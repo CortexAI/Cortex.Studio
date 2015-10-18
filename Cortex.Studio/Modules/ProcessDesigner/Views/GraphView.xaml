@@ -8,6 +8,8 @@
              xmlns:cal="http://www.caliburnproject.org"
              xmlns:util="clr-namespace:Cortex.Studio.Modules.ProcessDesigner.Util"
              xmlns:controls="clr-namespace:Cortex.Studio.Modules.ProcessDesigner.Controls"
+             xmlns:design="clr-namespace:Cortex.Studio.Modules.ProcessDesigner.Design"
+             xmlns:viewModels="clr-namespace:Cortex.Studio.Modules.ProcessDesigner.ViewModels"
              mc:Ignorable="d" 
              d:DesignHeight="500" d:DesignWidth="700"
 			 d:DataContext="{d:DesignInstance design:DesignTimeGraphViewModel, IsDesignTimeCreatable=True}"
@@ -42,7 +44,7 @@
                     </local:GraphControl.ElementItemContainerStyle>
 
                     <local:GraphControl.ElementItemTemplate>
-                        <DataTemplate DataType="vm:ElementViewModel">
+                        <DataTemplate DataType="viewModels:ElementViewModel">
                             <DataTemplate.Resources>
                                 <Style TargetType="local:ConnectorItem">
                                     <Setter Property="Position" Value="{Binding Position, Mode=OneWayToSource}" />
@@ -66,11 +68,17 @@
                                     <Border.Effect>
                                         <DropShadowEffect Color="SlateGray" ShadowDepth="0" BlurRadius="20" />
                                     </Border.Effect>
-                                    <StackPanel Orientation="Vertical">
+                                    <StackPanel Orientation="Vertical" cal:Message.Attach="[Event MouseLeftButtonDown] = [Action MouseDown($eventArgs)]">
                                         <Border Background="LightSkyBlue" Padding="5 2 2 2" BorderBrush="DodgerBlue" BorderThickness="0 0 0 1" CornerRadius="2 2 0 0">
                                             <StackPanel Orientation="Horizontal">
                                                 <Image Source="{Binding IconUri}" Margin="0 0 3 0"></Image>
-                                                <TextBlock HorizontalAlignment="Stretch" Text="{Binding Name}" />
+                                                <TextBlock HorizontalAlignment="Stretch" Text="{Binding Name}">
+                                                    <TextBlock.ContextMenu>
+                                                        <ContextMenu>
+                                                            <MenuItem Header="Open Editor" cal:Message.Attach="OpenEditor()" />
+                                                        </ContextMenu>
+                                                    </TextBlock.ContextMenu>
+                                                </TextBlock>
                                             </StackPanel>
                                         </Border>
                                         <Border>
@@ -84,7 +92,6 @@
                                                     <ColumnDefinition Width="1" />
                                                     <ColumnDefinition Width="Auto"  MinWidth="50" />
                                                 </Grid.ColumnDefinitions>
-                                                <!-- <ContentControl Grid.Row="0" Grid.ColumnSpan="3" cal:View.Model="{Binding Element}"></ContentControl> /-->
                                                 <ContentControl Grid.Row="0" Grid.ColumnSpan="3" Content="{Binding View}"/>
                                                 <ItemsControl  Grid.Row="1" Grid.Column="0" ItemsSource="{Binding InputConnectors}" VerticalAlignment="Top" Margin="2">
                                                     <ItemsControl.ItemTemplate>

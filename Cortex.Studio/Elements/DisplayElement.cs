@@ -1,35 +1,22 @@
 ﻿using System.Collections.Generic;
 using System.IO;
-using Caliburn.Micro;
 using Cortex.Model;
 using Cortex.Model.Pins;
 using Cortex.Model.Serialization;
 
 namespace Cortex.Studio.Elements
 {
-    class DisplayElement : PropertyChangedBase, IElement, IPersistable
+    class DisplayElement : IElement
     {
         public IEnumerable<IInputPin> Inputs { get { return _inputs; } }
 
         public IEnumerable<IOutputPin> Outputs { get { return _outputs; } }
-       
 
-        private string _value;
+
         private readonly IInputPin[] _inputs;
         private readonly IOutputPin[] _outputs;
 
-        public string Value
-        {
-            get
-            {
-                return _value;
-            }
-            private set
-            {
-                _value = value;
-                NotifyOfPropertyChange(() => Value);
-            }
-        }
+        public string Value { get; private set; }
 
         public DisplayElement()
         {

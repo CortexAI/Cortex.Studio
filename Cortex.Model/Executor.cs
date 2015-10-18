@@ -36,7 +36,7 @@ namespace Cortex.Model
             var startPoint = _process.Elements.FirstOrDefault(e => e is StartPoint) as StartPoint;
             if (startPoint != null)
             {
-                _thread = new Thread(startPoint.Run);
+                _thread = new Thread(startPoint.Run) {Priority = ThreadPriority.AboveNormal, IsBackground = true };
                 _thread.Start();
             }
         }

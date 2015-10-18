@@ -20,7 +20,7 @@ namespace Cortex.Studio.Modules.Output.Commands
 
         public override Task Run(Command command)
         {
-            _shell.ShowTool<OutputViewModel>();
+            _shell.ShowTool<OutputViewModel>(); 
             return TaskUtility.Completed;
         }
     }

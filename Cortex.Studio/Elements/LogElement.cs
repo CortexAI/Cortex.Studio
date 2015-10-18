@@ -21,9 +21,10 @@ namespace Cortex.Studio.Elements
         private void Action(Flow flow)
         {
             var val = ((DataInputPin)_inputs[1]).Value;
-            
+
             if (val != null && _log != null)
                 _log.Info("Output: " + val);
+
             ((FlowOutputPin)_outputs[0]).Call(flow);
         }
 

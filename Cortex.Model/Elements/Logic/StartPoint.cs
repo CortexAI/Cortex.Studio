@@ -4,7 +4,6 @@ using Cortex.Model.Pins;
 
 namespace Cortex.Model.Elements.Logic
 {
-    [Serializable]
     public class StartPoint : BaseElement
     {
         public StartPoint()

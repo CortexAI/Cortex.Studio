@@ -3,6 +3,7 @@ using System.Windows;
 using System.Windows.Media;
 using Caliburn.Micro;
 using Cortex.Model;
+using Cortex.Model.Pins;
 
 namespace Cortex.Studio.Modules.ProcessDesigner.ViewModels
 {

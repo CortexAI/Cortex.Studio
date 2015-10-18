@@ -1,15 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Controls;
+using System.Windows.Input;
 using Caliburn.Micro;
 using Cortex.Model;
 using Cortex.Model.Pins;
 using Cortex.Studio.Elements;
+using Cortex.Studio.Modules.ProcessDesigner.Commands;
+using Gemini.Framework.Commands;
+using Gemini.Framework.Services;
+using Gemini.Framework.Threading;
 
 namespace Cortex.Studio.Modules.ProcessDesigner.ViewModels
 {
-    public class ElementViewModel : PropertyChangedBase
+    public class ElementViewModel : PropertyChangedBase, ICommandHandler<OpenEditorCommandDefenition>
     {
         private bool _isSelected;
         private readonly BindableCollection<InputConnectorViewModel> _inputConnectors = new BindableCollection<InputConnectorViewModel>();
@@ -17,11 +23,13 @@ namespace Cortex.Studio.Modules.ProcessDesigner.ViewModels
         
         private readonly IElement _element;
         private readonly ElementItemDefenition _itemDefenition;
-        private readonly UserControl _view;
+        private readonly IEnumerable<ElementEditorDefenition> _editors;
 
         private double _x;
         private double _y;
-        
+        private EditorWrapperViewModel _attachedEditorWrapper;
+
+
         public event EventHandler OutputChanged;
 
         public double X
@@ -60,10 +68,7 @@ namespace Cortex.Studio.Modules.ProcessDesigner.ViewModels
             }
         }
 
-        public UserControl View
-        {
-            get { return _view; }
-        }
+        public UserControl View { get; private set; }
 
         public IElement Element
         {
@@ -95,18 +100,21 @@ namespace Cortex.Studio.Modules.ProcessDesigner.ViewModels
             _element = element;
             var defenitionType = process.GetMetaData<Type>(element, "Defenition");
             _itemDefenition = IoC.GetAll<ElementItemDefenition>().FirstOrDefault(d => d.GetType() == defenitionType);
+            _editors = IoC.GetAll<ElementEditorDefenition>().Where(e => e.ElementType == _element.GetType());
 
             if(_itemDefenition == null)
                 throw new Exception("No defenition");
 
             X = process.GetMetaData<double>(element, "X");
             Y = process.GetMetaData<double>(element, "Y");
-            
-            var defenitionWithView = _itemDefenition as IViewProvider;
-            if (defenitionWithView != null)
+
+
+            var embeddedEditor = _editors.FirstOrDefault(e => e.Embed);
+            if (embeddedEditor != null)
             {
-                _view = defenitionWithView.View;
-                _view.DataContext = _element;
+                var embeddedView = embeddedEditor.CreateView();
+                ViewModelBinder.Bind(embeddedEditor.CreateViewModel(Element), embeddedView, null);
+                this.View = embeddedView;
             }
 
             SetConnectors();
@@ -139,6 +147,36 @@ namespace Cortex.Studio.Modules.ProcessDesigner.ViewModels
         {
             var handler = OutputChanged;
             if (handler != null) handler(this, EventArgs.Empty);
+        }
+
+        public void Update(Command command)
+        {
+            
+        }
+
+        public Task Run(Command command)
+        {
+            OpenEditor();
+            return TaskUtility.Completed;
+        }
+
+        public void OpenEditor()
+        {
+            if (_editors != null && _editors.Any())
+            {
+                if (_attachedEditorWrapper == null)
+                {
+                    var editor = _editors.First();
+                    _attachedEditorWrapper = new EditorWrapperViewModel(_itemDefenition, editor.CreateViewModel(this.Element), editor.CreateView());
+                }
+                IoC.Get<IShell>().OpenDocument(_attachedEditorWrapper);
+            }
+        }
+
+        public void MouseDown(MouseButtonEventArgs args)
+        {
+            if(args.ClickCount >= 2)
+                OpenEditor();
         }
     }
 }
