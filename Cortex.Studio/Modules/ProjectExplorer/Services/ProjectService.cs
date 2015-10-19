@@ -13,13 +13,14 @@ namespace Cortex.Studio.Modules.ProjectExplorer.Services
     [Export(typeof(IProjectService))]
     class ProjectService : IProjectService
     {
-        [Import]
-        private ProjectExplorerViewModel _vm;
         
+        private readonly ProjectExplorerViewModel _vm;
         private const string DefaultFolderName = "Cortex Projects";
 
-        public ProjectService()
+        [ImportingConstructor]
+        public ProjectService(ProjectExplorerViewModel vm)
         {
+            _vm = vm;
             Persister = new RegistryRecentProjectsPersister
             {
                 MaxProjects = 5

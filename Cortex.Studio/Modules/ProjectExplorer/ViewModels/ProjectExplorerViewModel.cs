@@ -33,9 +33,6 @@ namespace Cortex.Studio.Modules.ProjectExplorer.ViewModels
         private readonly IShell _shell;
         private readonly IEditorProviderSelector _editorProviderSelector;
 
-        [Import]
-        private IProjectService _service;
-
         public FolderItemViewModel Root
         {
             get { return _root; }
