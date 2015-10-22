@@ -10,7 +10,7 @@ namespace Cortex.Model.Pins
         }
 
         public FlowOutputPin()
-            : this("Flow out")
+            : this("Out")
         {
         }
 

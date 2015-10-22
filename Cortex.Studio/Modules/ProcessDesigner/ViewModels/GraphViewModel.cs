@@ -25,7 +25,7 @@ namespace Cortex.Studio.Modules.ProcessDesigner.ViewModels
         private readonly IInspectorTool _inspectorTool;
         private readonly ILog _log = LogManager.GetLog(typeof (GraphViewModel));
         private Executor _executor;
-        private IContainer _process;
+        protected IContainer _process;
         private readonly BindableCollection<ElementViewModel> _elements = new BindableCollection<ElementViewModel>();
 
         public IObservableCollection<ElementViewModel> Elements

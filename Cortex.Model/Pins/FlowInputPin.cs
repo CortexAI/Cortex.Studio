@@ -17,7 +17,7 @@ namespace Cortex.Model.Pins
         }
 
         public FlowInputPin(Action<Flow> handler)
-            : this("Flow in", handler)
+            : this("In", handler)
         {
         }
 

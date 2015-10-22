@@ -123,18 +123,24 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Elements\DisplayElementViewModel.cs" />
-    <Compile Include="Elements\EditorView.cs" />
+    <Compile Include="Elements\BitmapViewer\BitmapViewer.cs" />
+    <Compile Include="Elements\BitmapViewer\BitmapViewerView.xaml.cs">
+      <DependentUpon>BitmapViewerView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Elements\BitmapViewer\BitmapViewerViewModel.cs" />
+    <Compile Include="Elements\Display\DisplayElementViewModel.cs" />
+    <Compile Include="Elements\EditorViewModel.cs" />
     <Compile Include="Elements\ElementEditorDefenition.cs" />
     <Compile Include="Elements\IViewProvider.cs" />
-    <Compile Include="Elements\DisplayElement.cs" />
-    <Compile Include="Elements\DisplayElementView.xaml.cs">
+    <Compile Include="Elements\Display\DisplayElement.cs" />
+    <Compile Include="Elements\Display\DisplayElementView.xaml.cs">
       <DependentUpon>DisplayElementView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Elements\LogElementView.xaml.cs">
+    <Compile Include="Elements\LogElement\LogElementView.xaml.cs">
       <DependentUpon>LogElementView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Elements\LogElementViewModel.cs" />
+    <Compile Include="Elements\LogElement\LogElementViewModel.cs" />
+    <Compile Include="Elements\ToBitmap.cs" />
     <Compile Include="Modules\Core\Commands\SaveAllCommandDefenition.cs" />
     <Compile Include="Modules\Core\Commands\SaveAllCommandHandler.cs" />
     <Compile Include="Modules\Core\MenuDefenitions.cs" />
@@ -174,12 +180,16 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Elements\ElementsDefenition.cs" />
-    <Compile Include="Elements\LogElement.cs" />
-    <Page Include="Elements\DisplayElementView.xaml">
+    <Compile Include="Elements\LogElement\LogElement.cs" />
+    <Page Include="Elements\BitmapViewer\BitmapViewerView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Elements\LogElementView.xaml">
+    <Page Include="Elements\Display\DisplayElementView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Elements\LogElement\LogElementView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
