@@ -30,6 +30,17 @@ namespace Cortex.Studio.Modules.ProcessDesigner.ViewModels
             get { return TypeToColorConverter.GetColor(Pin); }
         }
 
+        public Type Type
+        {
+            get
+            {
+                var dPin = Pin as IDataPin;
+                if (dPin != null)
+                    return dPin.Type;
+                return typeof (Cortex.Model.Flow);
+            }
+        }
+
         public Point Position
         {
             get { return _position; }

@@ -21,7 +21,7 @@
     <Grid>
         <ScrollViewer CanContentScroll="True" VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Visible">
             <local:ZoomAndPanControl x:Name="ZoomAndPanControl" Background="WhiteSmoke" MaxContentScale="1" MinContentScale="1">
-                <local:GraphControl x:Name="GraphControl" Background="#FF7A7A7A" 
+                <local:GraphControl x:Name="GraphControl"
 									ElementsSource="{Binding Elements}" ConnectionsSource="{Binding Connections}"
 									Width="3000" Height="2000"
 									PreviewMouseRightButtonDown="OnGraphControlRightMouseButtonDown"
@@ -51,28 +51,24 @@
                                     <Setter Property="Template">
                                         <Setter.Value>
                                             <ControlTemplate TargetType="local:ConnectorItem">
-                                                <Grid Width="12" Height="12">
-                                                    <Ellipse Stroke="{Binding Color, Converter={StaticResource ColorToBrushConverter}}" Fill="Transparent"
-                                                             StrokeThickness="1" />
+                                                <Grid Width="12" Height="12" ToolTip="{Binding Type}">
+                                                    <Ellipse Stroke="Black" Fill="White" StrokeThickness="1" />
                                                     <Ellipse Fill="{Binding Color, Converter={StaticResource ColorToBrushConverter}}" 
-                                                             Visibility="{Binding IsConnected, Converter={StaticResource BoolToVisibilityConverter}}" />
+                                                             Visibility="{Binding IsConnected, Converter={StaticResource BoolToVisibilityConverter}}"
+                                                             Stroke="Black" StrokeThickness="1"/>
                                                 </Grid>
                                             </ControlTemplate>
                                         </Setter.Value>
                                     </Setter>
                                 </Style>
                             </DataTemplate.Resources>
-                            <Border x:Name="HighlightBorder" 
-									BorderThickness="2" Padding="2" CornerRadius="4">
-                                <Border CornerRadius="4" Background="#333">
-                                    <Border.Effect>
-                                        <DropShadowEffect Color="SlateGray" ShadowDepth="0" BlurRadius="20" />
-                                    </Border.Effect>
+                            <Border x:Name="HighlightBorder" BorderThickness="2" Padding="2" CornerRadius="7">
+                                <Border CornerRadius="5" Background="#e1e1e1">
                                     <StackPanel Orientation="Vertical" cal:Message.Attach="[Event MouseLeftButtonDown] = [Action MouseDown($eventArgs)]">
-                                        <Border Background="LightSkyBlue" Padding="5 2 2 2" BorderBrush="DodgerBlue" BorderThickness="0 0 0 1" CornerRadius="2 2 0 0">
+                                        <Border Padding="6 3 6 3" Background="#bcbcbc" CornerRadius="5 5 0 0">
                                             <StackPanel Orientation="Horizontal">
                                                 <Image Source="{Binding IconUri}" Margin="0 0 3 0"></Image>
-                                                <TextBlock HorizontalAlignment="Stretch" Text="{Binding Name}">
+                                                <TextBlock HorizontalAlignment="Stretch" Text="{Binding Name}" FontFamily="Segoe UI Semibold" FontSize="14">
                                                     <TextBlock.ContextMenu>
                                                         <ContextMenu>
                                                             <MenuItem Header="Open Editor" cal:Message.Attach="OpenEditor()" />
@@ -81,54 +77,47 @@
                                                 </TextBlock>
                                             </StackPanel>
                                         </Border>
-                                        <Border>
-                                            <Grid>
-                                                <Grid.RowDefinitions>
-                                                    <RowDefinition Height="Auto"></RowDefinition>
-                                                    <RowDefinition Height="Auto"></RowDefinition>
-                                                </Grid.RowDefinitions>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="Auto" MinWidth="50" />
-                                                    <ColumnDefinition Width="1" />
-                                                    <ColumnDefinition Width="Auto"  MinWidth="50" />
-                                                </Grid.ColumnDefinitions>
-                                                <ContentControl Grid.Row="0" Grid.ColumnSpan="3" Content="{Binding View}"/>
-                                                <ItemsControl  Grid.Row="1" Grid.Column="0" ItemsSource="{Binding InputConnectors}" VerticalAlignment="Top" Margin="2">
-                                                    <ItemsControl.ItemTemplate>
-                                                        <DataTemplate>
-                                                            <Grid>
-                                                                <Grid.ColumnDefinitions>
-                                                                    <ColumnDefinition Width="Auto"/>
-                                                                    <ColumnDefinition Width="*"/>
-                                                                </Grid.ColumnDefinitions>
-                                                                <local:ConnectorItem Grid.Column="0" />
-                                                                <TextBlock Grid.Column="1" Text="{Binding Name}" FontSize="12" VerticalAlignment="Center" Margin="3" Foreground="White"/>
-                                                            </Grid>
-                                                        </DataTemplate>
-                                                    </ItemsControl.ItemTemplate>
-                                                </ItemsControl>
-                                                <ItemsControl Grid.Row="1" Grid.Column="2" ItemsSource="{Binding OutputConnectors}" VerticalAlignment="Top" Margin="2">
-                                                    <ItemsControl.ItemTemplate>
-                                                        <DataTemplate>
-                                                            <Grid>
-                                                                <Grid.ColumnDefinitions>
-                                                                    <ColumnDefinition Width="*"/>
-                                                                    <ColumnDefinition Width="Auto"/>
-                                                                </Grid.ColumnDefinitions>
-                                                                <TextBlock Grid.Column="0" Text="{Binding Name}" FontSize="12" VerticalAlignment="Center" Margin="3" HorizontalAlignment="Right" Foreground="White"/>
-                                                                <local:ConnectorItem Grid.Column="1" />
-                                                            </Grid>
-                                                        </DataTemplate>
-                                                    </ItemsControl.ItemTemplate>
-                                                </ItemsControl>
-                                            </Grid>
-                                        </Border>
+                                        <ContentControl Content="{Binding View}"/>
+                                        <Grid Margin="-7 0 -7 0">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto" MinWidth="50" />
+                                                <ColumnDefinition Width="*"  MinWidth="50" />
+                                            </Grid.ColumnDefinitions>
+                                            <ItemsControl Grid.Column="0" ItemsSource="{Binding InputConnectors}" VerticalAlignment="Top" Margin="2">
+                                                <ItemsControl.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <Grid>
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="Auto"/>
+                                                                <ColumnDefinition Width="*"/>
+                                                            </Grid.ColumnDefinitions>
+                                                            <local:ConnectorItem Grid.Column="0" />
+                                                            <TextBlock Grid.Column="1" Text="{Binding Name}" FontSize="12" VerticalAlignment="Center" Margin="3"/>
+                                                        </Grid>
+                                                    </DataTemplate>
+                                                </ItemsControl.ItemTemplate>
+                                            </ItemsControl>
+                                            <ItemsControl Grid.Column="1" ItemsSource="{Binding OutputConnectors}" VerticalAlignment="Top" Margin="2">
+                                                <ItemsControl.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <Grid>
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="*"/>
+                                                                <ColumnDefinition Width="Auto"/>
+                                                            </Grid.ColumnDefinitions>
+                                                            <TextBlock Grid.Column="0" Text="{Binding Name}" FontSize="12" VerticalAlignment="Center" Margin="3" HorizontalAlignment="Right" />
+                                                            <local:ConnectorItem Grid.Column="1" />
+                                                        </Grid>
+                                                    </DataTemplate>
+                                                </ItemsControl.ItemTemplate>
+                                            </ItemsControl>
+                                        </Grid>
                                     </StackPanel>
                                 </Border>
                             </Border>
                             <DataTemplate.Triggers>
                                 <DataTrigger Binding="{Binding IsSelected}" Value="True">
-                                    <Setter TargetName="HighlightBorder" Property="BorderBrush" Value="Yellow" />
+                                    <Setter TargetName="HighlightBorder" Property="BorderBrush" Value="CornflowerBlue" />
                                 </DataTrigger>
                             </DataTemplate.Triggers>
                         </DataTemplate>

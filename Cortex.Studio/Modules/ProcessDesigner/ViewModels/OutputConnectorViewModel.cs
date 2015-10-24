@@ -36,6 +36,17 @@ namespace Cortex.Studio.Modules.ProcessDesigner.ViewModels
             }
         }
 
+        public Type Type
+        {
+            get
+            {
+                var dPin = Pin as IDataPin;
+                if (dPin != null)
+                    return dPin.Type;
+                return typeof(Cortex.Model.Flow);
+            }
+        }
+
         public bool IsConnected
         {
             get { return _connections > 0; }

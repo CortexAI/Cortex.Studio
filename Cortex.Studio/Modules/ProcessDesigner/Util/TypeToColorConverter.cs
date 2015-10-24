@@ -10,7 +10,7 @@ namespace Cortex.Studio.Modules.ProcessDesigner.Util
         public static Color GetColor(IPin pin)
         {
             if (pin is IFlowInputPin || pin is IFlowOutputPin)
-                return Colors.White;
+                return Colors.SteelBlue;
             if (pin is IDataPin)
                 return GetColor(((IDataPin) pin).Type);
             return Colors.AliceBlue;
@@ -28,7 +28,7 @@ namespace Cortex.Studio.Modules.ProcessDesigner.Util
             if (colorDict.ContainsKey(type))
                 return colorDict[type];
 
-            return Colors.Black;
+            return Colors.Purple;
         }
     }
 }

@@ -14,6 +14,7 @@ namespace Cortex.Kinect
         private readonly DataOutputPin _colorFramePin;
         private readonly DataOutputPin _depthFramePin;
         private readonly DataOutputPin _skeletonFramePin;
+        private readonly DataOutputPin _kinectPin;
 
         public Kinect()
         {
@@ -21,6 +22,7 @@ namespace Cortex.Kinect
             AddInputPin(new FlowInputPin("Stop", Stop));
 
             _onFramesReadyPin = new FlowOutputPin("Frames ready");
+            _kinectPin = new DataOutputPin("Kinect", typeof (KinectSensor));
             _colorFramePin = new DataOutputPin("Color Frame", typeof(Frames.ColorFrame));
             _depthFramePin = new DataOutputPin("Depth Frame", typeof(Frames.DepthFrame));
             _skeletonFramePin = new DataOutputPin("Skeleton Frame", typeof(Frames.SkeletonFrame));
@@ -29,11 +31,14 @@ namespace Cortex.Kinect
             AddOutputPin(_colorFramePin);
             AddOutputPin(_depthFramePin);
             AddOutputPin(_skeletonFramePin);
+            AddOutputPin(_kinectPin);
 
 
             if (KinectSensor.KinectSensors.Count > 0)
             {
                 _sensor = KinectSensor.KinectSensors[0];
+                _kinectPin.Value = _sensor;
+
                 try
                 {
                     _sensor.ColorStream.Enable(ColorImageFormat.RgbResolution640x480Fps30);
