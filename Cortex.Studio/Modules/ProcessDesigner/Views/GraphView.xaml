@@ -72,12 +72,15 @@
                                                     <TextBlock.ContextMenu>
                                                         <ContextMenu>
                                                             <MenuItem Header="Open Editor" cal:Message.Attach="OpenEditor()" />
+                                                            <MenuItem Header="Show Embedded" IsCheckable="True" IsChecked="{Binding IsShowingEmbedded}" />
                                                         </ContextMenu>
                                                     </TextBlock.ContextMenu>
                                                 </TextBlock>
                                             </StackPanel>
                                         </Border>
-                                        <ContentControl Content="{Binding View}"/>
+                                        <Viewbox MaxHeight="300" MaxWidth="300" StretchDirection="DownOnly" >
+                                            <ContentControl Content="{Binding EmbeddedView}" Visibility="{Binding IsShowingEmbedded, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                        </Viewbox>
                                         <Grid Margin="-7 0 -7 0">
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="Auto" MinWidth="50" />

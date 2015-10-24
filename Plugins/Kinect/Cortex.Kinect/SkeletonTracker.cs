@@ -81,7 +81,7 @@ namespace Cortex.Kinect
                 }
             }
 
-            foreach (int trackingId in trackersToRemove)
+            foreach (var trackingId in trackersToRemove)
             {
                 _trackedSkeletons.Remove(trackingId);
                 if (((Skeleton) _lastTrackedPin.Value).TrackingId == trackingId)

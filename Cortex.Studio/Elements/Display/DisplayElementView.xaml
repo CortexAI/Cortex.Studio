@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" >
-    <Grid Background="Black" Width="200" Height="60">
-        <Label x:Name="Label" Content="{Binding Value,FallbackValue=null, Mode=TwoWay}" Foreground="White" FontSize="36"></Label>
+    <Grid Width="200" Height="60">
+        <Label x:Name="Label" Content="{Binding Value,FallbackValue=null, Mode=TwoWay}" FontSize="36"></Label>
     </Grid>
 </UserControl>

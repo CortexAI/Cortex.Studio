@@ -28,6 +28,7 @@ namespace Cortex.Studio.Modules.ProcessDesigner.ViewModels
         private double _x;
         private double _y;
         private EditorWrapperViewModel _attachedEditorWrapper;
+        private bool _isShowingEmbedded;
 
 
         public event EventHandler OutputChanged;
@@ -68,7 +69,7 @@ namespace Cortex.Studio.Modules.ProcessDesigner.ViewModels
             }
         }
 
-        public UserControl View { get; private set; }
+        public UserControl EmbeddedView { get; private set; }
 
         public IElement Element
         {
@@ -84,7 +85,17 @@ namespace Cortex.Studio.Modules.ProcessDesigner.ViewModels
                 NotifyOfPropertyChange(() => IsSelected);
             }
         }
-        
+
+        public bool IsShowingEmbedded
+        {
+            get { return _isShowingEmbedded; }
+            set
+            {
+                _isShowingEmbedded = value; 
+                NotifyOfPropertyChange(()=>IsShowingEmbedded);
+            }
+        }
+
         public IList<InputConnectorViewModel> InputConnectors
         {
             get { return _inputConnectors; }
@@ -114,7 +125,7 @@ namespace Cortex.Studio.Modules.ProcessDesigner.ViewModels
             {
                 var embeddedView = embeddedEditor.CreateView();
                 ViewModelBinder.Bind(embeddedEditor.CreateViewModel(Element), embeddedView, null);
-                this.View = embeddedView;
+                this.EmbeddedView = embeddedView;
             }
 
             SetConnectors();
@@ -175,8 +186,11 @@ namespace Cortex.Studio.Modules.ProcessDesigner.ViewModels
 
         public void MouseDown(MouseButtonEventArgs args)
         {
-            if(args.ClickCount >= 2)
+            if (args.ClickCount >= 2)
+            {
                 OpenEditor();
+                args.Handled = true;
+            }
         }
     }
 }
