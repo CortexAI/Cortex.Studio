@@ -9,17 +9,20 @@ namespace Cortex.Studio.Elements.BitmapViewer
     {
         public WriteableBitmap Bitmap { get; private set; }
 
+        private readonly DataInputPin<WriteableBitmap> _inputPin = new DataInputPin<WriteableBitmap>("Bitmap");
+        private readonly FlowOutputPin _flowOutput = new FlowOutputPin();
+
         public BitmapViewer()
         {
             AddInputPin(new FlowInputPin(OnFlow));
-            AddInputPin(new DataInputPin("Bitmap", typeof(WriteableBitmap)));
-            AddOutputPin(new FlowOutputPin());
+            AddInputPin(_inputPin);
+            AddOutputPin(_flowOutput);
         }
 
         private void OnFlow(Flow flow)
         {
-            this.Bitmap = ((IDataInputPin)_inputs[1]).Value as WriteableBitmap;
-            ((IFlowOutputPin)_outputs[0]).Call(flow);
+            this.Bitmap = _inputPin.Value;
+            _flowOutput.Call(flow);
         }
     }
 }

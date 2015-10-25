@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.Composition;
+using Cortex.Core;
 using Cortex.Core.Model;
 
 namespace Cortex.Kinect
@@ -7,7 +8,7 @@ namespace Cortex.Kinect
     {
         [Export]
         public static ElementGroupDefenition KinectElements 
-            = new ElementGroupDefenition("Kinect");
+            = new ElementGroupDefenition(WellKnownGroups.Plugins, "Kinect");
 
         [Export]
         public static ElementItemDefenition KinectSensor =

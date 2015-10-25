@@ -10,24 +10,19 @@ namespace Cortex.Kinect
     class Kinect : BaseElement, IDisposable
     {
         private readonly KinectSensor _sensor;
-        private readonly FlowOutputPin _onFramesReadyPin;
         private Flow _flow;
-        private readonly DataOutputPin _colorFramePin;
-        private readonly DataOutputPin _depthFramePin;
-        private readonly DataOutputPin _skeletonFramePin;
-        private readonly DataOutputPin _kinectPin;
+
+        private readonly FlowOutputPin _onFramesReadyPin = new FlowOutputPin("Frames ready");
+        private readonly DataOutputPin<Frames.ColorFrame> _colorFramePin = new DataOutputPin<Frames.ColorFrame>("Color Frame");
+        private readonly DataOutputPin<Frames.DepthFrame> _depthFramePin = new DataOutputPin<Frames.DepthFrame>("Depth Frame");
+        private readonly DataOutputPin<Frames.SkeletonFrame> _skeletonFramePin = new DataOutputPin<Frames.SkeletonFrame>("Skeleton Frame");
+        private readonly DataOutputPin<KinectSensor> _kinectPin = new DataOutputPin<KinectSensor>("Kinect");
         private readonly ManualResetEvent _activeEvent = new ManualResetEvent(false);
 
         public Kinect()
         {
             AddInputPin(new FlowInputPin("Start", Start));
             AddInputPin(new FlowInputPin("Stop", Stop));
-
-            _onFramesReadyPin = new FlowOutputPin("Frames ready");
-            _kinectPin = new DataOutputPin("Kinect", typeof (KinectSensor));
-            _colorFramePin = new DataOutputPin("Color Frame", typeof(Frames.ColorFrame));
-            _depthFramePin = new DataOutputPin("Depth Frame", typeof(Frames.DepthFrame));
-            _skeletonFramePin = new DataOutputPin("Skeleton Frame", typeof(Frames.SkeletonFrame));
             
             AddOutputPin(_onFramesReadyPin);
             AddOutputPin(_colorFramePin);

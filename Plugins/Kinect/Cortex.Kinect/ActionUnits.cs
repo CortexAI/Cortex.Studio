@@ -7,30 +7,19 @@ namespace Cortex.Kinect
 {
     class ActionUnits : BaseElement
     {
-        private readonly DataInputPin _faceFramePin;
-        private readonly FlowOutputPin _flowOut;
-        private readonly DataOutputPin _au1;
-        private readonly DataOutputPin _au2;
-        private readonly DataOutputPin _au3;
-        private readonly DataOutputPin _au4;
-        private readonly DataOutputPin _au5;
-        private readonly DataOutputPin _au6;
+        private readonly DataInputPin<FaceTrackFrame> _faceFramePin = new DataInputPin<FaceTrackFrame>("Face Frame");
+        private readonly FlowOutputPin _flowOut = new FlowOutputPin();
+        private readonly DataOutputPin _au1 = new DataOutputPin<double>("Brow Lower");
+        private readonly DataOutputPin _au2 = new DataOutputPin<double>("Brow Raiser");
+        private readonly DataOutputPin _au3 = new DataOutputPin<double>("Jaw Lower");
+        private readonly DataOutputPin _au4 = new DataOutputPin<double>("LipCorner Depressor");
+        private readonly DataOutputPin _au5 = new DataOutputPin<double>("Lip Raiser");
+        private readonly DataOutputPin _au6 = new DataOutputPin<double>("Lip Stretcher");
 
         public ActionUnits()
         {
             AddInputPin(new FlowInputPin(OnCall));
-
-            _faceFramePin = new DataInputPin("Face Frame", typeof (FaceTrackFrame));
             AddInputPin(_faceFramePin);
-
-            _flowOut = new FlowOutputPin();
-            _au1 = new DataOutputPin("Brow Lower", typeof(double));
-            _au2 = new DataOutputPin("Brow Raiser", typeof(double));
-            _au3 = new DataOutputPin("Jaw Lower", typeof(double));
-            _au4 = new DataOutputPin("Lip Corner Depressor", typeof(double));
-            _au5 = new DataOutputPin("Lip Raiser", typeof(double));
-            _au6 = new DataOutputPin("Lip Stretcher", typeof(double));
-
             AddOutputPin(_flowOut);
             AddOutputPin(_au1);
             AddOutputPin(_au2);
@@ -42,7 +31,7 @@ namespace Cortex.Kinect
 
         private void OnCall(Flow flow)
         {
-            var frame = _faceFramePin.Value as FaceTrackFrame;
+            var frame = _faceFramePin.Value;
             if(frame == null)
                 return;
 

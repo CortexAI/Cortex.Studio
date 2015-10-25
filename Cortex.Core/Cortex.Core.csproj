@@ -89,6 +89,7 @@
     <Compile Include="Model\Serialization\PersisterWriter.cs" />
     <Compile Include="Model\Serialization\ReferenceManager.cs" />
     <Compile Include="Model\Utilities\TypeExtensions.cs" />
+    <Compile Include="WellKnownGroups.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

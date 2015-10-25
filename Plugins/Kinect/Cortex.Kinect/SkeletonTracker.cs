@@ -22,21 +22,17 @@ namespace Cortex.Kinect
         }
 
         private const uint MaxMissedFrames = 100;
-        private readonly DataInputPin _skeletonFramePin;
-        private readonly FlowOutputPin _skeletonTracked;
-        private readonly FlowOutputPin _skeletonUnTracked;
+        private readonly DataInputPin<Frames.SkeletonFrame> _skeletonFramePin = new DataInputPin<Frames.SkeletonFrame>("Skeleton frame");
+        private readonly FlowOutputPin _skeletonTracked = new FlowOutputPin("Tracked");
+        private readonly FlowOutputPin _skeletonUnTracked = new FlowOutputPin("Un Tracked");
         private readonly Dictionary<int, TrackedSkeleton> _trackedSkeletons = new Dictionary<int, TrackedSkeleton>();
-        private readonly DataOutputPin _lastTrackedPin;
+        private readonly DataOutputPin<Skeleton> _lastTrackedPin = new DataOutputPin<Skeleton>("Last tracked skeleton");
 
         public SkeletonTracker()
         {
             AddInputPin(new FlowInputPin("On skeleton frame", OnSkeletonFrame));
-            _skeletonFramePin = new DataInputPin("Skeleton frame", typeof (Frames.SkeletonFrame));
+            
             AddInputPin(_skeletonFramePin);
-
-            _skeletonTracked = new FlowOutputPin("Tracked");
-            _skeletonUnTracked = new FlowOutputPin("Un Tracked");
-            _lastTrackedPin = new DataOutputPin("Last tracked skeleton", typeof (Skeleton));
             AddOutputPin(_skeletonTracked);
             AddOutputPin(_skeletonUnTracked);
             AddOutputPin(_lastTrackedPin);
@@ -44,7 +40,7 @@ namespace Cortex.Kinect
 
         private void OnSkeletonFrame(Flow flow)
         {
-            var skeletonFrame = _skeletonFramePin.Value as Frames.SkeletonFrame;
+            var skeletonFrame = _skeletonFramePin.Value;
             if(skeletonFrame == null)
                 return;
 
@@ -84,10 +80,10 @@ namespace Cortex.Kinect
             foreach (var trackingId in trackersToRemove)
             {
                 _trackedSkeletons.Remove(trackingId);
-                if (((Skeleton) _lastTrackedPin.Value).TrackingId == trackingId)
+                if (_lastTrackedPin.Value != null && _lastTrackedPin.Value.TrackingId == trackingId)
                 {
                     if (_trackedSkeletons.Any())
-                        _lastTrackedPin.Value = _trackedSkeletons.First();
+                        _lastTrackedPin.Value = _trackedSkeletons.First().Value.Skeleton;
                     else
                         _lastTrackedPin.Value = null;
                 }

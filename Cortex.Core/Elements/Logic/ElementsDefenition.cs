@@ -5,7 +5,9 @@ namespace Cortex.Core.Elements.Logic
 {
     internal class ElementsDefenition
     {
-        [Export] public static ElementGroupDefenition LogicElements = new ElementGroupDefenition("Logic");
+        [Export] 
+        public static ElementGroupDefenition LogicElements = 
+            new ElementGroupDefenition(WellKnownGroups.Common, "Logic");
 
         [Export] public static ElementItemDefenition StartPoint =
             new ElementItemDefenition<StartPoint>(LogicElements, "Start point", null, "Entry point of a process");

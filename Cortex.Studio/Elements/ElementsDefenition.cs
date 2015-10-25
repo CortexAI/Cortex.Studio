@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.Composition;
+using Cortex.Core;
 using Cortex.Core.Model;
 using Cortex.Studio.Elements.BitmapViewer;
 
@@ -7,11 +8,12 @@ namespace Cortex.Studio.Elements
     public static class EditorElementsDefenition
     {
         [Export]
-        public static ElementGroupDefenition EditorElements = new ElementGroupDefenition("Editor");
+        public static ElementGroupDefenition EditorElements = 
+            new ElementGroupDefenition(WellKnownGroups.Common, "Editor");
 
         [Export]
         public static ElementItemDefenition LogElement =
-            new ElementItemDefenition<LogElement>(EditorElements, "Log to console", null, "Logs any data to console");
+            new ElementItemDefenition<LogElement.LogElement>(EditorElements, "Log to console", null, "Logs any data to console");
 
         [Export]
         public static ElementItemDefenition UIElement = 
@@ -31,7 +33,7 @@ namespace Cortex.Studio.Elements
 
         [Export]
         public static ElementEditorDefenition LogElementEditor =
-            new ElementEditor<LogElement, LogElementViewModel, LogElementView>();
+            new ElementEditor<LogElement.LogElement, LogElementViewModel, LogElementView>();
 
         [Export]
         public static ElementEditorDefenition BitmapViewerEditor =

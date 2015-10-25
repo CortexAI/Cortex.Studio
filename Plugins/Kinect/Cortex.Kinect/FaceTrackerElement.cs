@@ -11,14 +11,14 @@ namespace Cortex.Kinect
     class FaceTrackerElement : BaseElement, IDisposable
     {
         private FaceTracker _faceTracker;
-        
-        private readonly DataInputPin _colorImagePin;
-        private readonly DataInputPin _skeletonPin;
-        private readonly DataInputPin _depthImagePin;
-        private readonly DataInputPin _kinectPin;
 
-        private readonly FlowOutputPin _trackedPin;
-        private readonly DataOutputPin _faceTrackedFrame;
+        private readonly DataInputPin<ColorFrame> _colorImagePin = new DataInputPin<ColorFrame>("Color frame");
+        private readonly DataInputPin<Skeleton> _skeletonPin = new DataInputPin<Skeleton>("Skeleton");
+        private readonly DataInputPin<DepthFrame> _depthImagePin = new DataInputPin<DepthFrame>("Depth frame");
+        private readonly DataInputPin<KinectSensor> _kinectPin = new DataInputPin<KinectSensor>("Kinect");
+
+        private readonly FlowOutputPin _trackedPin = new FlowOutputPin("Successfull tracking");
+        private readonly DataOutputPin<FaceTrackFrame> _faceTrackedFrame = new DataOutputPin<FaceTrackFrame>("Face frame");
 
         private SkeletonTrackingState _skeletonTrackingState;
         
@@ -27,28 +27,21 @@ namespace Cortex.Kinect
         {
             AddInputPin(new FlowInputPin(OnCall));
 
-            _kinectPin = new DataInputPin("Kinect", typeof (KinectSensor));
-            _colorImagePin = new DataInputPin("Color frame", typeof (ColorFrame));
-            _depthImagePin = new DataInputPin("Depth frame", typeof (DepthFrame));
-            _skeletonPin = new DataInputPin("Skeleton", typeof (Skeleton));
-
             AddInputPin(_kinectPin);
             AddInputPin(_colorImagePin);
             AddInputPin(_depthImagePin);
             AddInputPin(_skeletonPin);
-
-            _trackedPin = new FlowOutputPin("Successfull tracking");
-            _faceTrackedFrame = new DataOutputPin("Face frame", typeof (FaceTrackFrame));
+            
             AddOutputPin(_trackedPin);
             AddOutputPin(_faceTrackedFrame);
         }
 
         private void OnCall(Flow flow)
         {
-            var color = _colorImagePin.Value as ColorFrame;
-            var depth = _depthImagePin.Value as DepthFrame;
-            var skeleton = _skeletonPin.Value as Skeleton;
-            var kinect = _kinectPin.Value as KinectSensor;
+            var color = _colorImagePin.Value;
+            var depth = _depthImagePin.Value;
+            var skeleton = _skeletonPin.Value;
+            var kinect = _kinectPin.Value;
 
             if(kinect == null || color == null || depth == null || skeleton == null)
                 return;

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
 using System.Linq;
@@ -32,24 +33,30 @@ namespace Cortex.Studio.Modules.ElementsToolbox.ViewModels
             get { return PaneLocation.Left; }
         }
 
+        public override string DisplayName { get { return "Elements Toolbox"; }}
+
         public ElementsToolboxViewModel()
         {
-            DisplayName = "Elements Toolbox";
-            
-
             var elements = IoC.GetAll<ElementItemDefenition>();
-            
             var categroiesPool = elements.GroupBy(e => e.Group).Select(g => new CategoryViewModel(g.Key, g)).ToList();
 
-            foreach (var category in categroiesPool)
+            foreach (var category in categroiesPool.ToList())
             {
                 if (category.GroupDefenition.ParentGroup != null)
                 {
                     var parent =
                         categroiesPool.FirstOrDefault(
                             cat => cat.GroupDefenition.Equals(category.GroupDefenition.ParentGroup));
-                    if (parent != null)
-                        parent.Items.Insert(0,category);
+                    
+                    if (parent == null)
+                    {
+                        parent = new CategoryViewModel(category.GroupDefenition.ParentGroup,
+                            new List<ElementItemDefenition>());
+                        parent.Items.Add(category);
+                        categroiesPool.Add(parent);
+                    }
+
+                     parent.Items.Insert(0, category);
                 }
             }
 

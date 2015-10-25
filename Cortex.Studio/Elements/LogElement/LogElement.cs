@@ -4,28 +4,30 @@ using Cortex.Core.Elements;
 using Cortex.Core.Model;
 using Cortex.Core.Model.Pins;
 
-namespace Cortex.Studio.Elements
+namespace Cortex.Studio.Elements.LogElement
 {
     class LogElement : BaseElement
     {
         private ILog _log;
+        private readonly DataInputPin<object> _input = new DataInputPin<object>("Object");
+        private readonly FlowOutputPin _output = new FlowOutputPin();
 
         public LogElement()
         {
             _log = LogManager.GetLog(this.GetType());
             AddInputPin(new FlowInputPin(Action));
-            AddInputPin(new DataInputPin("Object", typeof(object)));
-            AddOutputPin(new FlowOutputPin());
+            AddInputPin(_input);
+            AddOutputPin(_output);
         }
 
         private void Action(Flow flow)
         {
-            var val = ((DataInputPin)_inputs[1]).Value;
+            var val = _input.Value;
 
             if (val != null && _log != null)
                 _log.Info("Output: " + val);
 
-            ((FlowOutputPin)_outputs[0]).Call(flow);
+            _output.Call(flow);
         }
 
         void OnDeserialized(StreamingContext context)
