@@ -4,7 +4,7 @@ using System.ComponentModel.Composition;
 using System.Linq;
 using System.Windows;
 using Caliburn.Micro;
-using Cortex.Model;
+using Cortex.Core.Model;
 using Gemini.Framework;
 using Gemini.Framework.Services;
 

@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.Composition;
-using Cortex.Model;
+using Cortex.Core.Model;
 using Cortex.Studio.Elements.BitmapViewer;
 
 namespace Cortex.Studio.Elements

@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using Caliburn.Micro;
-using Cortex.Model;
+using Cortex.Core.Model;
 using Cortex.Studio.Elements;
 using Gemini.Framework;
 

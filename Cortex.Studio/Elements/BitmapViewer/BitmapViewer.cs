@@ -1,7 +1,7 @@
 ﻿using System.Windows.Media.Imaging;
-using Cortex.Model;
-using Cortex.Model.Elements;
-using Cortex.Model.Pins;
+using Cortex.Core.Elements;
+using Cortex.Core.Model;
+using Cortex.Core.Model.Pins;
 
 namespace Cortex.Studio.Elements.BitmapViewer
 {

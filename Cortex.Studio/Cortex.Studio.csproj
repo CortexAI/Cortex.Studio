@@ -325,9 +325,9 @@
     <Resource Include="Modules\ProcessDesigner\Resources\image.png" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Cortex.Model\Cortex.Model.csproj">
+    <ProjectReference Include="..\Cortex.Core\Cortex.Core.csproj">
       <Project>{841972A7-8B8F-4F21-B05C-1D8E21A64021}</Project>
-      <Name>Cortex.Model</Name>
+      <Name>Cortex.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

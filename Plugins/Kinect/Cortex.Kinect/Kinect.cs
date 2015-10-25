@@ -1,7 +1,8 @@
 ﻿using System;
-using Cortex.Model;
-using Cortex.Model.Elements;
-using Cortex.Model.Pins;
+using System.Threading;
+using Cortex.Core.Elements;
+using Cortex.Core.Model;
+using Cortex.Core.Model.Pins;
 using Microsoft.Kinect;
 
 namespace Cortex.Kinect
@@ -15,6 +16,7 @@ namespace Cortex.Kinect
         private readonly DataOutputPin _depthFramePin;
         private readonly DataOutputPin _skeletonFramePin;
         private readonly DataOutputPin _kinectPin;
+        private readonly ManualResetEvent _activeEvent = new ManualResetEvent(false);
 
         public Kinect()
         {
@@ -83,6 +85,7 @@ namespace Cortex.Kinect
                 throw new Exception("No sensor");
 
             _sensor.Stop();
+            _activeEvent.Set();
         }
 
         private void Start(Flow flow)
@@ -97,6 +100,8 @@ namespace Cortex.Kinect
             }
             
             _flow = flow;
+            _activeEvent.WaitOne();
+            _activeEvent.Reset();
         }
         
         private void SensorOnAllFramesReady(object sender, AllFramesReadyEventArgs e)

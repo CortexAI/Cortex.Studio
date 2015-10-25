@@ -1,8 +1,9 @@
 ﻿using System.Linq;
-using Cortex.Model;
-using Cortex.Model.Elements.DebugElements;
-using Cortex.Model.Elements.Logic;
-using Cortex.Model.Elements.Types;
+using Cortex.Core;
+using Cortex.Core.Elements.DebugElements;
+using Cortex.Core.Elements.Logic;
+using Cortex.Core.Elements.Types;
+using Cortex.Core.Model;
 
 namespace Cortex.Console
 {

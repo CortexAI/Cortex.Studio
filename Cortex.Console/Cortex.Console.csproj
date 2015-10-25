@@ -48,9 +48,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Cortex.Model\Cortex.Model.csproj">
+    <ProjectReference Include="..\Cortex.Core\Cortex.Core.csproj">
       <Project>{841972a7-8b8f-4f21-b05c-1d8e21a64021}</Project>
-      <Name>Cortex.Model</Name>
+      <Name>Cortex.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -3,10 +3,10 @@ using System.Diagnostics;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using Cortex.Model;
-using Cortex.Model.Elements;
-using Cortex.Model.Pins;
-using Cortex.Model.Serialization;
+using Cortex.Core.Elements;
+using Cortex.Core.Model;
+using Cortex.Core.Model.Pins;
+using Cortex.Core.Model.Serialization;
 
 namespace Cortex.Studio.Elements
 {

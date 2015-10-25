@@ -1,4 +1,4 @@
-﻿using Cortex.Model;
+﻿using Cortex.Core.Model;
 
 namespace Cortex.Studio.Elements
 {

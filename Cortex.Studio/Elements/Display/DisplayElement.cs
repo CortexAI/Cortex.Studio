@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.IO;
-using Cortex.Model;
-using Cortex.Model.Pins;
-using Cortex.Model.Serialization;
+using Cortex.Core.Model;
+using Cortex.Core.Model.Pins;
+using Cortex.Core.Model.Serialization;
 
 namespace Cortex.Studio.Elements
 {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows.Media;
-using Cortex.Model.Pins;
+using Cortex.Core.Model.Pins;
 
 namespace Cortex.Studio.Modules.ProcessDesigner.Util
 {

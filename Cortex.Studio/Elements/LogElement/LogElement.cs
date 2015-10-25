@@ -1,8 +1,8 @@
 ﻿using System.Runtime.Serialization;
 using Caliburn.Micro;
-using Cortex.Model;
-using Cortex.Model.Elements;
-using Cortex.Model.Pins;
+using Cortex.Core.Elements;
+using Cortex.Core.Model;
+using Cortex.Core.Model.Pins;
 
 namespace Cortex.Studio.Elements
 {

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Windows.Controls;
-using Cortex.Model;
+using Cortex.Core.Model;
 
 namespace Cortex.Studio.Elements
 {

@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.Composition;
-using Cortex.Model;
+using Cortex.Core.Model;
 
 namespace Cortex.Kinect
 {

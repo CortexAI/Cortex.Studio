@@ -2,7 +2,8 @@
 using System.Windows;
 using System.Windows.Media;
 using Caliburn.Micro;
-using Cortex.Model.Pins;
+using Cortex.Core.Model;
+using Cortex.Core.Model.Pins;
 using Cortex.Studio.Modules.ProcessDesigner.Util;
 
 namespace Cortex.Studio.Modules.ProcessDesigner.ViewModels
@@ -37,7 +38,7 @@ namespace Cortex.Studio.Modules.ProcessDesigner.ViewModels
                 var dPin = Pin as IDataPin;
                 if (dPin != null)
                     return dPin.Type;
-                return typeof (Cortex.Model.Flow);
+                return typeof (Flow);
             }
         }
 

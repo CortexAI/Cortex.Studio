@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
-using Cortex.Model;
+using Cortex.Core.Model;
 using Gemini.Framework;
 using Gemini.Framework.Services;
 

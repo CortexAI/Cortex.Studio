@@ -1,5 +1,4 @@
 ﻿using System.Windows.Controls;
-using Cortex.Model;
 
 namespace Cortex.Studio.Elements
 {

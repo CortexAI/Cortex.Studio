@@ -1,8 +1,8 @@
 ﻿using System;
+using Cortex.Core.Elements;
+using Cortex.Core.Model;
+using Cortex.Core.Model.Pins;
 using Cortex.Kinect.Frames;
-using Cortex.Model;
-using Cortex.Model.Elements;
-using Cortex.Model.Pins;
 using Microsoft.Kinect;
 using Microsoft.Kinect.Toolkit.FaceTracking;
 

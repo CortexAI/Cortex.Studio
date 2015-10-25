@@ -51,9 +51,9 @@
     <Compile Include="ToBytes.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Cortex.Model\Cortex.Model.csproj">
-      <Project>{841972a7-8b8f-4f21-b05c-1d8e21a64021}</Project>
-      <Name>Cortex.Model</Name>
+    <ProjectReference Include="..\..\..\Cortex.Core\Cortex.Core.csproj">
+      <Project>{841972A7-8B8F-4F21-B05C-1D8E21A64021}</Project>
+      <Name>Cortex.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\Microsoft.Kinect.Toolkit.FaceTracking\Microsoft.Kinect.Toolkit.FaceTracking.csproj">
       <Project>{1bcf9cee-df01-430e-b49d-41a9a88963eb}</Project>

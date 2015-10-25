@@ -1,6 +1,6 @@
-﻿using Cortex.Model;
-using Cortex.Model.Elements;
-using Cortex.Model.Pins;
+﻿using Cortex.Core.Elements;
+using Cortex.Core.Model;
+using Cortex.Core.Model.Pins;
 using Microsoft.Kinect.Toolkit.FaceTracking;
 
 namespace Cortex.Kinect

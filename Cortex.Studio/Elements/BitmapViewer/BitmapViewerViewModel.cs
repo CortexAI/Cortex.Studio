@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Windows.Media.Imaging;
-using Cortex.Model;
+using Cortex.Core.Model;
 
 namespace Cortex.Studio.Elements.BitmapViewer
 {

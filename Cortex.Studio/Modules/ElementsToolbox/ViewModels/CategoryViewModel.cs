@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using Cortex.Model;
+using Cortex.Core.Model;
 
 namespace Cortex.Studio.Modules.ElementsToolbox.ViewModels
 {

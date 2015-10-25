@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using Caliburn.Micro;
-using Cortex.Model;
-using Cortex.Model.Pins;
+using Cortex.Core.Model;
+using Cortex.Core.Model.Pins;
 
 namespace Cortex.Studio.Elements
 {

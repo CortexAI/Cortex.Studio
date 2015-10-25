@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cortex.Kinect", "Cortex.Kin
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Kinect.Toolkit.FaceTracking", "Microsoft.Kinect.Toolkit.FaceTracking\Microsoft.Kinect.Toolkit.FaceTracking.csproj", "{1BCF9CEE-DF01-430E-B49D-41A9A88963EB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cortex.Model", "..\..\Cortex.Model\Cortex.Model.csproj", "{841972A7-8B8F-4F21-B05C-1D8E21A64021}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cortex.Model", "..\..\Cortex.Core\Cortex.Core.csproj", "{841972A7-8B8F-4F21-B05C-1D8E21A64021}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cortex.Studio", "..\..\Cortex.Studio\Cortex.Studio.csproj", "{087C7ADD-3651-4BAA-9A46-B56C35149D3E}"
 EndProject
