@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
 using Cortex.Core.Model;
 
 namespace Cortex.Studio.Modules.ElementsToolbox.ViewModels
@@ -31,12 +29,11 @@ namespace Cortex.Studio.Modules.ElementsToolbox.ViewModels
         }
 
         public ObservableCollection<ToolboxItemViewModel> Items { get; set; }
-        
-        public CategoryViewModel(ElementGroupDefenition @group, IEnumerable<ElementItemDefenition> elements)
+       
+        public CategoryViewModel(ElementGroupDefenition @group)
         {
             _groupDefenition = group;
-            var items = elements.Select(e => new ElementItemViewModel(e)).ToList();
-            Items = new ObservableCollection<ToolboxItemViewModel>(items);
+            Items = new ObservableCollection<ToolboxItemViewModel>();
         }
     }
 }

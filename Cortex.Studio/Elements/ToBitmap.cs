@@ -76,6 +76,8 @@ namespace Cortex.Studio.Elements
                 _format = PixelFormats.Bgr32;
             else if (BytesPerPixel == 3)
                 _format = PixelFormats.Rgb24;
+            else if (BytesPerPixel == 2)
+                _format = PixelFormats.Gray16;
             
 
             _bitmap = new WriteableBitmap(Width, Height, 96, 96, _format, null);

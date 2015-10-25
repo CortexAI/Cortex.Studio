@@ -37,30 +37,29 @@ namespace Cortex.Studio.Modules.ElementsToolbox.ViewModels
 
         public ElementsToolboxViewModel()
         {
-            var elements = IoC.GetAll<ElementItemDefenition>();
-            var categroiesPool = elements.GroupBy(e => e.Group).Select(g => new CategoryViewModel(g.Key, g)).ToList();
+            var categories = IoC.GetAll<ElementGroupDefenition>().Select(g => new CategoryViewModel(g)).ToList();
+            var elements = IoC.GetAll<ElementItemDefenition>().ToList();
 
-            foreach (var category in categroiesPool.ToList())
+            foreach (var egroup in elements.GroupBy(e => e.Group))
+            {
+                var category = categories.FirstOrDefault(cat => cat.GroupDefenition.Equals(egroup.Key));
+                if(category != null)
+                    category.Items = new ObservableCollection<ToolboxItemViewModel>(egroup.Select(elem => new ElementItemViewModel(elem)));
+            }
+
+            foreach (var category in categories)
             {
                 if (category.GroupDefenition.ParentGroup != null)
                 {
-                    var parent =
-                        categroiesPool.FirstOrDefault(
+                    var parent = categories.FirstOrDefault(
                             cat => cat.GroupDefenition.Equals(category.GroupDefenition.ParentGroup));
                     
-                    if (parent == null)
-                    {
-                        parent = new CategoryViewModel(category.GroupDefenition.ParentGroup,
-                            new List<ElementItemDefenition>());
-                        parent.Items.Add(category);
-                        categroiesPool.Add(parent);
-                    }
-
-                     parent.Items.Insert(0, category);
+                    if (parent != null)
+                        parent.Items.Insert(0, category);
                 }
             }
 
-            Categories = new ObservableCollection<CategoryViewModel>(categroiesPool.Where(cat => cat.GroupDefenition.ParentGroup == null));
+            Categories = new ObservableCollection<CategoryViewModel>(categories.Where(cat => cat.GroupDefenition.ParentGroup == null));
         }
 
         public void OnMouseDown(object sender, object dataContext, EventArgs args)

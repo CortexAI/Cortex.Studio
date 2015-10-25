@@ -114,9 +114,13 @@ namespace Cortex.Kinect.Frames
             var bytes = new byte[Data.Length * 3];
             for (var i = 0; i < bytes.Length; i += 3)
             {
-                bytes[i] = (byte)((Data[i / 3] & 0xFF00) >> 8);
-                bytes[i + 1] = (byte)((Data[i / 3] & 0x00FF));
-                bytes[i + 2] = (byte)((Data[i / 3] & 0x00FF));
+                var val = (int)((1.0 - Math.Round((double)Data[i/3])/short.MaxValue) * 255);
+                //bytes[i] = (byte)((Data[i / 3] & 0xFF00) >> 8);
+                //bytes[i + 1] = (byte)((Data[i / 3] & 0x00FF));
+                //bytes[i + 2] = (byte)((Data[i / 3] & 0x00FF));
+                bytes[i] = (byte)val;
+                bytes[i + 1] = (byte)val;
+                bytes[i + 2] = (byte)val;
             }
 
             return bytes;
