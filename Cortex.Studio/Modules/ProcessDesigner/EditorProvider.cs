@@ -44,7 +44,7 @@ namespace Cortex.Studio.Modules.ProcessDesigner
         {
             get
             {
-                yield return new EditorFileType("Process", ".prcs");
+                yield return new EditorFileType("ProcessGraph", ".prcs");
             }
         }
     }

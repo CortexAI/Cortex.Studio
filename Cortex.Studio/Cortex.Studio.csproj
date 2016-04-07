@@ -43,6 +43,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Caliburn.Micro.2.0.2\lib\net45\Caliburn.Micro.Platform.dll</HintPath>
     </Reference>
+    <Reference Include="Cortex.Core, Version=0.1.5940.32202, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Cortex.Core.0.1.5940.32202\lib\net45\Cortex.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Gemini, Version=1.0.6054.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\GeminiWpf.1.0.6054\lib\net45\Gemini.dll</HintPath>
@@ -128,14 +132,15 @@
       <DependentUpon>BitmapViewerView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Elements\BitmapViewer\BitmapViewerViewModel.cs" />
+    <Compile Include="Elements\Display\DisplayElement.cs" />
     <Compile Include="Elements\Display\DisplayElementViewModel.cs" />
     <Compile Include="Elements\EditorViewModel.cs" />
     <Compile Include="Elements\ElementEditorDefenition.cs" />
     <Compile Include="Elements\IViewProvider.cs" />
-    <Compile Include="Elements\Display\DisplayElement.cs" />
     <Compile Include="Elements\Display\DisplayElementView.xaml.cs">
       <DependentUpon>DisplayElementView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Elements\LogElement\LogElement.cs" />
     <Compile Include="Elements\LogElement\LogElementView.xaml.cs">
       <DependentUpon>LogElementView.xaml</DependentUpon>
     </Compile>
@@ -180,7 +185,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Elements\ElementsDefenition.cs" />
-    <Compile Include="Elements\LogElement\LogElement.cs" />
     <Page Include="Elements\BitmapViewer\BitmapViewerView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -323,12 +327,6 @@
     <Resource Include="Modules\ProcessDesigner\Resources\active_x_16xLG.png" />
     <Resource Include="Modules\ProcessDesigner\Resources\color_swatch.png" />
     <Resource Include="Modules\ProcessDesigner\Resources\image.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Cortex.Core\Cortex.Core.csproj">
-      <Project>{841972A7-8B8F-4F21-B05C-1D8E21A64021}</Project>
-      <Name>Cortex.Core</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\arrow_run_16xLG.png" />

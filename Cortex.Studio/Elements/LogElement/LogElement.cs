@@ -1,38 +1,25 @@
-﻿using System.Runtime.Serialization;
-using Caliburn.Micro;
-using Cortex.Core.Elements;
+﻿using Caliburn.Micro;
 using Cortex.Core.Model;
-using Cortex.Core.Model.Pins;
 
 namespace Cortex.Studio.Elements.LogElement
 {
-    class LogElement : BaseElement
+    class LogElement : Node
     {
-        private ILog _log;
-        private readonly DataInputPin<object> _input = new DataInputPin<object>("Object");
-        private readonly FlowOutputPin _output = new FlowOutputPin();
+        private readonly ILog _log;
+        private readonly InputPin<object> _input;
 
         public LogElement()
         {
-            _log = LogManager.GetLog(this.GetType());
-            AddInputPin(new FlowInputPin(Action));
+            _input = new InputPin<object>("Input");
+            _log = LogManager.GetLog(GetType());
             AddInputPin(_input);
-            AddOutputPin(_output);
         }
 
-        private void Action(Flow flow)
+        protected override void Handler()
         {
-            var val = _input.Value;
-
-            if (val != null && _log != null)
-                _log.Info("Output: " + val);
-
-            _output.Call(flow);
-        }
-
-        void OnDeserialized(StreamingContext context)
-        {
-            _log = LogManager.GetLog(this.GetType());
+            var o = _input.Take();
+            if(o != null)
+                _log?.Info("Output: " + o);
         }
     }
 }

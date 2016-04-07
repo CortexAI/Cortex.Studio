@@ -1,23 +1,22 @@
-﻿using System.Linq;
-using Caliburn.Micro;
+﻿using Caliburn.Micro;
 using Cortex.Core.Model;
-using Cortex.Core.Model.Pins;
 
-namespace Cortex.Studio.Elements
+namespace Cortex.Studio.Elements.LogElement
 {
     class LogElementViewModel : EditorViewModel
     {
-        public IObservableCollection<string> Log { get; private set; }
-        
-        public LogElementViewModel(IElement element) : base(element)
+        public IObservableCollection<string> Log { get; }
+        public override string Name => "Logger";
+        public LogElementViewModel(INode element) : base(element)
         {
             Log = new BindableCollection<string>();
         }
         
-        public override void AfterElementCalled(Flow flow)
+        public override void AfterInputPinProcessed(IInputPin input, object o)
         {
-            var val = ((DataInputPin) Element.Inputs.ToArray()[1]).Value.ToString();
+            var val = o.ToString();
             Log.Add(val);
+            base.AfterInputPinProcessed(input, o);
         }
     }
 }

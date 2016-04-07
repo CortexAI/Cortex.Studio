@@ -1,32 +1,36 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows.Media;
-using Cortex.Core.Model.Pins;
+using Cortex.Core.Model;
 
 namespace Cortex.Studio.Modules.ProcessDesigner.Util
 {
     public static class TypeToColorConverter
     {
-        public static Color GetColor(IPin pin)
-        {
-            if (pin is IFlowInputPin || pin is IFlowOutputPin)
-                return Colors.SteelBlue;
-            if (pin is IDataPin)
-                return GetColor(((IDataPin) pin).Type);
-            return Colors.AliceBlue;
-        }
+        private static Dictionary<Type, Color> _colors;
 
-        public static Color GetColor(Type type)
+        static TypeToColorConverter()
         {
-            var colorDict = new Dictionary<Type, Color> {
+            _colors = new Dictionary<Type, Color> {
                 { typeof(int), Colors.LightSkyBlue },
                 { typeof(double), Colors.LightSkyBlue },
                 { typeof(object), Colors.Purple },
                 { typeof(bool), Colors.Red },
             };
+        }
 
-            if (colorDict.ContainsKey(type))
-                return colorDict[type];
+        public static Color GetColor(IPin pin)
+        {
+            return GetColor(pin.Type);
+        }
+
+        public static Color GetColor(Type type)
+        {
+            if (type != null)
+            {
+                if (_colors.ContainsKey(type))
+                    return _colors[type];
+            }
 
             return Colors.Purple;
         }

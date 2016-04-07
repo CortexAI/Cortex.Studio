@@ -3,18 +3,16 @@ using System.Diagnostics;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using Cortex.Core.Elements;
+using Cortex.Core.Nodes;
 using Cortex.Core.Model;
-using Cortex.Core.Model.Pins;
 using Cortex.Core.Model.Serialization;
 
 namespace Cortex.Studio.Elements
 {
-    class ToBitmap : BaseElement
+    class ToBitmap : Node
     {
-        private readonly FlowOutputPin _flowOut;
-        private readonly DataInputPin _dataPin;
-        private readonly DataOutputPin _bitmapPin;
+        private readonly InputPin<byte[]> _input;
+        private readonly OutputPin<WriteableBitmap> _bitmapPin;
         private WriteableBitmap _bitmap;
         private Int32Rect _rect;
         
@@ -54,19 +52,17 @@ namespace Cortex.Studio.Elements
 
         public ToBitmap()
         {
-            _dataPin = new DataInputPin("Data", typeof(byte[]));
-            _flowOut = new FlowOutputPin();
-            _bitmapPin = new DataOutputPin("Bitmap", typeof(WriteableBitmap));
-            
+            _bitmapPin = new OutputPin<WriteableBitmap>("Bitmap");
+            _input = new InputPin<byte[]>("Data");
+
             _width = 640;
             _height = 480;
             _bytesPerPixel = 4;
             
             Rebuild();
 
-            AddInputPin(new FlowInputPin(OnCall));
-            AddInputPin(_dataPin);
-            AddOutputPin(_flowOut);
+            
+            AddInputPin(_input);
             AddOutputPin(_bitmapPin);
         }
 
@@ -82,20 +78,6 @@ namespace Cortex.Studio.Elements
 
             _bitmap = new WriteableBitmap(Width, Height, 96, 96, _format, null);
             _rect = new Int32Rect(0, 0, Width, Height);
-            _bitmapPin.Value = _bitmap;
-        }
-
-        private void OnCall(Flow flow)
-        {
-            try
-            {
-                _bitmap.WritePixels(_rect, (byte[])_dataPin.Value, (int)_bitmap.Width * ((_format.BitsPerPixel + 7) / 8), 0);
-                _flowOut.Call(flow);
-            }
-            catch (Exception)
-            {
-                Debug.WriteLine("Failed to write a bitmap");
-            }
         }
 
         public override void Load(IPersisterReader reader)
@@ -105,6 +87,19 @@ namespace Cortex.Studio.Elements
             _bytesPerPixel = reader.Get<int>("BPP");
             Rebuild();
             base.Load(reader);
+        }
+
+        protected override void Handler()
+        {
+            try
+            {
+                _bitmap.WritePixels(_rect, _input.Take(), (int)_bitmap.Width * ((_format.BitsPerPixel + 7) / 8), 0);
+                _bitmapPin.Emit(_bitmap);
+            }
+            catch (Exception)
+            {
+                Debug.WriteLine("Failed to write a bitmap");
+            }
         }
 
         public override void Save(IPersisterWriter writer)

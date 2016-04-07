@@ -3,7 +3,7 @@
 namespace Cortex.Studio.Elements
 {
     /// <summary>
-    /// Interaction logic for UIElement.xaml
+    /// Interaction logic for UINode.xaml
     /// </summary>
     public partial class DisplayElementView : UserControl
     {

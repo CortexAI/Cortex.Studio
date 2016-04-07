@@ -1,28 +1,19 @@
 ﻿using System.Windows.Media.Imaging;
-using Cortex.Core.Elements;
 using Cortex.Core.Model;
-using Cortex.Core.Model.Pins;
 
 namespace Cortex.Studio.Elements.BitmapViewer
 {
-    class BitmapViewer : BaseElement
+    class BitmapViewer : Node
     {
-        public WriteableBitmap Bitmap { get; private set; }
-
-        private readonly DataInputPin<WriteableBitmap> _inputPin = new DataInputPin<WriteableBitmap>("Bitmap");
-        private readonly FlowOutputPin _flowOutput = new FlowOutputPin();
+        private readonly InputPin<object> _input;
 
         public BitmapViewer()
         {
-            AddInputPin(new FlowInputPin(OnFlow));
-            AddInputPin(_inputPin);
-            AddOutputPin(_flowOutput);
+            _input = new InputPin<object>("Input");
         }
 
-        private void OnFlow(Flow flow)
+        protected override void Handler()
         {
-            this.Bitmap = _inputPin.Value;
-            _flowOutput.Call(flow);
         }
     }
 }

@@ -9,11 +9,11 @@ namespace Cortex.Studio.Elements
         public Type ElementType { get; protected set; }
         public bool Embed { get; protected set; }
         public abstract UserControl CreateView();
-        public abstract EditorViewModel CreateViewModel(IElement element);
+        public abstract EditorViewModel CreateViewModel(INode element);
     }
 
     public class ElementEditor<T1, T2, T3> : ElementEditorDefenition
-        where T1 : IElement
+        where T1 : INode
         where T2 : EditorViewModel
         where T3 : UserControl, new()
     {
@@ -32,7 +32,7 @@ namespace Cortex.Studio.Elements
             return new T3();
         }
 
-        public override EditorViewModel CreateViewModel(IElement element)
+        public override EditorViewModel CreateViewModel(INode element)
         {
             return Activator.CreateInstance(typeof(T2), element) as EditorViewModel;
         }

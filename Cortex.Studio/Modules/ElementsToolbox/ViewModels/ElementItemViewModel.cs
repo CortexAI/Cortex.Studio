@@ -5,7 +5,7 @@ namespace Cortex.Studio.Modules.ElementsToolbox.ViewModels
 {
     class ElementItemViewModel : ToolboxItemViewModel
     {
-        private readonly ElementItemDefenition _elementDefenition;
+        private readonly NodeDefenition _elementDefenition;
 
         public override string Name
         {
@@ -22,12 +22,12 @@ namespace Cortex.Studio.Modules.ElementsToolbox.ViewModels
             get { return _elementDefenition.IconUri; }
         }
 
-        public ElementItemDefenition Defenition
+        public NodeDefenition Defenition
         {
             get { return _elementDefenition; }
         }
         
-        public ElementItemViewModel(ElementItemDefenition defenition)
+        public ElementItemViewModel(NodeDefenition defenition)
         {
             _elementDefenition = defenition;
         }

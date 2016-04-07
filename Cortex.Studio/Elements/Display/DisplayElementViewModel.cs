@@ -1,11 +1,12 @@
 ﻿using Cortex.Core.Model;
 
-namespace Cortex.Studio.Elements
+namespace Cortex.Studio.Elements.Display
 {
     class DisplayElementViewModel : EditorViewModel
     {
         private string _value;
 
+        public override string Name => "Display";
         public string Value
         {
             get
@@ -19,13 +20,15 @@ namespace Cortex.Studio.Elements
             }
         }
 
-        public DisplayElementViewModel(IElement element) : base(element)
+        public DisplayElementViewModel(INode element) : base(element)
         {
         }
 
-        public override void AfterElementCalled(Flow flow)
+       
+
+        public override void AfterInputPinProcessed(IInputPin input, object o)
         {
-            Value = ((DisplayElement) Element).Value;
+            Value = o.ToString();
         }
     }
 }

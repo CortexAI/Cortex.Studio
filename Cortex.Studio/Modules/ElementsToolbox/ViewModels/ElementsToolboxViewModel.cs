@@ -28,17 +28,14 @@ namespace Cortex.Studio.Modules.ElementsToolbox.ViewModels
             }
         }
 
-        public override PaneLocation PreferredLocation
-        {
-            get { return PaneLocation.Left; }
-        }
+        public override PaneLocation PreferredLocation => PaneLocation.Left;
 
-        public override string DisplayName { get { return "Elements Toolbox"; }}
+        public override string DisplayName => "Elements Toolbox";
 
         public ElementsToolboxViewModel()
         {
-            var categories = IoC.GetAll<ElementGroupDefenition>().Select(g => new CategoryViewModel(g)).ToList();
-            var elements = IoC.GetAll<ElementItemDefenition>().ToList();
+            var categories = IoC.GetAll<NodeGroupDefenition>().Select(g => new CategoryViewModel(g)).ToList();
+            var elements = IoC.GetAll<NodeDefenition>().ToList();
 
             foreach (var egroup in elements.GroupBy(e => e.Group))
             {
@@ -53,9 +50,8 @@ namespace Cortex.Studio.Modules.ElementsToolbox.ViewModels
                 {
                     var parent = categories.FirstOrDefault(
                             cat => cat.GroupDefenition.Equals(category.GroupDefenition.ParentGroup));
-                    
-                    if (parent != null)
-                        parent.Items.Insert(0, category);
+
+                    parent?.Items.Insert(0, category);
                 }
             }
 

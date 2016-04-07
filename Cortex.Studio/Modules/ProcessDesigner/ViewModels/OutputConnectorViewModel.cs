@@ -3,7 +3,6 @@ using System.Windows;
 using System.Windows.Media;
 using Caliburn.Micro;
 using Cortex.Core.Model;
-using Cortex.Core.Model.Pins;
 using Cortex.Studio.Modules.ProcessDesigner.Util;
 
 namespace Cortex.Studio.Modules.ProcessDesigner.ViewModels
@@ -15,17 +14,14 @@ namespace Cortex.Studio.Modules.ProcessDesigner.ViewModels
 
         public event EventHandler PositionChanged;
 
-        public IOutputPin Pin { get; private set; }
+        public IOutputPin Pin { get; }
         
-        public ElementViewModel Element { get; private set; }
+        public ElementViewModel Element { get; }
 
-        public string Name { get { return Pin.Name; } }
-        
-        public Color Color
-        {
-            get { return TypeToColorConverter.GetColor(Pin); }
-        }
-        
+        public string Name => Pin.Name;
+
+        public Color Color => TypeToColorConverter.GetColor(Pin);
+
         public Point Position
         {
             get { return _position; }
@@ -37,26 +33,11 @@ namespace Cortex.Studio.Modules.ProcessDesigner.ViewModels
             }
         }
 
-        public Type Type
-        {
-            get
-            {
-                var dPin = Pin as IDataPin;
-                if (dPin != null)
-                    return dPin.Type;
-                return typeof(Flow);
-            }
-        }
+        public Type Type => Pin.Type;
 
-        public bool IsConnected
-        {
-            get { return _connections > 0; }
-        }
-        
-        public ConnectorDirection ConnectorDirection
-        {
-            get { return ConnectorDirection.Output; }
-        }
+        public bool IsConnected => _connections > 0;
+
+        public ConnectorDirection ConnectorDirection => ConnectorDirection.Output;
 
         public void Attach(ConnectionViewModel connection)
         {
@@ -79,7 +60,7 @@ namespace Cortex.Studio.Modules.ProcessDesigner.ViewModels
         private void RaisePositionChanged()
         {
             var handler = PositionChanged;
-            if (handler != null) handler(this, EventArgs.Empty);
+            handler?.Invoke(this, EventArgs.Empty);
         }
     }
 }

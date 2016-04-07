@@ -13,7 +13,7 @@ namespace Cortex.Studio.Modules.ProcessDesigner.ViewModels
     {
         private IContainer _process;
         private INode _selectedItem;
-        private ObservableCollection<IElement> _elements;
+        private ObservableCollection<INode> _elements;
         private ObservableCollection<IConnection> _connections;
 
         public override PaneLocation PreferredLocation
@@ -21,7 +21,7 @@ namespace Cortex.Studio.Modules.ProcessDesigner.ViewModels
             get { return PaneLocation.Right; }
         }
 
-        public ObservableCollection<IElement> Elements
+        public ObservableCollection<INode> Elements
         {
             get { return _elements; }
             set
@@ -83,7 +83,7 @@ namespace Cortex.Studio.Modules.ProcessDesigner.ViewModels
 
                 NotifyOfPropertyChange(() => Container);
 
-                Elements = new ObservableCollection<IElement>(_process.Elements);
+                Elements = new ObservableCollection<INode>(_process.Elements);
                 Connections = new ObservableCollection<IConnection>(_process.Connections);
 
                 _process.ConnectionAdded+= ProcessOnConnectionAdded;
@@ -93,12 +93,12 @@ namespace Cortex.Studio.Modules.ProcessDesigner.ViewModels
             }
         }
 
-        private void ProcessOnElementRemoved(IContainer container, IElement element)
+        private void ProcessOnElementRemoved(IContainer container, INode element)
         {
             Elements.Remove(element);
         }
 
-        private void ProcessOnElementAdded(IContainer container, IElement element)
+        private void ProcessOnElementAdded(IContainer container, INode element)
         {
             Elements.Add(element);
         }

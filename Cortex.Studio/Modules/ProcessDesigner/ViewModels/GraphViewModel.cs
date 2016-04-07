@@ -7,7 +7,6 @@ using System.Windows;
 using Caliburn.Micro;
 using Cortex.Core;
 using Cortex.Core.Model;
-using Cortex.Core.Model.Pins;
 using Cortex.Core.Model.Serialization;
 using Cortex.Studio.Modules.ProcessDesigner.Commands;
 using Gemini.Framework;
@@ -25,36 +24,24 @@ namespace Cortex.Studio.Modules.ProcessDesigner.ViewModels
     {
         private readonly IInspectorTool _inspectorTool;
         private readonly ILog _log = LogManager.GetLog(typeof (GraphViewModel));
-        private Executor _executor;
+        private Session _session;
         protected IContainer _process;
         private readonly BindableCollection<ElementViewModel> _elements = new BindableCollection<ElementViewModel>();
 
-        public IObservableCollection<ElementViewModel> Elements
-        {
-            get { return _elements; }
-        }
-        
+        public IObservableCollection<ElementViewModel> Elements => _elements;
+
         private readonly BindableCollection<ConnectionViewModel> _connections = new BindableCollection<ConnectionViewModel>();
 
-        public IObservableCollection<ConnectionViewModel> Connections
-        {
-            get { return _connections; }
-        }
+        public IObservableCollection<ConnectionViewModel> Connections => _connections;
 
         public IEnumerable<ElementViewModel> SelectedElements
         {
             get { return _elements.Where(x => x.IsSelected); }
         }
 
-        public bool IsRunning
-        {
-            get
-            {
-                return _executor != null && _executor.IsRunning;
-            }
-        }
+        public bool IsRunning => _session != null && _session.IsRunning;
 
-        public IContainer Process { get { return _process; } }
+        public IContainer Process => _process;
 
         public GraphViewModel()
         {
@@ -79,9 +66,7 @@ namespace Cortex.Studio.Modules.ProcessDesigner.ViewModels
         {
             // If current drag point is close to an input connector, show its snapped position.
             var nearbyConnector = FindNearbyInputConnector(currentDragPoint);
-            connection.ToPosition = (nearbyConnector != null)
-                ? nearbyConnector.Position
-                : currentDragPoint;
+            connection.ToPosition = nearbyConnector?.Position ?? currentDragPoint;
         }
 
         public void OnConnectionDragCompleted(Point currentDragPoint, ConnectionViewModel newConnection, IConnectorViewModel sourceConnector)
@@ -108,18 +93,6 @@ namespace Cortex.Studio.Modules.ProcessDesigner.ViewModels
 
             try
             {
-                // Datapins couldn't have multiple connections
-                if (nearbyConnector.IsConnected && nearbyConnector.Pin is IDataPin)
-                {
-                    var connections = Connections.Where(c => c.To == nearbyConnector).ToList();
-                    foreach (var connection in connections)
-                    {
-                        Connections.Remove(connection);
-                        connection.Clear();
-                        _process.RemoveConnection(connection.Connection);
-                    }
-                    _log.Warn("Target connector doesn't support multiple inputs. Removing other connectors");
-                }
                 newConnection.Attach(nearbyConnector);
                 _process.AddConnection(newConnection.Connection);
                 _log.Info("Connection created");
@@ -146,8 +119,8 @@ namespace Cortex.Studio.Modules.ProcessDesigner.ViewModels
         public void DeleteElement(ElementViewModel element)
         {
             var connections = 
-                        Connections.Where(c => c.From.Element == element)
-                .Union( Connections.Where(c => c.To.Element == element)).ToList();
+                        Connections.Where(c => c.From.Element.Equals(element))
+                .Union( Connections.Where(c => c.To.Element.Equals(element))).ToList();
 
             foreach (var connection in connections)
             {
@@ -184,7 +157,7 @@ namespace Cortex.Studio.Modules.ProcessDesigner.ViewModels
 
         Task ICommandHandler<RunProcessCommandDefenition>.Run(Command command)
         {
-            _executor.Start();
+            _session.Start();
             return TaskUtility.Completed;
         }
 
@@ -195,21 +168,21 @@ namespace Cortex.Studio.Modules.ProcessDesigner.ViewModels
 
         Task ICommandHandler<StopProcessCommandDefenition>.Run(Command command)
         {
-            _executor.Stop();
+            _session.Stop();
             return TaskUtility.Completed;
         }
 
         protected override Task DoNew()
         {
             _log.Info("Graph created: {0}", FileName);
-            _process = new Process();
-            _executor = new Executor((Process)_process);
+            _process = new ProcessGraph();
+            _session = new Session((ProcessGraph)_process);
             return TaskUtility.Completed;
         }
 
         protected override Task DoLoad(string filePath)
         {
-            _process = ContainerPersister.Deserialize<Process>(filePath);
+            _process = ContainerPersister.Deserialize<ProcessGraph>(filePath);
 
             foreach (var element in _process.Elements)
             {
@@ -218,14 +191,14 @@ namespace Cortex.Studio.Modules.ProcessDesigner.ViewModels
 
             foreach (var connection in _process.Connections)
             {
-                var startElement = Elements.FirstOrDefault(e => e.Element.Equals(connection.StartElement));
-                var endElement = Elements.FirstOrDefault(e => e.Element.Equals(connection.EndElement));
+                var startElement = Elements.FirstOrDefault(e => e.Element.Equals(connection.StartNode));
+                var endElement = Elements.FirstOrDefault(e => e.Element.Equals(connection.EndNode));
                 var startConnector = startElement.OutputConnectors.FirstOrDefault(c => c.Pin.Equals(connection.StartPin));
                 var endConnector = endElement.InputConnectors.FirstOrDefault(c => c.Pin.Equals(connection.EndPin));
                 Connections.Add(new ConnectionViewModel(startConnector, endConnector, connection));
             }
 
-            _executor = new Executor((Process)_process);
+            _session = new Session((ProcessGraph)_process);
             return TaskUtility.Completed;
         }
 
@@ -240,7 +213,7 @@ namespace Cortex.Studio.Modules.ProcessDesigner.ViewModels
             return TaskUtility.Completed;
         }
 
-        public void CreateElement(ElementItemDefenition defenition, Point mousePosition)
+        public void CreateElement(NodeDefenition defenition, Point mousePosition)
         {
             var element = defenition.CreateElement();
             _process.AddElement(element);

@@ -1,15 +1,13 @@
-﻿using System;
-using System.Windows.Media.Imaging;
+﻿using System.Windows.Media.Imaging;
 using Cortex.Core.Model;
 
 namespace Cortex.Studio.Elements.BitmapViewer
 {
     class BitmapViewerViewModel : EditorViewModel
     {
-        private readonly BitmapViewer _bitmapViewer;
-
         private BitmapSource _image;
 
+        public override string Name => "Bitmap viewer";
         public BitmapSource Image
         {
             get
@@ -23,15 +21,14 @@ namespace Cortex.Studio.Elements.BitmapViewer
             }
         }
 
-        public BitmapViewerViewModel(IElement element) : base(element)
+        public BitmapViewerViewModel(INode element) : base(element)
         {
-            _bitmapViewer = element as BitmapViewer;
         }
 
-        public override void AfterElementCalled(Flow flow)
+        public override void AfterInputPinProcessed(IInputPin input, object o)
         {
-            Image = _bitmapViewer.Bitmap;
-            base.AfterElementCalled(flow);
+            Image = o as WriteableBitmap;
+            base.AfterInputPinProcessed(input, o);
         }
     }
 }

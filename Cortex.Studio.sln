@@ -5,10 +5,6 @@ VisualStudioVersion = 12.0.21005.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cortex.Studio", "Cortex.Studio\Cortex.Studio.csproj", "{087C7ADD-3651-4BAA-9A46-B56C35149D3E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cortex.Core", "Cortex.Core\Cortex.Core.csproj", "{841972A7-8B8F-4F21-B05C-1D8E21A64021}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cortex.Console", "Cortex.Console\Cortex.Console.csproj", "{D6814C99-A2B1-46B1-86A3-D3A93757D0B0}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -19,14 +15,6 @@ Global
 		{087C7ADD-3651-4BAA-9A46-B56C35149D3E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{087C7ADD-3651-4BAA-9A46-B56C35149D3E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{087C7ADD-3651-4BAA-9A46-B56C35149D3E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{841972A7-8B8F-4F21-B05C-1D8E21A64021}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{841972A7-8B8F-4F21-B05C-1D8E21A64021}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{841972A7-8B8F-4F21-B05C-1D8E21A64021}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{841972A7-8B8F-4F21-B05C-1D8E21A64021}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D6814C99-A2B1-46B1-86A3-D3A93757D0B0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D6814C99-A2B1-46B1-86A3-D3A93757D0B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D6814C99-A2B1-46B1-86A3-D3A93757D0B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D6814C99-A2B1-46B1-86A3-D3A93757D0B0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,5 +1,4 @@
-﻿using System.Windows;
-using System.Windows.Controls;
+﻿using System.Windows.Controls;
 using Caliburn.Micro;
 using Cortex.Core.Model;
 using Cortex.Studio.Elements;
@@ -7,37 +6,25 @@ using Gemini.Framework;
 
 namespace Cortex.Studio.Modules.ProcessDesigner.ViewModels
 {
-    public class ElementCalledEventArgs : RoutedEventArgs
-    {
-        public ElementCalledEventArgs(Flow flow)
-        {
-            this.Flow = flow;
-        }
-
-        public Flow Flow { get; private set; }
-    }
-
     class EditorWrapperViewModel : Document
     {
-        private readonly UserControl _editorView;
-        private readonly ElementItemDefenition _defenition;
+        private readonly NodeDefenition _defenition;
         private readonly EditorViewModel _vm;
-        public UserControl EditorView { get { return _editorView; } }
+        public UserControl EditorView { get; }
 
-        public override string DisplayName { get { return _defenition.Name; }}
+        public override string DisplayName => _defenition.Name;
 
-        public EditorWrapperViewModel(ElementItemDefenition itemDefenition, EditorViewModel vm, UserControl view)
+        public EditorWrapperViewModel(NodeDefenition itemDefenition, EditorViewModel vm, UserControl view)
         {
             _defenition = itemDefenition;
-            _editorView = view;
+            EditorView = view;
             _vm = vm;
             ViewModelBinder.Bind(vm, view, null);
         }
 
         public void Apply()
         {
-            if(_vm != null)
-                _vm.Apply();
+            _vm?.Apply();
         }
     }
 }

@@ -235,7 +235,7 @@
       <xs:pattern value=".*" />
     </xs:restriction>
   </xs:simpleType>
-  <xs:simpleType name="Condition">
+  <xs:simpleType name="Branch">
     <xs:restriction base="xs:string">
       <xs:minLength value="1" />
     </xs:restriction>
@@ -283,7 +283,7 @@
         </xs:attribute>
         <xs:attribute name="batchSize" type="xs:integer">
           <xs:annotation>
-            <xs:documentation>Number of log events that should be processed in a batch by the lazy writer thread.</xs:documentation>
+            <xs:documentation>Number of log events that should be ProcessGraphed in a batch by the lazy writer thread.</xs:documentation>
           </xs:annotation>
         </xs:attribute>
         <xs:attribute name="overflowAction" type="NLog.Targets.Wrappers.AsyncTargetWrapperOverflowAction">
@@ -566,13 +566,13 @@
   </xs:simpleType>
   <xs:complexType name="NLog.Targets.ConsoleRowHighlightingRule">
     <xs:choice minOccurs="0" maxOccurs="unbounded">
-      <xs:element name="condition" minOccurs="0" maxOccurs="1" type="Condition" />
+      <xs:element name="condition" minOccurs="0" maxOccurs="1" type="Branch" />
       <xs:element name="backgroundColor" minOccurs="0" maxOccurs="1" type="NLog.Targets.ConsoleOutputColor" />
       <xs:element name="foregroundColor" minOccurs="0" maxOccurs="1" type="NLog.Targets.ConsoleOutputColor" />
     </xs:choice>
-    <xs:attribute name="condition" type="Condition">
+    <xs:attribute name="condition" type="Branch">
       <xs:annotation>
-        <xs:documentation>Condition that must be met in order to set the specified foreground and background color.</xs:documentation>
+        <xs:documentation>Branch that must be met in order to set the specified foreground and background color.</xs:documentation>
       </xs:annotation>
     </xs:attribute>
     <xs:attribute name="backgroundColor" type="NLog.Targets.ConsoleOutputColor">
@@ -1099,7 +1099,7 @@
         </xs:attribute>
         <xs:attribute name="networkWrites" type="xs:boolean">
           <xs:annotation>
-            <xs:documentation>Indicates whether concurrent writes to the log file by multiple processes on different network hosts.</xs:documentation>
+            <xs:documentation>Indicates whether concurrent writes to the log file by multiple ProcessGraphes on different network hosts.</xs:documentation>
           </xs:annotation>
         </xs:attribute>
         <xs:attribute name="maxLogFilenames" type="xs:integer">
@@ -1114,7 +1114,7 @@
         </xs:attribute>
         <xs:attribute name="concurrentWrites" type="xs:boolean">
           <xs:annotation>
-            <xs:documentation>Indicates whether concurrent writes to the log file by multiple processes on the same host.</xs:documentation>
+            <xs:documentation>Indicates whether concurrent writes to the log file by multiple ProcessGraphes on the same host.</xs:documentation>
           </xs:annotation>
         </xs:attribute>
         <xs:attribute name="concurrentWriteAttempts" type="xs:integer">
@@ -1188,16 +1188,16 @@
       <xs:extension base="WrapperTargetBase">
         <xs:choice minOccurs="0" maxOccurs="unbounded">
           <xs:element name="name" minOccurs="0" maxOccurs="1" type="xs:string" />
-          <xs:element name="condition" minOccurs="0" maxOccurs="1" type="Condition" />
+          <xs:element name="condition" minOccurs="0" maxOccurs="1" type="Branch" />
         </xs:choice>
         <xs:attribute name="name" type="xs:string">
           <xs:annotation>
             <xs:documentation>Name of the target.</xs:documentation>
           </xs:annotation>
         </xs:attribute>
-        <xs:attribute name="condition" type="Condition">
+        <xs:attribute name="condition" type="Branch">
           <xs:annotation>
-            <xs:documentation>Condition expression. Log events who meet this condition will be forwarded to the wrapped target.</xs:documentation>
+            <xs:documentation>Branch expression. Log events who meet this condition will be forwarded to the wrapped target.</xs:documentation>
           </xs:annotation>
         </xs:attribute>
       </xs:extension>
@@ -1248,7 +1248,7 @@
         </xs:attribute>
         <xs:attribute name="revertToSelf" type="xs:boolean">
           <xs:annotation>
-            <xs:documentation>Indicates whether to revert to the credentials of the process instead of impersonating another user.</xs:documentation>
+            <xs:documentation>Indicates whether to revert to the credentials of the ProcessGraph instead of impersonating another user.</xs:documentation>
           </xs:annotation>
         </xs:attribute>
         <xs:attribute name="userName" type="xs:string">
@@ -1929,7 +1929,7 @@
       <xs:extension base="WrapperTargetBase">
         <xs:choice minOccurs="0" maxOccurs="unbounded">
           <xs:element name="name" minOccurs="0" maxOccurs="1" type="xs:string" />
-          <xs:element name="defaultFilter" minOccurs="0" maxOccurs="1" type="Condition" />
+          <xs:element name="defaultFilter" minOccurs="0" maxOccurs="1" type="Branch" />
           <xs:element name="when" minOccurs="0" maxOccurs="unbounded" type="NLog.Targets.Wrappers.FilteringRule" />
         </xs:choice>
         <xs:attribute name="name" type="xs:string">
@@ -1937,7 +1937,7 @@
             <xs:documentation>Name of the target.</xs:documentation>
           </xs:annotation>
         </xs:attribute>
-        <xs:attribute name="defaultFilter" type="Condition">
+        <xs:attribute name="defaultFilter" type="Branch">
           <xs:annotation>
             <xs:documentation>Default filter to be applied when no specific rule matches.</xs:documentation>
           </xs:annotation>
@@ -1947,15 +1947,15 @@
   </xs:complexType>
   <xs:complexType name="NLog.Targets.Wrappers.FilteringRule">
     <xs:choice minOccurs="0" maxOccurs="unbounded">
-      <xs:element name="exists" minOccurs="0" maxOccurs="1" type="Condition" />
-      <xs:element name="filter" minOccurs="0" maxOccurs="1" type="Condition" />
+      <xs:element name="exists" minOccurs="0" maxOccurs="1" type="Branch" />
+      <xs:element name="filter" minOccurs="0" maxOccurs="1" type="Branch" />
     </xs:choice>
-    <xs:attribute name="exists" type="Condition">
+    <xs:attribute name="exists" type="Branch">
       <xs:annotation>
-        <xs:documentation>Condition to be tested.</xs:documentation>
+        <xs:documentation>Branch to be tested.</xs:documentation>
       </xs:annotation>
     </xs:attribute>
-    <xs:attribute name="filter" type="Condition">
+    <xs:attribute name="filter" type="Branch">
       <xs:annotation>
         <xs:documentation>Resulting filter to be applied when the condition matches.</xs:documentation>
       </xs:annotation>
@@ -2296,16 +2296,16 @@
       <xs:extension base="Filter">
         <xs:choice minOccurs="0" maxOccurs="unbounded">
           <xs:element name="action" minOccurs="0" maxOccurs="1" type="FilterResult" />
-          <xs:element name="condition" minOccurs="0" maxOccurs="1" type="Condition" />
+          <xs:element name="condition" minOccurs="0" maxOccurs="1" type="Branch" />
         </xs:choice>
         <xs:attribute name="action" type="FilterResult">
           <xs:annotation>
             <xs:documentation>Action to be taken when filter matches.</xs:documentation>
           </xs:annotation>
         </xs:attribute>
-        <xs:attribute name="condition" type="Condition">
+        <xs:attribute name="condition" type="Branch">
           <xs:annotation>
-            <xs:documentation>Condition expression.</xs:documentation>
+            <xs:documentation>Branch expression.</xs:documentation>
           </xs:annotation>
         </xs:attribute>
       </xs:extension>

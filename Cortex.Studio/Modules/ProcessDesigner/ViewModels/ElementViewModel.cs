@@ -6,7 +6,6 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using Caliburn.Micro;
 using Cortex.Core.Model;
-using Cortex.Core.Model.Pins;
 using Cortex.Studio.Elements;
 using Cortex.Studio.Modules.ProcessDesigner.Commands;
 using Gemini.Framework.Commands;
@@ -21,8 +20,8 @@ namespace Cortex.Studio.Modules.ProcessDesigner.ViewModels
         private readonly BindableCollection<InputConnectorViewModel> _inputConnectors = new BindableCollection<InputConnectorViewModel>();
         private readonly BindableCollection<OutputConnectorViewModel> _outputConnectors = new BindableCollection<OutputConnectorViewModel>();
         
-        private readonly IElement _element;
-        private readonly ElementItemDefenition _itemDefenition;
+        private readonly INode _element;
+        private readonly NodeDefenition _itemDefenition;
         private readonly IEnumerable<ElementEditorDefenition> _editors;
 
         private double _x;
@@ -53,28 +52,13 @@ namespace Cortex.Studio.Modules.ProcessDesigner.ViewModels
             }
         }
         
-        public string Name
-        {
-            get
-            {
-                return _element != null ? _itemDefenition.Name : "Element";
-            }
-        }
+        public string Name => _element != null ? _itemDefenition.Name : "Element";
 
-        public Uri IconUri
-        {
-            get
-            {
-                return _element != null ? _itemDefenition.IconUri : null;
-            }
-        }
+        public Uri IconUri => _element != null ? _itemDefenition.IconUri : null;
 
         public UserControl EmbeddedView { get; private set; }
 
-        public IElement Element
-        {
-            get { return _element; }
-        }
+        public INode Element => _element;
 
         public bool IsSelected
         {
@@ -96,21 +80,15 @@ namespace Cortex.Studio.Modules.ProcessDesigner.ViewModels
             }
         }
 
-        public IList<InputConnectorViewModel> InputConnectors
-        {
-            get { return _inputConnectors; }
-        }
+        public IList<InputConnectorViewModel> InputConnectors => _inputConnectors;
 
-        public IList<OutputConnectorViewModel> OutputConnectors
-        {
-            get { return _outputConnectors; }
-        }
-        
-        public ElementViewModel(IContainer process, IElement element)
+        public IList<OutputConnectorViewModel> OutputConnectors => _outputConnectors;
+
+        public ElementViewModel(IContainer process, INode element)
         {
             _element = element;
             var defenitionType = process.GetMetaData<Type>(element, "Defenition");
-            _itemDefenition = IoC.GetAll<ElementItemDefenition>().FirstOrDefault(d => d.GetType() == defenitionType);
+            _itemDefenition = IoC.GetAll<NodeDefenition>().FirstOrDefault(d => d.GetType() == defenitionType);
             _editors = IoC.GetAll<ElementEditorDefenition>().Where(e => e.ElementType == _element.GetType());
 
             if(_itemDefenition == null)
@@ -157,7 +135,7 @@ namespace Cortex.Studio.Modules.ProcessDesigner.ViewModels
         protected virtual void RaiseOutputChanged()
         {
             var handler = OutputChanged;
-            if (handler != null) handler(this, EventArgs.Empty);
+            handler?.Invoke(this, EventArgs.Empty);
         }
 
         public void Update(Command command)

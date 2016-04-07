@@ -7,7 +7,7 @@ namespace Cortex.Studio.Modules.ProcessDesigner
     class ToolbarDefenitions
     {
         [Export]
-        public static ToolBarDefinition ProcessToolBar = new ToolBarDefinition(1, "Process Designer");
+        public static ToolBarDefinition ProcessToolBar = new ToolBarDefinition(1, "ProcessGraph Designer");
 
         [Export]
         public static ToolBarItemGroupDefinition ProcessToolBarGroup = new ToolBarItemGroupDefinition(ProcessToolBar, 0);
